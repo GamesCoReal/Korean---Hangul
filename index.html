@@ -992,6 +992,30 @@ function lessonUnlocked(i){
   return i <= s.unlocked;
 }
 
+function lessonAvailableForPractice(i){
+  return i === activeLesson || testPassed(i);
+}
+
+function availableLessonItems(){
+  return lessons
+    .filter((lesson,index) => lessonAvailableForPractice(index))
+    .flatMap(lesson => lesson.items);
+}
+
+function availableLessonJamo(){
+  const found = [];
+
+  lessons.forEach((lesson,index)=>{
+    if(!lessonAvailableForPractice(index)) return;
+
+    lessonJamo(index).forEach(letter=>{
+      if(!found.includes(letter)) found.push(letter);
+    });
+  });
+
+  return found;
+}
+
 function practiceComplete(i){
   return lessons[i].items.every(item =>
     practiceCount(item[0]) >= NEEDED_CORRECT
@@ -1205,8 +1229,7 @@ function makeAnswerChoices(){
 
   const correct = currentPractice[1];
 
-  const all = lessons
-    .flatMap(lesson => lesson.items.map(item => item[1]));
+  const all = availableLessonItems().map(item => item[1]);
 
   let choices = [correct];
 
@@ -1341,20 +1364,20 @@ function getIncompleteBuildLetters(){
 
 function randomPartnerFor(letter){
 
-  const lessonParts = lessonJamo(activeLesson);
+  const lessonParts = availableLessonJamo();
 
   if(isConsonant(letter)){
 
     const vowels = lessonParts.filter(isVowel);
-    const pool = vowels.length ? vowels : ALL_VOWELS;
+    const pool = vowels.length ? vowels : [];
 
-    return random(pool);
+    return pool.length ? random(pool) : null;
   }
 
   const consonants = lessonParts.filter(isConsonant);
-  const pool = consonants.length ? consonants : ALL_CONSONANTS;
+  const pool = consonants;
 
-  return random(pool);
+  return pool.length ? random(pool) : null;
 }
 
 function randomBuildPair(){
@@ -1375,19 +1398,19 @@ function randomBuildPair(){
   }else{
     const parts = decomposeHangul(focus);
     cho = parts[0];
-    jung = parts[1] || random(ALL_VOWELS);
+    jung = parts[1] || null;
   }
 
   return {
     cho,
     jung,
-    syllable: composeHangul(cho,jung)
+    syllable: jung ? composeHangul(cho,jung) : focus
   };
 }
 
 function getBuildingChoices(correctPart){
 
-  const allParts = ALL_CONSONANTS.concat(ALL_VOWELS);
+  const allParts = availableLessonJamo();
 
   let choices = [correctPart];
 
@@ -1418,7 +1441,7 @@ function newBuildingQuestion(){
   const pair = randomBuildPair();
 
   currentBuilding = pair.syllable;
-  currentBuildParts = [pair.cho, pair.jung];
+  currentBuildParts = [pair.cho, pair.jung].filter(Boolean);
   selectedBuildParts = [];
   buildingLocked = false;
 
@@ -2001,7 +2024,7 @@ let writingPool = [];
 function writingTargets(){
 
   const available = lessons
-    .slice(0,s.unlocked + 1)
+    .filter((lesson,index) => lessonAvailableForPractice(index))
     .flatMap(lesson => lesson.items.map(item => item[0]));
 
   const targets = [];
@@ -2264,165 +2287,99 @@ function writingScore(){
 
   }
 
-  const targetCanvas =
-    document.createElement("canvas");
-
+  const targetCanvas = document.createElement("canvas");
   targetCanvas.width = size;
   targetCanvas.height = size;
-
-  const targetCtx =
-    targetCanvas.getContext("2d");
-
-  targetCtx.fillStyle = "white";
-  targetCtx.fillRect(0,0,size,size);
-
-  targetCtx.fillStyle = "black";
-
-  targetCtx.font =
-    "500 90px sans-serif";
-
-  targetCtx.textAlign = "center";
-  targetCtx.textBaseline = "middle";
-
-  targetCtx.fillText(
-    currentWritingTarget.char,
-    size/2,
-    size/2
-  );
-
-  const targetData =
-    targetCtx.getImageData(
-      0,
-      0,
-      size,
-      size
-    ).data;
-
-  const targetMask =
-    new Uint8Array(size*size);
-
-  for(let i=0;i<targetMask.length;i++){
-
-    if(targetData[i*4] < 230){
-      targetMask[i] = 1;
-    }
-
-  }
-
-  let targetCount = 0;
-  let covered = 0;
-  let userCount = 0;
-  let matched = 0;
-
+  const targetCtx = targetCanvas.getContext("2d");
+  const chars = [...currentWritingTarget.char];
+  const centers = chars.length === 1
+    ? [size / 2]
+    : chars.map((_,index) =>
+      size * (index + 1) / (chars.length + 1)
+    );
   const tolerance = 14;
 
-  for(let y=0;y<size;y++){
+  function scoreTargetChar(char,center){
+    targetCtx.clearRect(0,0,size,size);
+    targetCtx.font = "500 90px sans-serif";
+    targetCtx.textAlign = "center";
+    targetCtx.textBaseline = "middle";
+    targetCtx.fillStyle = "black";
+    targetCtx.fillText(char,center,size/2);
 
-    for(let x=0;x<size;x++){
+    const targetData = targetCtx.getImageData(0,0,size,size).data;
+    const targetMask = new Uint8Array(size*size);
 
-      const i = y*size+x;
+    for(let i=0;i<targetMask.length;i++){
+      if(targetData[i*4] < 230) targetMask[i] = 1;
+    }
 
-      if(targetMask[i]){
+    let targetCount = 0;
+    let covered = 0;
+    let targetMatched = 0;
+    let userInTarget = 0;
 
-        targetCount++;
+    for(let y=0;y<size;y++){
+      for(let x=0;x<size;x++){
+        const i = y*size+x;
 
-        let found = false;
+        if(targetMask[i]){
+          targetCount++;
+          let found = false;
 
-        for(let dy=-tolerance;dy<=tolerance && !found;dy++){
+          for(let dy=-tolerance;dy<=tolerance && !found;dy++){
+            for(let dx=-tolerance;dx<=tolerance;dx++){
+              const nx = x+dx;
+              const ny = y+dy;
 
-          for(let dx=-tolerance;dx<=tolerance;dx++){
-
-            const nx = x+dx;
-            const ny = y+dy;
-
-            if(
-              nx>=0 &&
-              nx<size &&
-              ny>=0 &&
-              ny<size &&
-              userMask[ny*size+nx]
-            ){
-
-              found = true;
-              break;
-
+              if(nx>=0 && nx<size && ny>=0 && ny<size &&
+                 userMask[ny*size+nx]){
+                found = true;
+                break;
+              }
             }
-
           }
 
+          if(found) covered++;
         }
 
-        if(found) covered++;
+        if(userMask[i]){
+          let found = false;
 
-      }
+          for(let dy=-tolerance;dy<=tolerance && !found;dy++){
+            for(let dx=-tolerance;dx<=tolerance;dx++){
+              const nx = x+dx;
+              const ny = y+dy;
 
-      if(userMask[i]){
-        userCount++;
-      }
-
-    }
-
-  }
-
-  for(let y=0;y<size;y++){
-
-    for(let x=0;x<size;x++){
-
-      const i = y*size+x;
-
-      if(!userMask[i]) continue;
-
-      let found = false;
-
-      for(let dy=-tolerance;dy<=tolerance && !found;dy++){
-
-        for(let dx=-tolerance;dx<=tolerance;dx++){
-
-          const nx = x+dx;
-          const ny = y+dy;
-
-          if(
-            nx>=0 &&
-            nx<size &&
-            ny>=0 &&
-            ny<size &&
-            targetMask[ny*size+nx]
-          ){
-
-            found = true;
-            break;
-
+              if(nx>=0 && nx<size && ny>=0 && ny<size &&
+                 targetMask[ny*size+nx]){
+                found = true;
+                break;
+              }
+            }
           }
 
+          if(found) targetMatched++;
+          if(Math.abs(x-center) < size / chars.length){
+            userInTarget++;
+          }
         }
-
       }
-
-      if(found) matched++;
-
     }
 
+    const coverage = targetCount ? covered / targetCount : 0;
+    const precision = userInTarget ? targetMatched / userInTarget : 0;
+    let score = coverage * .88 + precision * .12;
+
+    if(coverage >= .40) score += .08;
+    if(coverage >= .60) score += .07;
+
+    return Math.min(1,score);
   }
 
-  const coverage =
-    targetCount ? covered/targetCount : 0;
-
-  const precision =
-    userCount ? matched/userCount : 0;
-
-  let score =
-    coverage*.88 +
-    precision*.12;
-
-  if(coverage >= .40){
-    score += .08;
-  }
-
-  if(coverage >= .60){
-    score += .07;
-  }
-
-  return Math.min(1,score);
+  return chars.map((char,index) =>
+    scoreTargetChar(char,centers[index])
+  );
 }
 
 /* =========================================================
@@ -2433,37 +2390,32 @@ function checkWriting(){
 
   if(!currentWritingTarget) return;
 
-  const score =
+  const scores =
     writingScore();
 
-  const percent =
-    Math.round(score*100);
+  const passed = [];
+  const missed = [];
 
-  if(percent >= 55){
+  [...currentWritingTarget.char].forEach((char,index)=>{
+    const percent = Math.round(scores[index] * 100);
 
-    const char =
-      currentWritingTarget.char;
+    if(percent >= 55){
+      s.writing[char] = writeCount(char) + 1;
+      s.correct++;
+      passed.push(`${char} ${percent}% ✓`);
+    }else{
+      missed.push(`${char} ${percent}%`);
+    }
+  });
 
-    s.writing[char] = writeCount(char) + 1;
+  s.total += [...currentWritingTarget.char].length;
+  s.streak = missed.length ? 0 : s.streak + passed.length;
 
-    s.correct++;
-    s.total++;
-    s.streak++;
+  $("writeFeedback").textContent =
+    `${passed.length ? `Marked: ${passed.join(", ")}.` : ""}` +
+    `${missed.length ? ` Keep practicing: ${missed.join(", ")}.` : ""}`;
 
-    $("writeFeedback").textContent =
-      `Correct! ✓ ${percent}%  ${char} marked once.`;
-
-    save();
-
-  }else{
-
-    s.total++;
-    s.streak = 0;
-
-    $("writeFeedback").textContent =
-      `Not quite. ${percent}%  Moving on.`;
-
-  }
+  save();
 
   updateWritingUI();
 
