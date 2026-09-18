@@ -1,0 +1,2535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f7f9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Hangul Quest</title>
+
+<style>
+:root{
+  --bg:#f7f7f9;
+  --card:#fff;
+  --ink:#17171a;
+  --muted:#73747d;
+  --line:#e5e5ea;
+  --accent:#111827;
+  --good:#16803c;
+  --bad:#d92d20;
+  --soft:#f0f0f4
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",sans-serif;
+  min-height:100svh
+}
+
+button{
+  font:inherit;
+  color:inherit;
+  cursor:pointer
+}
+
+button:active{
+  transform:scale(.98)
+}
+
+.app{
+  max-width:640px;
+  margin:auto;
+  padding:env(safe-area-inset-top) 17px calc(25px + env(safe-area-inset-bottom))
+}
+
+header{
+  padding:18px 3px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+
+h1{
+  font-size:29px;
+  letter-spacing:-.7px;
+  margin:0
+}
+
+.sub{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:3px
+}
+
+.headerButtons{
+  display:flex;
+  gap:7px;
+  align-items:center
+}
+
+.iconbtn{
+  border:0;
+  background:var(--soft);
+  border-radius:13px;
+  padding:10px 12px
+}
+
+.langbtn{
+  border:0;
+  background:var(--accent);
+  color:#fff;
+  border-radius:13px;
+  padding:10px 12px;
+  font-size:12px;
+  font-weight:800
+}
+
+nav{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+  margin:8px 0 14px
+}
+
+nav button{
+  border:0;
+  background:transparent;
+  border-radius:13px;
+  padding:10px 3px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted)
+}
+
+nav button.active{
+  background:var(--accent);
+  color:#fff
+}
+
+.view{
+  display:none
+}
+
+.view.active{
+  display:block
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:20px;
+  box-shadow:0 6px 25px #00000008
+}
+
+.hero{
+  padding:24px 20px
+}
+
+.eyebrow{
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800
+}
+
+h2{
+  font-size:24px;
+  margin:5px 0 7px;
+  letter-spacing:-.4px
+}
+
+p{
+  line-height:1.45
+}
+
+.primary{
+  width:100%;
+  border:0;
+  background:var(--accent);
+  color:white;
+  border-radius:16px;
+  padding:15px;
+  font-weight:750;
+  margin-top:10px
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:white;
+  border-radius:14px;
+  padding:12px 14px;
+  font-weight:700
+}
+
+.progress{
+  height:7px;
+  background:#e8e8ed;
+  border-radius:99px;
+  overflow:hidden;
+  margin:9px 0 16px
+}
+
+.progress div{
+  height:100%;
+  background:var(--accent);
+  width:0;
+  transition:.25s
+}
+
+.lesson-list{
+  display:grid;
+  gap:10px;
+  margin-top:14px
+}
+
+.lesson{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  width:100%;
+  text-align:left;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:19px;
+  padding:14px
+}
+
+.lesson.locked{
+  opacity:.5
+}
+
+.num{
+  width:40px;
+  height:40px;
+  border-radius:14px;
+  background:var(--soft);
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  flex:none
+}
+
+.lesson b{
+  display:block
+}
+
+.lesson small{
+  color:var(--muted)
+}
+
+.xp{
+  margin-left:auto;
+  font-size:12px;
+  color:var(--muted)
+}
+
+.glyph{
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size:100px;
+  text-align:center;
+  line-height:1.05;
+  padding:13px 0
+}
+
+.prompt{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700
+}
+
+.answers{
+  display:grid;
+  gap:9px;
+  margin-top:13px
+}
+
+.answer{
+  border:1.5px solid var(--line);
+  background:#fff;
+  border-radius:16px;
+  padding:15px;
+  text-align:left;
+  font-size:17px;
+  font-weight:700;
+  min-height:56px
+}
+
+.answer.correct{
+  border-color:var(--good);
+  background:#effaf2;
+  color:var(--good)
+}
+
+.answer.wrong{
+  border-color:var(--bad);
+  background:#fff1ef;
+  color:var(--bad)
+}
+
+.feedback{
+  text-align:center;
+  font-weight:750;
+  min-height:24px;
+  margin:12px 0 0
+}
+
+.next{
+  display:none
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:12px 0
+}
+
+.stat{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:12px 5px;
+  text-align:center
+}
+
+.stat b{
+  font-size:19px;
+  display:block
+}
+
+.stat span{
+  font-size:10px;
+  color:var(--muted)
+}
+
+.choices{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:14px
+}
+
+.choices button{
+  min-height:76px;
+  border:1.5px solid var(--line);
+  background:#fff;
+  border-radius:17px;
+  font-weight:750;
+  font-size:20px
+}
+
+.board{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:14px 0
+}
+
+.tile{
+  background:var(--soft);
+  border-radius:17px;
+  padding:14px;
+  text-align:center
+}
+
+.tile b{
+  font-size:31px;
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif
+}
+
+.tile small{
+  display:block;
+  color:var(--muted)
+}
+
+.builder{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:7px;
+  min-height:92px;
+  border:1px dashed #cfcfd5;
+  border-radius:18px;
+  font-size:52px;
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif
+}
+
+.slot{
+  width:72px;
+  height:72px;
+  border:2px dashed #ccc;
+  border-radius:15px;
+  display:grid;
+  place-items:center
+}
+
+.padwrap{
+  position:relative;
+  margin-top:12px
+}
+
+.pad{
+  width:100%;
+  height:260px;
+  background:#fff;
+  border:2px solid var(--line);
+  border-radius:20px;
+  touch-action:none;
+  display:block
+}
+
+.guide{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  display:grid;
+  place-items:center;
+  color:#e5e5e9;
+  font-size:130px;
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  z-index:1
+}
+
+.padwrap canvas{
+  position:relative;
+  z-index:2
+}
+
+.row{
+  display:flex;
+  gap:8px;
+  align-items:center
+}
+
+.row>*{
+  flex:1
+}
+
+.tiny{
+  font-size:12px;
+  color:var(--muted)
+}
+
+.flash{
+  font-size:64px;
+  text-align:center;
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  padding:24px
+}
+
+.stars{
+  letter-spacing:3px;
+  font-size:25px
+}
+
+.hidden{
+  display:none!important
+}
+
+.reviewgrid{
+  display:grid;
+  gap:9px;
+  margin-top:12px
+}
+
+.reviewitem{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:15px;
+  padding:13px
+}
+
+.reviewitem b{
+  font-size:25px;
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif
+}
+
+.due{
+  color:var(--muted);
+  font-size:12px
+}
+
+.score{
+  font-size:31px;
+  font-weight:850;
+  text-align:center;
+  margin-top:8px
+}
+
+.score.good{
+  color:var(--good)
+}
+
+.score.bad{
+  color:var(--bad)
+}
+
+.masteryBox{
+  background:var(--soft);
+  border-radius:16px;
+  padding:12px;
+  margin-top:12px;
+  text-align:center;
+  font-size:13px
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  <div>
+    <h1 id="title">Hangul Quest 🇰🇷</h1>
+    <div class="sub" id="subtitle">
+      Read it • build it • write it • remember it
+    </div>
+  </div>
+
+  <div class="headerButtons">
+    <button class="langbtn" id="language" type="button">한국어</button>
+    <button class="iconbtn" id="sound" type="button">🔊</button>
+  </div>
+</header>
+
+<nav id="nav">
+  <button class="active" data-view="home" type="button">Learn</button>
+  <button data-view="practice" type="button">Practice</button>
+  <button data-view="write" type="button">Write</button>
+  <button data-view="review" type="button">Review</button>
+</nav>
+
+<section id="home" class="view active">
+
+  <div class="card hero">
+
+    <div class="eyebrow" id="courseEyebrow">Your course</div>
+
+    <h2 id="homeTitle">Start learning Hangul</h2>
+
+    <p id="homeDescription">
+      Short lessons take you from individual letters
+      to real Korean syllable blocks.
+    </p>
+
+    <div class="progress">
+      <div id="coursebar"></div>
+    </div>
+
+    <div class="tiny" id="courseText"></div>
+
+  </div>
+
+  <div class="lesson-list" id="lessons"></div>
+
+</section>
+
+<section id="practice" class="view">
+
+  <div class="card">
+
+    <div class="row">
+      <div class="eyebrow" id="lessonPracticeLabel">
+        Lesson practice
+      </div>
+
+      <div class="tiny" id="qnum"></div>
+    </div>
+
+    <div class="progress">
+      <div id="qbar"></div>
+    </div>
+
+    <div class="prompt" id="prompt"></div>
+
+    <div class="glyph" id="big"></div>
+
+    <div class="answers" id="answers"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <button class="primary next" id="next" type="button">
+      Continue →
+    </button>
+
+    <div class="masteryBox" id="masteryBox">
+      Correct: 0 • Wrong: 0
+    </div>
+
+  </div>
+
+  <div class="stats">
+
+    <div class="stat">
+      <b id="correct">0</b>
+      <span id="correctLabel">Correct</span>
+    </div>
+
+    <div class="stat">
+      <b id="streak">0</b>
+      <span id="streakLabel">Streak</span>
+    </div>
+
+    <div class="stat">
+      <b id="accuracy">—</b>
+      <span id="accuracyLabel">Accuracy</span>
+    </div>
+
+  </div>
+
+  <div class="card" id="builderCard">
+
+    <div class="eyebrow" id="builderEyebrow">
+      Syllable builder
+    </div>
+
+    <h2 id="builderTitle">
+      Build a block
+    </h2>
+
+    <div class="builder">
+
+      <div class="slot" id="bs1">?</div>
+      <div class="slot" id="bs2">?</div>
+      <div class="slot" id="bs3">→</div>
+
+    </div>
+
+    <div class="choices" id="buildChoices"></div>
+
+    <div class="feedback" id="buildFeedback"></div>
+
+  </div>
+
+</section>
+
+<section id="write" class="view">
+
+  <div class="card">
+
+    <div class="eyebrow" id="writingLabel">
+      Writing practice
+    </div>
+
+    <h2 id="writeGlyph">ㄱ</h2>
+
+    <p class="tiny" id="writeInstructions">
+      Trace the guide with your finger.
+      Your strokes stay on this device.
+    </p>
+
+    <div class="padwrap">
+
+      <div class="guide" id="guide">ㄱ</div>
+
+      <canvas class="pad" id="canvas"></canvas>
+
+    </div>
+
+    <div class="score" id="writeScore"></div>
+
+    <div class="tiny" style="text-align:center" id="scoreHint"></div>
+
+    <div class="row">
+
+      <button class="secondary" id="erase" type="button">
+        Clear
+      </button>
+
+      <button class="primary" id="checkWrite" type="button">
+        Check ✓
+      </button>
+
+    </div>
+
+    <button class="secondary" id="newWrite" type="button" style="width:100%;margin-top:8px">
+      Next letter →
+    </button>
+
+    <div class="feedback" id="writeFeedback"></div>
+
+  </div>
+
+</section>
+
+<section id="review" class="view">
+
+  <div class="card">
+
+    <div class="eyebrow" id="reviewEyebrow">
+      Spaced repetition
+    </div>
+
+    <h2 id="reviewTitle">
+      Review what needs work
+    </h2>
+
+    <p class="tiny" id="reviewDescription">
+      Letters you miss come back sooner.
+      Strong letters wait longer.
+    </p>
+
+    <div class="reviewgrid" id="reviewList"></div>
+
+    <button class="primary" id="startReview" type="button">
+      Start review
+    </button>
+
+  </div>
+
+</section>
+
+</div>
+
+<script>
+
+/* =========================================================
+   HANGUL DATA
+========================================================= */
+
+const units = [
+
+  {
+    name:"Consonants 1",
+    ko:"자음 1",
+    desc:"The first 7 consonants",
+    koDesc:"처음 배우는 7개의 자음",
+    items:[
+      ["ㄱ","g / k"],
+      ["ㄴ","n"],
+      ["ㄷ","d / t"],
+      ["ㄹ","r / l"],
+      ["ㅁ","m"],
+      ["ㅂ","b / p"],
+      ["ㅅ","s"]
+    ]
+  },
+
+  {
+    name:"Consonants 2",
+    ko:"자음 2",
+    desc:"More consonants",
+    koDesc:"더 많은 자음",
+    items:[
+      ["ㅇ","ng / silent"],
+      ["ㅈ","j"],
+      ["ㅊ","ch"],
+      ["ㅋ","k"],
+      ["ㅌ","t"],
+      ["ㅍ","p"],
+      ["ㅎ","h"]
+    ]
+  },
+
+  {
+    name:"Vowels 1",
+    ko:"모음 1",
+    desc:"Basic vowels",
+    koDesc:"기본 모음",
+    items:[
+      ["ㅏ","a"],
+      ["ㅑ","ya"],
+      ["ㅓ","eo"],
+      ["ㅕ","yeo"],
+      ["ㅗ","o"],
+      ["ㅛ","yo"],
+      ["ㅜ","u"]
+    ]
+  },
+
+  {
+    name:"Vowels 2",
+    ko:"모음 2",
+    desc:"The remaining basic vowels",
+    koDesc:"나머지 기본 모음",
+    items:[
+      ["ㅠ","yu"],
+      ["ㅡ","eu"],
+      ["ㅣ","i"],
+      ["ㅐ","ae"],
+      ["ㅔ","e"]
+    ]
+  },
+
+  {
+    name:"Syllable Blocks",
+    ko:"음절 블록",
+    desc:"Combine consonants + vowels",
+    koDesc:"자음과 모음을 결합해요",
+    items:[
+      ["가","ga"],
+      ["나","na"],
+      ["다","da"],
+      ["마","ma"],
+      ["바","ba"],
+      ["사","sa"]
+    ]
+  },
+
+  {
+    name:"Reading",
+    ko:"읽기",
+    desc:"Simple Korean blocks",
+    koDesc:"간단한 한국어 음절",
+    items:[
+      ["너","neo"],
+      ["미","mi"],
+      ["고","go"],
+      ["아","a"],
+      ["우","u"],
+      ["하","ha"]
+    ]
+  }
+
+];
+
+const all = units.flatMap((u,ui)=>
+  u.items.map(x=>({
+    ...x,
+    unit:ui
+  }))
+);
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let s;
+
+try{
+  s=JSON.parse(
+    localStorage.getItem("hangulQuest") || "{}"
+  );
+}catch(e){
+  s={};
+}
+
+s.correct ??= 0;
+s.total ??= 0;
+s.streak ??= 0;
+s.unlocked ??= 1;
+s.mastery ??= {};
+
+let language=
+  s.language==="ko"
+    ?"ko"
+    :"en";
+
+let q=0;
+let qTotal=10;
+let current=null;
+let locked=false;
+let activeUnit=0;
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function $(id){
+  return document.getElementById(id);
+}
+
+function save(){
+
+  s.language=language;
+
+  try{
+    localStorage.setItem(
+      "hangulQuest",
+      JSON.stringify(s)
+    );
+  }catch(e){}
+
+}
+
+function shuffle(a){
+
+  return [...a].sort(
+    ()=>Math.random()-.5
+  );
+
+}
+
+function getMastery(key){
+
+  s.mastery[key] ??={
+    correct:0,
+    wrong:0
+  };
+
+  const m=s.mastery[key];
+
+  if(!Number.isFinite(m.correct))
+    m.correct=0;
+
+  if(!Number.isFinite(m.wrong))
+    m.wrong=0;
+
+  return m;
+
+}
+
+function updateMastery(key,isCorrect){
+
+  const m=getMastery(key);
+
+  if(isCorrect)
+    m.correct++;
+  else
+    m.wrong++;
+
+  save();
+
+}
+
+function masteredCount(){
+
+  return all.filter(x=>{
+    const m=getMastery(x[0]);
+    return m.correct>=2;
+  }).length;
+
+}
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+function updateLanguageUI(){
+
+  const ko=language==="ko";
+
+  document.documentElement.lang=
+    ko ? "ko" : "en";
+
+  $("language").textContent=
+    ko ? "English" : "한국어";
+
+  $("subtitle").textContent=
+    ko
+      ?"읽고 • 만들고 • 쓰고 • 기억해요"
+      :"Read it • build it • write it • remember it";
+
+  $("courseEyebrow").textContent=
+    ko ? "나의 코스" : "Your course";
+
+  $("homeTitle").textContent=
+    ko
+      ?"한글 배우기 시작"
+      :"Start learning Hangul";
+
+  $("homeDescription").textContent=
+    ko
+      ?"짧은 레슨으로 글자부터 실제 한국어 음절 블록까지 배워요."
+      :"Short lessons take you from individual letters to real Korean syllable blocks.";
+
+  $("lessonPracticeLabel").textContent=
+    ko ? "레슨 연습" : "Lesson practice";
+
+  $("correctLabel").textContent=
+    ko ? "정답" : "Correct";
+
+  $("streakLabel").textContent=
+    ko ? "연속" : "Streak";
+
+  $("accuracyLabel").textContent=
+    ko ? "정확도" : "Accuracy";
+
+  $("builderEyebrow").textContent=
+    ko ? "음절 블록 만들기" : "Syllable builder";
+
+  $("writingLabel").textContent=
+    ko ? "쓰기 연습" : "Writing practice";
+
+  $("writeInstructions").textContent=
+    ko
+      ?"가이드를 손가락으로 따라 써 보세요. 획은 이 기기에만 남아요."
+      :"Trace the guide with your finger. Your strokes stay on this device.";
+
+  $("erase").textContent=
+    ko ? "지우기" : "Clear";
+
+  $("newWrite").textContent=
+    ko ? "다음 글자 →" : "Next letter →";
+
+  $("reviewEyebrow").textContent=
+    ko ? "간격 반복" : "Spaced repetition";
+
+  $("reviewTitle").textContent=
+    ko ? "복습이 필요한 것을 확인하세요" : "Review what needs work";
+
+  $("reviewDescription").textContent=
+    ko
+      ?"틀린 글자는 더 빨리 다시 나오고, 익숙한 글자는 더 오래 기다려요."
+      :"Letters you miss come back sooner. Strong letters wait longer.";
+
+  $("startReview").textContent=
+    ko ? "복습 시작" : "Start review";
+
+  document
+    .querySelectorAll("#nav button")
+    .forEach(button=>{
+
+      const view=button.dataset.view;
+
+      const names=ko
+        ?{
+          home:"학습",
+          practice:"연습",
+          write:"쓰기",
+          review:"복습"
+        }
+        :{
+          home:"Learn",
+          practice:"Practice",
+          write:"Write",
+          review:"Review"
+        };
+
+      button.textContent=names[view];
+
+    });
+
+  renderLessons();
+
+  if(current)
+    renderCurrentQuestion();
+
+  writeNew();
+
+  renderReview();
+
+  updateMasteryDisplay();
+
+}
+
+$("language").addEventListener(
+  "click",
+  ()=>{
+
+    language=
+      language==="en"
+        ?"ko"
+        :"en";
+
+    save();
+    updateLanguageUI();
+
+  }
+);
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function setView(viewName){
+
+  const validViews=[
+    "home",
+    "practice",
+    "write",
+    "review"
+  ];
+
+  if(!validViews.includes(viewName))
+    viewName="home";
+
+  document
+    .querySelectorAll(".view")
+    .forEach(view=>{
+      view.classList.toggle(
+        "active",
+        view.id===viewName
+      );
+    });
+
+  document
+    .querySelectorAll("#nav button")
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        button.dataset.view===viewName
+      );
+    });
+
+  if(viewName==="practice"){
+
+    if(!current){
+
+      q=0;
+      newQuestion();
+
+    }
+
+  }
+
+  if(viewName==="write"){
+
+    setTimeout(()=>{
+      resizeCanvas();
+    },50);
+
+  }
+
+  if(viewName==="review")
+    renderReview();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+document
+  .querySelectorAll("#nav button")
+  .forEach(button=>{
+
+    button.addEventListener(
+      "click",
+      ()=>{
+        setView(button.dataset.view);
+      }
+    );
+
+  });
+
+/* =========================================================
+   LESSONS
+========================================================= */
+
+function renderLessons(){
+
+  $("lessons").innerHTML=
+    units.map((u,i)=>{
+
+      const unlocked=i<=s.unlocked;
+
+      return `
+
+        <button
+          class="lesson ${!unlocked?"locked":""}"
+          ${!unlocked?"disabled":""}
+          data-i="${i}"
+          type="button"
+        >
+
+          <div class="num">
+            ${i+1}
+          </div>
+
+          <div>
+
+            <b>
+              ${language==="ko"?u.ko:u.name}
+            </b>
+
+            <small>
+              ${language==="ko"?u.koDesc:u.desc}
+            </small>
+
+          </div>
+
+          <span class="xp">
+            ${unlocked?"▶":"🔒"}
+          </span>
+
+        </button>
+
+      `;
+
+    }).join("");
+
+  document
+    .querySelectorAll(".lesson")
+    .forEach(button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>{
+          activeUnit=
+            Number(button.dataset.i);
+
+          startLesson(activeUnit);
+        }
+      );
+
+    });
+
+  const done=Math.min(
+    units.length,
+    s.unlocked
+  );
+
+  $("coursebar").style.width=
+    done/units.length*100+"%";
+
+  $("courseText").textContent=
+    language==="ko"
+      ?`${done} / ${units.length} 레슨 잠금 해제 • ${masteredCount()}개 마스터`
+      :`${done} of ${units.length} lessons unlocked • ${masteredCount()} mastered`;
+
+}
+
+/* =========================================================
+   START LESSON
+========================================================= */
+
+function startLesson(i){
+
+  activeUnit=i;
+  q=0;
+  current=null;
+
+  setView("practice");
+
+  newQuestion();
+
+}
+
+/* =========================================================
+   PRACTICE
+========================================================= */
+
+function renderCurrentQuestion(){
+
+  if(!current)
+    return;
+
+  const mode=
+    current.practiceMode;
+
+  const right=
+    mode==="sound"
+      ?current[1]
+      :current[0];
+
+  $("prompt").textContent=
+    language==="ko"
+      ?(
+        mode==="sound"
+          ?"이 한글 글자의 소리는 무엇인가요?"
+          :"이 소리에 맞는 한글 글자는 무엇인가요?"
+      )
+      :(
+        mode==="sound"
+          ?"Which sound matches this Korean letter?"
+          :"Which Korean letter matches this sound?"
+      );
+
+  $("big").textContent=
+    language==="en"
+      ?(
+        mode==="sound"
+          ?current[0]
+          :current[1]
+      )
+      :(
+        mode==="sound"
+          ?current[1]
+          :current[0]
+      );
+
+  const pool=units[activeUnit].items;
+
+  const wrong=
+    shuffle(
+      pool.filter(x=>x!==current)
+    )
+    .slice(0,3)
+    .map(x=>{
+
+      if(language==="en"){
+
+        return mode==="sound"
+          ?x[1]
+          :x[0];
+
+      }else{
+
+        return mode==="sound"
+          ?x[1]
+          :x[0];
+
+      }
+
+    });
+
+  $("answers").innerHTML=
+    shuffle([
+      right,
+      ...wrong
+    ])
+    .map(answer=>`
+
+      <button
+        class="answer"
+        type="button"
+      >
+        ${answer}
+      </button>
+
+    `).join("");
+
+  [
+    ...$("answers").children
+  ].forEach(button=>{
+
+    button.addEventListener(
+      "click",
+      ()=>{
+        answer(button,right);
+      }
+    );
+
+  });
+
+  updateMasteryDisplay();
+
+}
+
+function newQuestion(){
+
+  locked=false;
+
+  $("feedback").textContent="";
+
+  $("next").style.display="none";
+
+  $("qnum").textContent=
+    `${q+1} / ${qTotal}`;
+
+  $("qbar").style.width=
+    q/qTotal*100+"%";
+
+  const pool=
+    units[activeUnit].items;
+
+  const item=
+    pool[
+      Math.floor(
+        Math.random()*pool.length
+      )
+    ];
+
+  current=[
+    item[0],
+    item[1]
+  ];
+
+  current.practiceMode=
+    Math.random()<.5
+      ?"sound"
+      :"letter";
+
+  renderCurrentQuestion();
+
+}
+
+/* =========================================================
+   ANSWER
+========================================================= */
+
+function answer(button,right){
+
+  if(locked)
+    return;
+
+  locked=true;
+
+  s.total++;
+
+  const ok=
+    button.textContent.trim()===right;
+
+  updateMastery(
+    current[0],
+    ok
+  );
+
+  if(ok){
+
+    s.correct++;
+    s.streak++;
+
+    button.classList.add("correct");
+
+    $("feedback").textContent=
+      language==="ko"
+        ?"✓ 정답!"
+        :"✓ Correct!";
+
+  }else{
+
+    s.streak=0;
+
+    button.classList.add("wrong");
+
+    $("feedback").textContent=
+      language==="ko"
+        ?`정답: ${right}`
+        :`Answer: ${right}`;
+
+    [
+      ...$("answers").children
+    ].forEach(button=>{
+
+      if(
+        button.textContent.trim()===right
+      ){
+        button.classList.add("correct");
+      }
+
+    });
+
+  }
+
+  save();
+  stats();
+  updateMasteryDisplay();
+
+  $("next").style.display="block";
+
+}
+
+/* =========================================================
+   NEXT QUESTION
+========================================================= */
+
+$("next").addEventListener(
+  "click",
+  ()=>{
+
+    q++;
+
+    if(q>=qTotal){
+
+      if(
+        activeUnit===s.unlocked &&
+        s.unlocked<units.length
+      ){
+        s.unlocked++;
+      }
+
+      save();
+
+      renderLessons();
+
+      current=null;
+
+      setView("home");
+
+    }else{
+
+      newQuestion();
+
+    }
+
+  }
+);
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function stats(){
+
+  $("correct").textContent=
+    s.correct;
+
+  $("streak").textContent=
+    s.streak;
+
+  $("accuracy").textContent=
+    s.total
+      ?Math.round(
+        s.correct/s.total*100
+      )+"%"
+      :"—";
+
+}
+
+/* =========================================================
+   MASTERY DISPLAY
+========================================================= */
+
+function updateMasteryDisplay(){
+
+  if(!current)
+    return;
+
+  const m=getMastery(current[0]);
+
+  $("masteryBox").textContent=
+    language==="ko"
+      ?`정답 ${m.correct} • 오답 ${m.wrong}`
+      :`Correct: ${m.correct} • Wrong: ${m.wrong}`;
+
+}
+
+/* =========================================================
+   SYLLABLE BUILDER
+========================================================= */
+
+const builderTargets=[
+  ["가","ㄱ","ㅏ"],
+  ["나","ㄴ","ㅏ"],
+  ["다","ㄷ","ㅏ"],
+  ["미","ㅁ","ㅣ"],
+  ["고","ㄱ","ㅗ"],
+  ["하","ㅎ","ㅏ"]
+];
+
+let builderTarget=null;
+let builderStep=0;
+
+function build(){
+
+  builderTarget=
+    builderTargets[
+      Math.floor(
+        Math.random()*
+        builderTargets.length
+      )
+    ];
+
+  builderStep=0;
+
+  $("builderTitle").textContent=
+    language==="ko"
+      ?`${builderTarget[0]} 만들기`
+      :`Build ${builderTarget[0]}`;
+
+  $("bs1").textContent="?";
+  $("bs2").textContent="?";
+  $("bs3").textContent="→";
+
+  $("buildFeedback").textContent="";
+
+  makeBuilderChoices();
+
+}
+
+function makeBuilderChoices(){
+
+  const right=
+    builderTarget[
+      builderStep+1
+    ];
+
+  const pool=
+    shuffle([
+      "ㄱ",
+      "ㄴ",
+      "ㄷ",
+      "ㅁ",
+      "ㅎ",
+      "ㅏ",
+      "ㅣ",
+      "ㅗ"
+    ])
+    .filter(x=>x!==right)
+    .slice(0,3);
+
+  $("buildChoices").innerHTML=
+    shuffle([
+      right,
+      ...pool
+    ])
+    .map(x=>`
+      <button type="button">
+        ${x}
+      </button>
+    `)
+    .join("");
+
+  [
+    ...$("buildChoices").children
+  ].forEach(button=>{
+
+    button.addEventListener(
+      "click",
+      ()=>{
+
+        if(
+          button.textContent.trim()!==right
+        ){
+
+          $("buildFeedback").textContent=
+            language==="ko"
+              ?"다시 해보세요"
+              :"Try again";
+
+          return;
+
+        }
+
+        button.classList.add("correct");
+
+        [
+          ...$("buildChoices").children
+        ].forEach(x=>x.disabled=true);
+
+        $("buildFeedback").textContent="✓";
+
+        if(builderStep===0){
+
+          $("bs1").textContent=
+            builderTarget[1];
+
+        }else{
+
+          $("bs2").textContent=
+            builderTarget[2];
+
+        }
+
+        builderStep++;
+
+        if(builderStep<2){
+
+          setTimeout(
+            makeBuilderChoices,
+            300
+          );
+
+        }else{
+
+          $("bs3").textContent=
+            "→ "+builderTarget[0];
+
+          $("buildFeedback").textContent=
+            language==="ko"
+              ?`✓ ${builderTarget[0]} = ${builderTarget[1]} + ${builderTarget[2]}`
+              :`✓ ${builderTarget[0]} = ${builderTarget[1]} + ${builderTarget[2]}`;
+
+          setTimeout(
+            build,
+            1500
+          );
+
+        }
+
+      }
+    );
+
+  });
+
+}
+
+build();
+
+/* =========================================================
+   WRITING
+========================================================= */
+
+const consonants=
+  units
+    .slice(0,2)
+    .flatMap(u=>u.items);
+
+let wi=0;
+let ctx=null;
+let down=false;
+let lastX=0;
+let lastY=0;
+
+/* Canvas resize */
+
+function resizeCanvas(){
+
+  const canvas=$("canvas");
+
+  if(!canvas)
+    return;
+
+  const rect=
+    canvas.getBoundingClientRect();
+
+  const d=
+    window.devicePixelRatio||1;
+
+  canvas.width=
+    Math.max(1,rect.width*d);
+
+  canvas.height=
+    Math.max(1,rect.height*d);
+
+  ctx=
+    canvas.getContext("2d");
+
+  ctx.setTransform(
+    d,
+    0,
+    0,
+    d,
+    0,
+    0
+  );
+
+  ctx.lineWidth=5;
+  ctx.lineCap="round";
+  ctx.lineJoin="round";
+
+}
+
+/* New writing letter */
+
+function writeNew(){
+
+  const x=
+    consonants[
+      wi%consonants.length
+    ][0];
+
+  $("writeGlyph").textContent=x;
+
+  $("guide").textContent=x;
+
+  $("writeFeedback").textContent="";
+
+  $("writeScore").textContent="";
+
+  $("scoreHint").textContent=
+    language==="ko"
+      ?"70% 이상이면 읽을 수 있는 것으로 표시돼요."
+      :"70% or higher is considered readable.";
+
+  clearCanvas();
+
+}
+
+/* Clear drawing */
+
+function clearCanvas(){
+
+  if(!ctx)
+    resizeCanvas();
+
+  if(!ctx)
+    return;
+
+  const canvas=$("canvas");
+
+  ctx.clearRect(
+    0,
+    0,
+    canvas.clientWidth,
+    canvas.clientHeight
+  );
+
+}
+
+/* Writing buttons */
+
+$("checkWrite").addEventListener(
+  "click",
+  ()=>{
+    calculateWritingScore();
+  }
+);
+
+$("newWrite").addEventListener(
+  "click",
+  ()=>{
+    wi++;
+    writeNew();
+  }
+);
+
+$("erase").addEventListener(
+  "click",
+  ()=>{
+    clearCanvas();
+    $("writeScore").textContent="";
+    $("writeFeedback").textContent="";
+  }
+);
+
+/* Pointer position */
+
+function pos(e){
+
+  const rect=
+    $("canvas")
+      .getBoundingClientRect();
+
+  return [
+    e.clientX-rect.left,
+    e.clientY-rect.top
+  ];
+
+}
+
+/* Start drawing */
+
+$("canvas").addEventListener(
+  "pointerdown",
+  e=>{
+
+    e.preventDefault();
+
+    down=true;
+
+    $("canvas").setPointerCapture(
+      e.pointerId
+    );
+
+    const p=pos(e);
+
+    lastX=p[0];
+    lastY=p[1];
+
+  }
+);
+
+/* Draw */
+
+$("canvas").addEventListener(
+  "pointermove",
+  e=>{
+
+    if(!down || !ctx)
+      return;
+
+    e.preventDefault();
+
+    const p=pos(e);
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      lastX,
+      lastY
+    );
+
+    ctx.lineTo(
+      p[0],
+      p[1]
+    );
+
+    ctx.stroke();
+
+    lastX=p[0];
+    lastY=p[1];
+
+  }
+);
+
+/* Stop drawing */
+
+[
+  "pointerup",
+  "pointercancel"
+].forEach(eventName=>{
+
+  $("canvas").addEventListener(
+    eventName,
+    e=>{
+
+      down=false;
+
+      try{
+        $("canvas").releasePointerCapture(
+          e.pointerId
+        );
+      }catch(err){}
+
+    }
+  );
+
+});
+
+/* Canvas resize */
+
+if(window.ResizeObserver){
+
+  new ResizeObserver(
+    resizeCanvas
+  ).observe(
+    $("canvas")
+  );
+
+}
+
+window.addEventListener(
+  "resize",
+  resizeCanvas
+);
+
+resizeCanvas();
+
+/* =========================================================
+   WRITING SCORE
+========================================================= */
+
+function getInkBounds(canvas){
+
+  const w=canvas.width;
+  const h=canvas.height;
+
+  const data=
+    ctx.getImageData(
+      0,
+      0,
+      w,
+      h
+    ).data;
+
+  let minX=w;
+  let minY=h;
+  let maxX=-1;
+  let maxY=-1;
+
+  for(let y=0;y<h;y++){
+
+    for(let x=0;x<w;x++){
+
+      const i=(y*w+x)*4;
+
+      const alpha=data[i+3];
+
+      if(alpha>20){
+
+        if(x<minX)minX=x;
+        if(y<minY)minY=y;
+        if(x>maxX)maxX=x;
+        if(y>maxY)maxY=y;
+
+      }
+
+    }
+
+  }
+
+  if(maxX<0)
+    return null;
+
+  return{
+    minX,
+    minY,
+    maxX,
+    maxY
+  };
+
+}
+
+function normalizeInk(canvas,bounds,size=64){
+
+  const source=
+    document.createElement("canvas");
+
+  source.width=size;
+  source.height=size;
+
+  const sctx=
+    source.getContext("2d");
+
+  const pad=5;
+
+  const bw=
+    bounds.maxX-bounds.minX+1;
+
+  const bh=
+    bounds.maxY-bounds.minY+1;
+
+  const scale=
+    Math.min(
+      (size-pad*2)/bw,
+      (size-pad*2)/bh
+    );
+
+  const dw=bw*scale;
+  const dh=bh*scale;
+
+  const dx=(size-dw)/2;
+  const dy=(size-dh)/2;
+
+  sctx.drawImage(
+    canvas,
+    bounds.minX,
+    bounds.minY,
+    bw,
+    bh,
+    dx,
+    dy,
+    dw,
+    dh
+  );
+
+  return source;
+
+}
+
+function getMask(canvas,size=64){
+
+  const c=
+    document.createElement("canvas");
+
+  c.width=size;
+  c.height=size;
+
+  const x=
+    c.getContext("2d");
+
+  x.drawImage(
+    canvas,
+    0,
+    0,
+    size,
+    size
+  );
+
+  const data=
+    x.getImageData(
+      0,
+      0,
+      size,
+      size
+    ).data;
+
+  const mask=
+    new Uint8Array(
+      size*size
+    );
+
+  for(let i=0;i<mask.length;i++){
+
+    const p=i*4;
+
+    const alpha=data[p+3];
+
+    mask[i]=
+      alpha>20 ? 1 : 0;
+
+  }
+
+  return mask;
+
+}
+
+function dilateMask(mask,size=64,radius=1){
+
+  const out=
+    new Uint8Array(
+      mask.length
+    );
+
+  for(let y=0;y<size;y++){
+
+    for(let x=0;x<size;x++){
+
+      let found=false;
+
+      for(
+        let dy=-radius;
+        dy<=radius && !found;
+        dy++
+      ){
+
+        for(
+          let dx=-radius;
+          dx<=radius;
+          dx++
+        ){
+
+          const nx=x+dx;
+          const ny=y+dy;
+
+          if(
+            nx>=0 &&
+            nx<size &&
+            ny>=0 &&
+            ny<size &&
+            mask[ny*size+nx]
+          ){
+
+            found=true;
+            break;
+
+          }
+
+        }
+
+      }
+
+      if(found)
+        out[y*size+x]=1;
+
+    }
+
+  }
+
+  return out;
+
+}
+
+function compareMasks(a,b,size=64){
+
+  const ad=dilateMask(a,size,1);
+  const bd=dilateMask(b,size,1);
+
+  let aCount=0;
+  let bCount=0;
+  let overlap=0;
+
+  for(let i=0;i<a.length;i++){
+
+    if(a[i])aCount++;
+    if(b[i])bCount++;
+
+    if(a[i] && bd[i])
+      overlap++;
+
+    if(b[i] && ad[i])
+      overlap++;
+
+  }
+
+  if(!aCount || !bCount)
+    return 0;
+
+  const precision=
+    overlap/(aCount+bCount);
+
+  const coverage=
+    Math.min(
+      1,
+      overlap/
+      Math.max(aCount,bCount)
+    );
+
+  return Math.max(
+    precision,
+    coverage*.85
+  );
+
+}
+
+function shiftedCompare(user,reference,size=64){
+
+  let best=0;
+
+  const shifts=[
+    [0,0],
+    [-1,0],
+    [1,0],
+    [0,-1],
+    [0,1]
+  ];
+
+  for(const [sx,sy] of shifts){
+
+    const shifted=
+      new Uint8Array(
+        size*size
+      );
+
+    for(let y=0;y<size;y++){
+
+      for(let x=0;x<size;x++){
+
+        const nx=x+sx;
+        const ny=y+sy;
+
+        if(
+          nx>=0 &&
+          nx<size &&
+          ny>=0 &&
+          ny<size
+        ){
+
+          shifted[
+            ny*size+nx
+          ]=
+            user[
+              y*size+x
+            ];
+
+        }
+
+      }
+
+    }
+
+    best=Math.max(
+      best,
+      compareMasks(
+        shifted,
+        reference,
+        size
+      )
+    );
+
+  }
+
+  return best;
+
+}
+
+function makeReference(letter,size=64){
+
+  const c=
+    document.createElement("canvas");
+
+  c.width=size;
+  c.height=size;
+
+  const x=
+    c.getContext("2d");
+
+  x.fillStyle="#fff";
+  x.fillRect(
+    0,
+    0,
+    size,
+    size
+  );
+
+  x.fillStyle="#111";
+
+  x.textAlign="center";
+  x.textBaseline="middle";
+
+  x.font=
+    "700 52px -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif";
+
+  x.fillText(
+    letter,
+    size/2,
+    size/2
+  );
+
+  return c;
+
+}
+
+function calculateWritingScore(){
+
+  const canvas=$("canvas");
+
+  if(!ctx || !canvas)
+    return;
+
+  const bounds=
+    getInkBounds(canvas);
+
+  if(!bounds){
+
+    $("writeScore").textContent="";
+
+    $("writeFeedback").textContent=
+      language==="ko"
+        ?"먼저 글자를 써 보세요."
+        :"Draw the letter first.";
+
+    return;
+
+  }
+
+  const normalized=
+    normalizeInk(
+      canvas,
+      bounds,
+      64
+    );
+
+  const userMask=
+    getMask(
+      normalized,
+      64
+    );
+
+  const reference=
+    makeReference(
+      $("writeGlyph").textContent,
+      64
+    );
+
+  const referenceMask=
+    getMask(
+      reference,
+      64
+    );
+
+  const similarity=
+    shiftedCompare(
+      userMask,
+      referenceMask,
+      64
+    );
+
+  const score=
+    Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          similarity*100
+        )
+      )
+    );
+
+  $("writeScore").textContent=
+    score+"%";
+
+  $("writeScore").className=
+    "score "+(
+      score>=70
+        ?"good"
+        :"bad"
+    );
+
+  if(score>=90){
+
+    $("writeFeedback").textContent=
+      language==="ko"
+        ?"훌륭해요! 정말 잘 썼어요."
+        :"Excellent! That looks great.";
+
+  }else if(score>=70){
+
+    $("writeFeedback").textContent=
+      language==="ko"
+        ?"읽을 수 있어요! ✓"
+        :"Readable! ✓";
+
+  }else if(score>=55){
+
+    $("writeFeedback").textContent=
+      language==="ko"
+        ?"거의 다 됐어요!"
+        :"Almost there!";
+
+  }else{
+
+    $("writeFeedback").textContent=
+      language==="ko"
+        ?"조금 더 연습해 보세요."
+        :"Keep practicing.";
+
+  }
+
+}
+
+document
+  .querySelectorAll("#nav button")
+  .forEach(button=>{
+
+    button.addEventListener(
+      "click",
+      ()=>{
+
+        if(
+          button.dataset.view==="write"
+        ){
+          setTimeout(
+            resizeCanvas,
+            50
+          );
+        }
+
+      }
+    );
+
+  });
+
+/* =========================================================
+   REVIEW
+========================================================= */
+
+function renderReview(){
+
+  const now=Date.now();
+
+  const due=
+    all
+      .map(x=>{
+
+        const m=
+          getMastery(x[0]);
+
+        return{
+          x,
+          m
+        };
+
+      })
+      .filter(z=>
+        z.m.wrong>0 ||
+        z.m.correct<2 ||
+        z.m.next<=now
+      )
+      .sort((a,b)=>{
+
+        const aScore=
+          a.m.wrong*100+
+          (a.m.correct<2?50:0)+
+          (a.m.next<=now?25:0);
+
+        const bScore=
+          b.m.wrong*100+
+          (b.m.correct<2?50:0)+
+          (b.m.next<=now?25:0);
+
+        return bScore-aScore;
+
+      })
+      .slice(0,12);
+
+  if(!due.length){
+
+    $("reviewList").innerHTML=
+      `<div class="tiny">${
+        language==="ko"
+          ?"지금은 급한 복습이 없어요. 🎉"
+          :"Nothing urgent. Keep practicing! 🎉"
+      }</div>`;
+
+    return;
+
+  }
+
+  $("reviewList").innerHTML=
+    due.map(z=>`
+
+      <div class="reviewitem">
+
+        <b>${z.x[0]}</b>
+
+        <span>
+
+          ${z.x[1]}
+
+          <br>
+
+          <span class="due">
+
+            ${
+              language==="ko"
+                ?`정답 ${z.m.correct} • 오답 ${z.m.wrong}`
+                :`Correct ${z.m.correct} • Wrong ${z.m.wrong}`
+            }
+
+          </span>
+
+        </span>
+
+      </div>
+
+    `).join("");
+
+}
+
+/* =========================================================
+   START REVIEW
+========================================================= */
+
+$("startReview").addEventListener(
+  "click",
+  ()=>{
+
+    const now=Date.now();
+
+    const due=
+      all.filter(x=>{
+
+        const m=getMastery(x[0]);
+
+        return(
+          m.next<=now ||
+          m.correct<2 ||
+          m.wrong>0
+        );
+
+      });
+
+    if(due.length){
+
+      const item=
+        due[
+          Math.floor(
+            Math.random()*due.length
+          )
+        ];
+
+      activeUnit=item.unit;
+
+    }else{
+
+      activeUnit=
+        Math.floor(
+          Math.random()*units.length
+        );
+
+    }
+
+    startLesson(activeUnit);
+
+  }
+);
+
+/* =========================================================
+   KOREAN PRONUNCIATION
+========================================================= */
+
+$("sound").addEventListener(
+  "click",
+  ()=>{
+
+    if(!current)
+      return;
+
+    const korean=current[0];
+
+    if("speechSynthesis" in window){
+
+      speechSynthesis.cancel();
+
+      const utterance=
+        new SpeechSynthesisUtterance(
+          korean
+        );
+
+      utterance.lang="ko-KR";
+      utterance.rate=.8;
+      utterance.pitch=1;
+
+      speechSynthesis.speak(
+        utterance
+      );
+
+    }
+
+  }
+);
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderLessons();
+stats();
+writeNew();
+updateLanguageUI();
+setView("home");
+
+</script>
+
+</body>
+</html>
