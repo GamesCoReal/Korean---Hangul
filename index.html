@@ -1,929 +1,477 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport"
-
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Hangul Quest</title>
 
 <style>
-
-:root{
-
-  --bg:#f5f5f7;
-
-  --card:#ffffff;
-
-  --text:#111111;
-
-  --muted:#777;
-
-  --line:#dedede;
-
-  --accent:#007aff;
-
-  --green:#34c759;
-
-  --red:#ff3b30;
-
-  --yellow:#ffcc00;
-
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
 
-*{
-
-  box-sizing:border-box;
-
-  -webkit-tap-highlight-color:transparent;
-
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
+              "SF Pro Text",Arial,sans-serif;
+  background:#f2f2f7;
+  color:#111;
 }
 
 body{
-
-  margin:0;
-
-  background:var(--bg);
-
-  color:var(--text);
-
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
-
-               "SF Pro Text",Arial,sans-serif;
-
+  padding-bottom:90px;
 }
 
 button{
-
   font:inherit;
-
+  border:none;
   cursor:pointer;
-
-  border:0;
-
 }
 
 .app{
-
-  width:min(760px,100%);
-
+  width:100%;
+  max-width:900px;
   margin:auto;
-
-  padding:16px;
-
-  padding-bottom:40px;
-
+  padding:18px 14px 30px;
 }
 
 header{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  margin-bottom:14px;
-
+  padding:8px 4px 18px;
 }
 
 h1{
-
   margin:0;
-
-  font-size:27px;
-
-  letter-spacing:-.7px;
-
+  font-size:34px;
+  font-weight:800;
+  letter-spacing:-1.2px;
 }
 
 .subtitle{
-
-  color:var(--muted);
-
-  font-size:13px;
-
-  margin-top:3px;
-
-}
-
-.sound{
-
-  width:42px;
-
-  height:42px;
-
-  border-radius:50%;
-
-  background:#fff;
-
-  border:1px solid var(--line);
-
-  font-size:19px;
-
+  color:#6e6e73;
+  margin-top:4px;
+  font-size:15px;
 }
 
 .tabs{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:4px 0 14px;
+  scrollbar-width:none;
+}
 
-  display:grid;
-
-  grid-template-columns:repeat(4,1fr);
-
-  gap:7px;
-
-  margin-bottom:14px;
-
+.tabs::-webkit-scrollbar{
+  display:none;
 }
 
 .tab{
-
-  padding:10px 5px;
-
-  border-radius:12px;
-
-  background:#e9e9ed;
-
+  flex:0 0 auto;
+  padding:10px 17px;
+  border-radius:20px;
+  background:#e5e5ea;
   color:#555;
-
-  font-size:13px;
-
-  font-weight:600;
-
+  font-weight:700;
 }
 
 .tab.active{
-
   background:#111;
-
   color:white;
-
 }
 
 .card{
-
-  background:var(--card);
-
-  border:1px solid var(--line);
-
-  border-radius:20px;
-
-  padding:18px;
-
-  box-shadow:0 2px 10px rgba(0,0,0,.035);
-
+  background:white;
+  border-radius:22px;
+  padding:20px;
   margin-bottom:14px;
-
-}
-
-.hidden{
-
-  display:none!important;
-
-}
-
-.sectionTitle{
-
-  font-size:21px;
-
-  font-weight:750;
-
-  letter-spacing:-.4px;
-
-}
-
-.small{
-
-  color:var(--muted);
-
-  font-size:13px;
-
-}
-
-.progressBar{
-
-  height:8px;
-
-  border-radius:20px;
-
-  background:#e8e8eb;
-
-  overflow:hidden;
-
-  margin-top:12px;
-
-}
-
-.progressFill{
-
-  height:100%;
-
-  background:var(--accent);
-
-  width:0%;
-
-  transition:.25s;
-
+  box-shadow:0 2px 12px rgba(0,0,0,.06);
 }
 
 .lesson{
-
-  border:1px solid var(--line);
-
-  border-radius:16px;
-
-  margin-bottom:8px;
-
-  overflow:hidden;
-
-  background:#fff;
-
-}
-
-.lessonHead{
-
   display:flex;
-
   align-items:center;
-
-  gap:12px;
-
-  padding:14px;
-
-}
-
-.lessonNumber{
-
-  width:34px;
-
-  height:34px;
-
-  border-radius:50%;
-
-  display:grid;
-
-  place-items:center;
-
-  background:#eee;
-
-  font-weight:700;
-
-  flex:none;
-
+  justify-content:space-between;
+  gap:14px;
 }
 
 .lessonInfo{
-
-  flex:1;
-
   min-width:0;
-
+  flex:1;
 }
 
 .lessonName{
-
-  font-weight:700;
-
+  font-size:20px;
+  font-weight:800;
 }
 
 .lessonDesc{
-
-  color:var(--muted);
-
-  font-size:12px;
-
-  margin-top:2px;
-
+  margin-top:4px;
+  color:#777;
+  font-size:14px;
 }
 
-.status{
-
-  font-size:12px;
-
-  font-weight:700;
-
-}
-
-.status.done{
-
-  color:var(--green);
-
-}
-
-.status.locked{
-
-  color:#999;
-
+.lessonStatus{
+  margin-top:8px;
+  font-size:13px;
+  color:#777;
 }
 
 .lessonButton{
-
-  width:100%;
-
-  padding:11px;
-
-  background:#f2f2f5;
-
-  border-top:1px solid var(--line);
-
-  font-weight:650;
-
+  padding:12px 16px;
+  border-radius:15px;
+  background:#111;
+  color:white;
+  font-weight:700;
 }
 
 .lessonButton:disabled{
-
-  color:#aaa;
-
-  background:#f7f7f8;
-
+  background:#d1d1d6;
+  color:#777;
 }
 
-.testRow{
-
-  padding:10px 14px 14px;
-
-  background:#fafafa;
-
-  border-top:1px solid var(--line);
-
+.sectionTitle{
+  font-size:25px;
+  font-weight:800;
+  margin:8px 2px 14px;
 }
 
-.testLabel{
-
-  font-size:12px;
-
-  font-weight:700;
-
-  color:#666;
-
-  margin-bottom:8px;
-
-}
-
-.primary{
-
-  width:100%;
-
-  background:var(--accent);
-
-  color:#fff;
-
-  padding:13px;
-
-  border-radius:13px;
-
-  font-weight:700;
-
-}
-
-.secondary{
-
-  background:#eeeef2;
-
-  color:#111;
-
-  padding:11px 15px;
-
-  border-radius:12px;
-
-  font-weight:650;
-
-}
-
-.row{
-
-  display:flex;
-
-  gap:8px;
-
-}
-
-.row>*{
-
-  flex:1;
-
-}
-
-.center{
-
+.prompt{
   text-align:center;
-
-}
-
-#prompt{
-
+  color:#777;
   font-size:15px;
-
-  color:#666;
-
-  text-align:center;
-
+  margin-bottom:5px;
 }
 
-#big{
-
+.glyph{
   text-align:center;
-
   font-size:100px;
-
-  line-height:1.1;
-
-  margin:10px 0 20px;
-
-  min-height:110px;
-
+  line-height:1.05;
+  font-weight:500;
+  margin:8px 0 14px;
 }
 
-.answers{
+.soundButton{
+  display:block;
+  margin:0 auto 18px;
+  background:#e5e5ea;
+  border-radius:50%;
+  width:48px;
+  height:48px;
+  font-size:21px;
+}
 
+.choices{
   display:grid;
-
   grid-template-columns:repeat(2,1fr);
-
-  gap:9px;
-
-}
-
-.answer{
-
-  min-height:56px;
-
-  border:2px solid #e4e4e7;
-
-  background:#fff;
-
-  border-radius:14px;
-
-  padding:10px;
-
-  font-size:17px;
-
-  font-weight:650;
-
-}
-
-.answer.selected{
-
-  border-color:var(--accent);
-
-  background:#eef5ff;
-
-}
-
-.answer.correct{
-
-  border-color:var(--green);
-
-  background:#effcf3;
-
-}
-
-.answer.wrong{
-
-  border-color:var(--red);
-
-  background:#fff0ef;
-
-}
-
-#feedback,
-
-#buildFeedback,
-
-#testFeedback,
-
-#writeFeedback{
-
-  min-height:24px;
-
-  text-align:center;
-
-  font-weight:700;
-
-  margin-top:12px;
-
-}
-
-.good{
-
-  color:var(--green);
-
-}
-
-.bad{
-
-  color:var(--red);
-
-}
-
-.builder{
-
-  margin-top:8px;
-
-}
-
-.buildSlots{
-
-  display:flex;
-
-  justify-content:center;
-
-  align-items:center;
-
   gap:10px;
-
-  margin:18px 0;
-
 }
 
-.buildSlot{
+.choice{
+  min-height:58px;
+  padding:12px;
+  border-radius:15px;
+  background:#f2f2f7;
+  font-size:20px;
+  font-weight:700;
+}
 
-  width:90px;
+.choice.selected{
+  background:#111;
+  color:white;
+}
 
-  height:90px;
+.choice.correct{
+  background:#34c759;
+  color:white;
+}
 
-  border:2px dashed #bbb;
+.choice.wrong{
+  background:#ff3b30;
+  color:white;
+}
 
+.checkButton{
+  width:100%;
+  margin-top:14px;
+  padding:15px;
+  border-radius:16px;
+  background:#111;
+  color:white;
+  font-weight:800;
+  font-size:17px;
+}
+
+.checkButton:disabled{
+  background:#d1d1d6;
+  color:#777;
+}
+
+.feedback{
+  min-height:25px;
+  text-align:center;
+  font-weight:800;
+  margin-top:12px;
+}
+
+.feedback.good{
+  color:#248a3d;
+}
+
+.feedback.bad{
+  color:#d70015;
+}
+
+.stats{
+  text-align:center;
+  color:#777;
+  margin-top:12px;
+  font-size:14px;
+}
+
+.progressBar{
+  height:8px;
+  background:#e5e5ea;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progressFill{
+  height:100%;
+  width:0%;
+  background:#111;
+  transition:.25s;
+}
+
+.backButton{
+  background:#e5e5ea;
+  padding:10px 15px;
+  border-radius:14px;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+/* BUILDING */
+
+.builderTarget{
+  text-align:center;
+  font-size:64px;
+  font-weight:700;
+  margin:5px 0 15px;
+}
+
+.builderEquation{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  font-size:42px;
+  font-weight:700;
+  margin:15px 0 22px;
+}
+
+.builderPiece{
+  min-width:65px;
+  min-height:65px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#f2f2f7;
   border-radius:17px;
-
-  display:grid;
-
-  place-items:center;
-
-  font-size:48px;
-
-  background:#fafafa;
-
 }
 
 .plus{
-
-  font-size:28px;
-
-  color:#999;
-
-}
-
-.buildResult{
-
-  text-align:center;
-
-  font-size:75px;
-
-  min-height:90px;
-
-  margin-bottom:15px;
-
+  color:#888;
 }
 
 .buildChoices{
-
-  display:grid;
-
-  grid-template-columns:repeat(4,1fr);
-
-  gap:8px;
-
-}
-
-.buildChoice{
-
-  padding:14px 5px;
-
-  border-radius:13px;
-
-  background:#f0f0f3;
-
-  font-size:27px;
-
-  font-weight:650;
-
-}
-
-.buildChoice.selected{
-
-  background:#dceaff;
-
-  outline:2px solid var(--accent);
-
-}
-
-.testTask{
-
-  text-align:center;
-
-}
-
-.testType{
-
-  color:#777;
-
-  font-size:13px;
-
-  margin-bottom:5px;
-
-}
-
-.testBig{
-
-  font-size:90px;
-
-  margin:12px 0;
-
-}
-
-.testChoices{
-
-  display:grid;
-
   grid-template-columns:repeat(2,1fr);
-
-  gap:9px;
-
 }
 
-.testBuild{
+.buildChoices button{
+  font-size:32px;
+}
 
+.buildChoices button.selected{
+  background:#111;
+  color:white;
+}
+
+/* TEST */
+
+.testCounter{
+  text-align:center;
+  color:#777;
+  margin-bottom:10px;
+}
+
+.testScore{
+  text-align:center;
+  font-size:40px;
+  font-weight:800;
+  margin:15px 0;
+}
+
+/* WRITING */
+
+.modeButtons{
   display:flex;
-
-  justify-content:center;
-
-  align-items:center;
-
-  gap:7px;
-
-  min-height:80px;
-
-  font-size:48px;
-
-}
-
-.testBuildBox{
-
-  width:72px;
-
-  height:72px;
-
-  border:2px solid #ddd;
-
-  border-radius:14px;
-
-  display:grid;
-
-  place-items:center;
-
-}
-
-.writeControls{
-
-  display:flex;
-
   gap:8px;
-
-  margin-bottom:12px;
-
+  margin-bottom:14px;
 }
 
 .modeButton{
-
   flex:1;
-
-  padding:11px;
-
-  border-radius:12px;
-
-  background:#eeeef2;
-
-  font-weight:700;
-
+  padding:12px;
+  border-radius:14px;
+  background:#e5e5ea;
+  font-weight:800;
 }
 
 .modeButton.active{
-
   background:#111;
-
-  color:#fff;
-
+  color:white;
 }
 
-.writeTarget{
-
+.writePrompt{
   text-align:center;
-
-  font-size:30px;
-
-  font-weight:700;
-
-  margin-bottom:8px;
-
+  color:#777;
+  margin-bottom:5px;
 }
 
 .canvasWrap{
-
-  position:relative;
-
-  width:min(100%,520px);
-
+  width:min(100%,500px);
   aspect-ratio:1;
-
-  margin:auto;
-
-  border:1px solid #d5d5d8;
-
-  border-radius:20px;
-
+  margin:0 auto;
+  position:relative;
+  border-radius:22px;
   overflow:hidden;
-
-  background:#fff;
-
-}
-
-#canvas{
-
-  position:absolute;
-
-  inset:0;
-
-  width:100%;
-
-  height:100%;
-
-  z-index:2;
-
+  background:white;
+  border:2px solid #ddd;
   touch-action:none;
-
 }
 
-#guide{
-
+.guide{
   position:absolute;
-
   inset:0;
-
-  width:100%;
-
-  height:100%;
-
+  display:flex;
+  align-items:center;
+  justify-content:center;
   z-index:1;
-
   pointer-events:none;
-
+  color:rgba(120,120,120,.28);
+  font-size:78%;
+  line-height:1;
+  font-weight:500;
 }
 
-#guideText{
+#writeCanvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:2;
+  background:transparent;
+  touch-action:none;
+}
 
-  font-family:
+.canvasGrid{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:.25;
+}
 
-    "Apple SD Gothic Neo",
+.canvasGrid::before,
+.canvasGrid::after{
+  content:"";
+  position:absolute;
+  background:#bbb;
+}
 
-    "Noto Sans KR",
+.canvasGrid::before{
+  width:1px;
+  height:100%;
+  left:50%;
+}
 
-    "Malgun Gothic",
-
-    sans-serif;
-
-  font-size:270px;
-
-  font-weight:500;
-
-  fill:#e1e1e5;
-
-  text-anchor:middle;
-
-  dominant-baseline:central;
-
+.canvasGrid::after{
+  width:100%;
+  height:1px;
+  top:50%;
 }
 
 .writeActions{
-
-  margin-top:12px;
-
   display:flex;
-
   gap:8px;
-
+  margin-top:14px;
 }
 
 .writeActions button{
-
   flex:1;
-
+  padding:14px;
+  border-radius:15px;
+  font-weight:800;
 }
 
-.attemptInfo{
+.clearButton{
+  background:#e5e5ea;
+}
 
-  text-align:center;
+.checkWriteButton{
+  background:#111;
+  color:white;
+}
 
-  margin:10px 0;
-
+.reviewInfo{
   color:#666;
-
-  font-size:13px;
-
+  line-height:1.5;
 }
 
-.statsGrid{
-
-  display:grid;
-
-  grid-template-columns:repeat(3,1fr);
-
-  gap:8px;
-
-}
-
-.stat{
-
-  background:#f4f4f6;
-
-  border-radius:14px;
-
-  padding:13px;
-
+.empty{
   text-align:center;
-
-}
-
-.statNum{
-
-  font-size:22px;
-
-  font-weight:750;
-
-}
-
-.statLabel{
-
+  padding:30px 10px;
   color:#777;
-
-  font-size:11px;
-
-  margin-top:2px;
-
 }
 
-.reviewItem{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  padding:12px 0;
-
-  border-bottom:1px solid #eee;
-
+.hidden{
+  display:none !important;
 }
 
-.reviewItem:last-child{
-
-  border-bottom:0;
-
-}
-
-.char{
-
-  font-size:25px;
-
-  font-weight:650;
-
-}
-
-@media(max-width:430px){
-
+@media(max-width:500px){
   .app{
-
-    padding:11px;
-
+    padding-left:11px;
+    padding-right:11px;
   }
 
-  #big{
-
-    font-size:88px;
-
+  h1{
+    font-size:30px;
   }
 
-  .buildChoices{
-
-    grid-template-columns:repeat(3,1fr);
-
+  .glyph{
+    font-size:86px;
   }
 
-  .buildSlot{
-
-    width:78px;
-
-    height:78px;
-
+  .builderTarget{
+    font-size:55px;
   }
 
+  .builderEquation{
+    font-size:34px;
+  }
+
+  .builderPiece{
+    min-width:58px;
+    min-height:58px;
+  }
 }
-
 </style>
-
 </head>
 
 <body>
@@ -931,269 +479,106 @@ h1{
 <div class="app">
 
 <header>
-
-  <div>
-
-    <h1>Hangul Quest 🇰🇷</h1>
-
-    <div class="subtitle">Learn Korean one building block at a time</div>
-
-  </div>
-
-  <button class="sound" id="soundBtn">🔊</button>
-
+  <h1>Hangul Quest 🇰🇷</h1>
+  <div class="subtitle">Learn Korean one character at a time.</div>
 </header>
 
 <div class="tabs">
-
   <button class="tab active" data-tab="learn">Learn</button>
-
   <button class="tab" data-tab="practice">Practice</button>
-
   <button class="tab" data-tab="write">Write</button>
-
   <button class="tab" data-tab="review">Review</button>
-
 </div>
 
-<!-- ================= LEARN ================= -->
+<!-- LEARN -->
+<section id="learnView">
 
-<section id="learn">
-
-  <div class="card">
-
-    <div class="sectionTitle">Your Progress</div>
-
-    <div class="small" id="courseStatus">Lesson 1</div>
-
-    <div class="progressBar">
-
-      <div class="progressFill" id="courseProgress"></div>
-
-    </div>
-
-  </div>
-
+  <div class="sectionTitle">Lessons</div>
   <div id="lessonList"></div>
 
 </section>
 
-<!-- ================= PRACTICE ================= -->
+<!-- PRACTICE -->
+<section id="practiceView" class="hidden">
 
-<section id="practice" class="hidden">
+  <button class="backButton" onclick="showTab('learn')">← Lessons</button>
 
-  <div class="card">
+  <div id="practiceCard" class="card"></div>
 
-    <div class="sectionTitle" id="practiceTitle">
-
-      Multiple Choice
-
-    </div>
-
-    <div class="small center" id="practiceStatus">
-
-      Choose the correct answer.
-
-    </div>
-
-    <div id="prompt"></div>
-
-    <div id="big"></div>
-
-    <div class="answers" id="answers"></div>
-
-    <button
-
-      class="primary"
-
-      id="checkPractice"
-
-      style="margin-top:12px"
-
-      disabled>
-
-      Check ✓
-
-    </button>
-
-    <div id="feedback"></div>
-
-  </div>
+  <div id="builderCard" class="card"></div>
 
 </section>
 
-<!-- ================= BUILD ================= -->
+<!-- TEST -->
+<section id="testView" class="hidden">
 
-<section id="build" class="hidden">
+  <button class="backButton" onclick="showTab('learn')">← Lessons</button>
 
-  <div class="card">
-
-    <div class="sectionTitle center">Building Blocks 🧩</div>
-
-    <div class="small center" id="buildStatus">
-
-      Build the Korean syllable.
-
-    </div>
-
-    <div class="buildResult" id="buildResult"></div>
-
-    <div class="buildSlots">
-
-      <div class="buildSlot" id="bs1">?</div>
-
-      <div class="plus">+</div>
-
-      <div class="buildSlot" id="bs2">?</div>
-
-    </div>
-
-    <div class="buildChoices" id="buildChoices"></div>
-
-    <div id="buildFeedback"></div>
-
-  </div>
+  <div id="testCard" class="card"></div>
 
 </section>
 
-<!-- ================= TEST ================= -->
+<!-- WRITE -->
+<section id="writeView" class="hidden">
 
-<section id="test" class="hidden">
-
-  <div class="card">
-
-    <div class="sectionTitle center" id="testTitle">
-
-      Test
-
-    </div>
-
-    <div class="small center" id="testProgress"></div>
-
-    <div id="testArea"></div>
-
-    <div id="testFeedback"></div>
-
-  </div>
-
-</section>
-
-<!-- ================= WRITE ================= -->
-
-<section id="write" class="hidden">
+  <div class="sectionTitle">Writing Practice</div>
 
   <div class="card">
 
-    <div class="sectionTitle center">Writing ✏️</div>
-
-    <div class="small center">
-
-      Get 3 readable drawings of each character.
-
-    </div>
-
-    <div class="writeControls">
-
-      <button class="modeButton active" id="traceMode">
-
+    <div class="modeButtons">
+      <button id="traceModeButton"
+              class="modeButton active"
+              onclick="setWriteMode('trace')">
         Trace
-
       </button>
 
-      <button class="modeButton" id="writeMode">
-
+      <button id="writeModeButton"
+              class="modeButton"
+              onclick="setWriteMode('write')">
         Write
-
       </button>
-
     </div>
 
-    <div class="writeTarget" id="writeTarget"></div>
-
-    <div class="attemptInfo" id="writeAttempt"></div>
+    <div id="writePrompt" class="writePrompt">
+      Trace the character.
+    </div>
 
     <div class="canvasWrap">
 
-      <svg id="guide"
+      <div class="canvasGrid"></div>
 
-           viewBox="0 0 500 500"
+      <div id="guide"
+           class="guide"></div>
 
-           preserveAspectRatio="xMidYMid meet">
-
-        <text
-
-          id="guideText"
-
-          x="250"
-
-          y="250"></text>
-
-      </svg>
-
-      <canvas id="canvas"></canvas>
+      <canvas id="writeCanvas"></canvas>
 
     </div>
 
     <div class="writeActions">
-
-      <button class="secondary" id="clearCanvas">
-
+      <button class="clearButton" onclick="clearCanvas()">
         Clear
-
       </button>
 
-      <button class="primary" id="checkWrite">
-
+      <button class="checkWriteButton" onclick="checkWriting()">
         Check ✓
-
       </button>
-
     </div>
 
-    <div id="writeFeedback"></div>
+    <div id="writeFeedback" class="feedback"></div>
+
+    <div id="writeStats" class="stats"></div>
 
   </div>
 
 </section>
 
-<!-- ================= REVIEW ================= -->
+<!-- REVIEW -->
+<section id="reviewView" class="hidden">
 
-<section id="review" class="hidden">
+  <div class="sectionTitle">Review</div>
 
   <div class="card">
-
-    <div class="sectionTitle">Review</div>
-
-    <div class="statsGrid">
-
-      <div class="stat">
-
-        <div class="statNum" id="statCorrect">0</div>
-
-        <div class="statLabel">Correct</div>
-
-      </div>
-
-      <div class="stat">
-
-        <div class="statNum" id="statTotal">0</div>
-
-        <div class="statLabel">Attempts</div>
-
-      </div>
-
-      <div class="stat">
-
-        <div class="statNum" id="statStreak">0</div>
-
-        <div class="statLabel">Streak</div>
-
-      </div>
-
-    </div>
-
-    <div id="reviewList" style="margin-top:12px"></div>
-
+    <div id="reviewContent" class="reviewInfo"></div>
   </div>
 
 </section>
@@ -1203,636 +588,278 @@ h1{
 <script>
 
 /* =========================================================
-
-   HANGUL DATA
-
+   LESSON DATA
 ========================================================= */
 
-const units = [
+const lessons = [
 
   {
-
-    type:"lesson",
-
     name:"Consonants 1",
-
     desc:"The first 7 consonants",
-
     items:[
-
       ["ㄱ","g / k"],
-
       ["ㄴ","n"],
-
       ["ㄷ","d / t"],
-
       ["ㄹ","r / l"],
-
       ["ㅁ","m"],
-
       ["ㅂ","b / p"],
-
       ["ㅅ","s"]
-
     ]
-
   },
 
   {
-
-    type:"test",
-
-    name:"Test 1",
-
-    desc:"Test: Consonants 1",
-
-    items:[
-
-      ["ㄱ","g / k"],
-
-      ["ㄴ","n"],
-
-      ["ㄷ","d / t"],
-
-      ["ㄹ","r / l"],
-
-      ["ㅁ","m"],
-
-      ["ㅂ","b / p"],
-
-      ["ㅅ","s"]
-
-    ],
-
-    lesson:0
-
-  },
-
-  {
-
-    type:"lesson",
-
     name:"Consonants 2",
-
     desc:"More consonants",
-
     items:[
-
       ["ㅇ","ng / silent"],
-
       ["ㅈ","j"],
-
       ["ㅊ","ch"],
-
       ["ㅋ","k"],
-
       ["ㅌ","t"],
-
       ["ㅍ","p"],
-
       ["ㅎ","h"]
-
     ]
-
   },
 
   {
-
-    type:"test",
-
-    name:"Test 2",
-
-    desc:"Test: Consonants 2",
-
-    items:[
-
-      ["ㅇ","ng / silent"],
-
-      ["ㅈ","j"],
-
-      ["ㅊ","ch"],
-
-      ["ㅋ","k"],
-
-      ["ㅌ","t"],
-
-      ["ㅍ","p"],
-
-      ["ㅎ","h"]
-
-    ],
-
-    lesson:1
-
-  },
-
-  {
-
-    type:"lesson",
-
     name:"Vowels 1",
-
     desc:"Basic vowels",
-
     items:[
-
       ["ㅏ","a"],
-
       ["ㅑ","ya"],
-
       ["ㅓ","eo"],
-
       ["ㅕ","yeo"],
-
       ["ㅗ","o"],
-
       ["ㅛ","yo"],
-
       ["ㅜ","u"]
-
     ]
-
   },
 
   {
-
-    type:"test",
-
-    name:"Test 3",
-
-    desc:"Test: Vowels 1",
-
-    items:[
-
-      ["ㅏ","a"],
-
-      ["ㅑ","ya"],
-
-      ["ㅓ","eo"],
-
-      ["ㅕ","yeo"],
-
-      ["ㅗ","o"],
-
-      ["ㅛ","yo"],
-
-      ["ㅜ","u"]
-
-    ],
-
-    lesson:2
-
-  },
-
-  {
-
-    type:"lesson",
-
     name:"Vowels 2",
-
     desc:"The remaining basic vowels",
-
     items:[
-
       ["ㅠ","yu"],
-
       ["ㅡ","eu"],
-
       ["ㅣ","i"],
-
       ["ㅐ","ae"],
-
       ["ㅔ","e"]
-
     ]
-
   },
 
   {
-
-    type:"test",
-
-    name:"Test 4",
-
-    desc:"Test: Vowels 2",
-
-    items:[
-
-      ["ㅠ","yu"],
-
-      ["ㅡ","eu"],
-
-      ["ㅣ","i"],
-
-      ["ㅐ","ae"],
-
-      ["ㅔ","e"]
-
-    ],
-
-    lesson:3
-
-  },
-
-  {
-
-    type:"lesson",
-
     name:"Syllable Blocks 1",
-
     desc:"Combine consonants and vowels",
-
     items:[
-
       ["가","ga"],
-
       ["나","na"],
-
       ["다","da"],
-
       ["마","ma"],
-
       ["바","ba"],
-
       ["사","sa"]
-
     ]
-
   },
 
   {
-
-    type:"test",
-
-    name:"Test 5",
-
-    desc:"Test: Syllable Blocks 1",
-
-    items:[
-
-      ["가","ga"],
-
-      ["나","na"],
-
-      ["다","da"],
-
-      ["마","ma"],
-
-      ["바","ba"],
-
-      ["사","sa"]
-
-    ],
-
-    lesson:4
-
-  },
-
-  {
-
-    type:"lesson",
-
     name:"Reading 1",
-
     desc:"Read simple Korean syllables",
-
     items:[
-
       ["너","neo"],
-
       ["미","mi"],
-
       ["고","go"],
-
       ["아","a"],
-
       ["우","u"],
-
       ["하","ha"]
-
     ]
-
-  },
-
-  {
-
-    type:"test",
-
-    name:"Test 6",
-
-    desc:"Test: Reading 1",
-
-    items:[
-
-      ["너","neo"],
-
-      ["미","mi"],
-
-      ["고","go"],
-
-      ["아","a"],
-
-      ["우","u"],
-
-      ["하","ha"]
-
-    ],
-
-    lesson:5
-
   }
 
 ];
 
+
+/* =========================================================
+   BUILD MAPS
+========================================================= */
+
 const jamoBuild = {
 
   "가":["ㄱ","ㅏ"],
-
   "나":["ㄴ","ㅏ"],
-
   "다":["ㄷ","ㅏ"],
-
   "라":["ㄹ","ㅏ"],
-
   "마":["ㅁ","ㅏ"],
-
   "바":["ㅂ","ㅏ"],
-
   "사":["ㅅ","ㅏ"],
 
   "아":["ㅇ","ㅏ"],
-
   "자":["ㅈ","ㅏ"],
-
   "차":["ㅊ","ㅏ"],
-
   "카":["ㅋ","ㅏ"],
-
   "타":["ㅌ","ㅏ"],
-
   "파":["ㅍ","ㅏ"],
-
   "하":["ㅎ","ㅏ"],
 
   "야":["ㅇ","ㅑ"],
-
   "어":["ㅇ","ㅓ"],
-
   "여":["ㅇ","ㅕ"],
-
   "오":["ㅇ","ㅗ"],
-
   "요":["ㅇ","ㅛ"],
-
   "우":["ㅇ","ㅜ"],
-
   "유":["ㅇ","ㅠ"],
-
   "으":["ㅇ","ㅡ"],
-
   "이":["ㅇ","ㅣ"],
-
   "애":["ㅇ","ㅐ"],
-
   "에":["ㅇ","ㅔ"],
 
   "너":["ㄴ","ㅓ"],
-
   "미":["ㅁ","ㅣ"],
-
   "고":["ㄱ","ㅗ"]
 
 };
 
+
 const consonantToSyllable = {
 
   "ㄱ":"가",
-
   "ㄴ":"나",
-
   "ㄷ":"다",
-
   "ㄹ":"라",
-
   "ㅁ":"마",
-
   "ㅂ":"바",
-
   "ㅅ":"사",
-
   "ㅇ":"아",
-
   "ㅈ":"자",
-
   "ㅊ":"차",
-
   "ㅋ":"카",
-
   "ㅌ":"타",
-
   "ㅍ":"파",
-
   "ㅎ":"하"
 
 };
 
+
 const vowelToSyllable = {
 
   "ㅏ":"아",
-
   "ㅑ":"야",
-
   "ㅓ":"어",
-
   "ㅕ":"여",
-
   "ㅗ":"오",
-
   "ㅛ":"요",
-
   "ㅜ":"우",
-
   "ㅠ":"유",
-
   "ㅡ":"으",
-
   "ㅣ":"이",
-
   "ㅐ":"애",
-
   "ㅔ":"에"
 
 };
 
+
 /* =========================================================
-
    STATE
-
 ========================================================= */
 
-const STORAGE_KEY = "hangulQuest_v5";
+const STORAGE_KEY = "hangulQuest_v8";
 
-let s = JSON.parse(
-
-  localStorage.getItem(STORAGE_KEY) || "null"
-
-) || {
+let s = {
 
   correct:0,
-
   total:0,
-
   streak:0,
 
-  unlockedLesson:0,
+  unlocked:0,
 
-  lessonProgress:{},
-
-  /*
-
-    practice:
-
-    how many CORRECT answers each character has.
-
-  */
-
-  practiceProgress:{},
-
-  /*
-
-    build:
-
-    how many successful builds each character has.
-
-  */
-
-  buildProgress:{},
-
-  /*
-
-    writing:
-
-    how many >=70% drawings each character has.
-
-  */
-
-  writingProgress:{},
-
-  /*
-
-    tests passed
-
-  */
-
-  testsPassed:{}
+  practice:{},
+  building:{},
+  writing:{},
+  tests:{}
 
 };
 
-let currentLesson = 0;
 
-let practiceState = {
+try{
 
-  item:null,
+  const saved = localStorage.getItem(STORAGE_KEY);
 
-  right:null,
+  if(saved){
 
-  selected:null,
+    const parsed = JSON.parse(saved);
 
-  locked:false
+    s = {
+      ...s,
+      ...parsed,
+      practice:parsed.practice || {},
+      building:parsed.building || {},
+      writing:parsed.writing || {},
+      tests:parsed.tests || {}
+    };
 
-};
+  }
 
-let buildState = {
+}catch(e){}
 
-  item:null,
-
-  target:null,
-
-  needed:[],
-
-  picked:[],
-
-  count:0,
-
-  locked:false
-
-};
-
-let testState = {
-
-  lesson:0,
-
-  tasks:[],
-
-  index:0,
-
-  correct:0,
-
-  locked:false
-
-};
-
-let writeState = {
-
-  target:null,
-
-  mode:"trace",
-
-  /*
-
-    Number of successful drawings for current target.
-
-    This is NOT consecutive.
-
-  */
-
-  success:0,
-
-  /*
-
-    Number of attempts is only informational.
-
-  */
-
-  attempts:0,
-
-  drawing:false,
-
-  lastX:0,
-
-  lastY:0
-
-};
-
-/* =========================================================
-
-   HELPERS
-
-========================================================= */
-
-const $ = id => document.getElementById(id);
 
 function save(){
 
   localStorage.setItem(
-
     STORAGE_KEY,
-
     JSON.stringify(s)
-
   );
 
 }
 
-function shuffle(arr){
 
-  const a = [...arr];
+/* =========================================================
+   GLOBALS
+========================================================= */
+
+let activeLesson = 0;
+
+let practiceState = {
+  item:null,
+  askSound:false,
+  selected:null,
+  locked:false
+};
+
+let buildState = {
+  item:null,
+  target:null,
+  parts:[],
+  selected:[],
+  locked:false
+};
+
+let testState = {
+  lesson:0,
+  tasks:[],
+  index:0,
+  score:0,
+  locked:false
+};
+
+let writeMode = "trace";
+let currentWriteTarget = null;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function $(id){
+  return document.getElementById(id);
+}
+
+
+function shuffle(array){
+
+  const a = [...array];
 
   for(let i=a.length-1;i>0;i--){
 
-    const j=Math.floor(Math.random()*(i+1));
+    const j = Math.floor(Math.random()*(i+1));
 
-    [a[i],a[j]]=[a[j],a[i]];
+    [a[i],a[j]] = [a[j],a[i]];
 
   }
 
@@ -1840,683 +867,628 @@ function shuffle(arr){
 
 }
 
-function rand(arr){
 
-  return arr[
+function random(array){
 
-    Math.floor(Math.random()*arr.length)
-
+  return array[
+    Math.floor(Math.random()*array.length)
   ];
 
 }
 
-function lessonData(i){
 
-  return units[i*2];
-
-}
-
-function testData(i){
-
-  return units[i*2+1];
-
-}
-
-function ensureLesson(i){
-
-  if(!s.lessonProgress[i]){
-
-    s.lessonProgress[i]={
-
-      practiceDone:false,
-
-      buildDone:false
-
-    };
-
-  }
-
-}
-
-function keyFor(item){
+function itemKey(item){
 
   return item[0];
 
 }
 
+
 function practiceCount(item){
 
-  return Number(
-
-    s.practiceProgress[keyFor(item)] || 0
-
-  );
+  return s.practice[itemKey(item)] || 0;
 
 }
+
 
 function buildCount(item){
 
-  return Number(
+  return s.building[itemKey(item)] || 0;
 
-    s.buildProgress[keyFor(item)] || 0
+}
 
+
+function writeCount(char){
+
+  return s.writing[char] || 0;
+
+}
+
+
+function testPassed(index){
+
+  return !!s.tests[index];
+}
+
+
+function lessonUnlocked(index){
+
+  return index <= s.unlocked;
+}
+
+
+function practiceComplete(index){
+
+  return lessons[index].items.every(
+    item => practiceCount(item) >= 3
   );
 
 }
 
-function writingCount(char){
 
-  return Number(
+function buildingComplete(index){
 
-    s.writingProgress[char] || 0
-
+  return lessons[index].items.every(
+    item => buildCount(item) >= 2
   );
 
 }
 
-function isTestPassed(i){
 
-  return !!s.testsPassed[i];
+function readyForTest(index){
 
-}
-
-function practiceComplete(i){
-
-  ensureLesson(i);
-
-  return lessonData(i).items.every(
-
-    item => practiceCount(item)>=3
-
+  return (
+    practiceComplete(index) &&
+    buildingComplete(index)
   );
 
 }
 
-function buildComplete(i){
-
-  ensureLesson(i);
-
-  return lessonData(i).items.every(
-
-    item => buildCount(item)>=2
-
-  );
-
-}
-
-function lessonUnlocked(i){
-
-  return i<=s.unlockedLesson;
-
-}
 
 /* =========================================================
-
    TABS
-
 ========================================================= */
 
-document.querySelectorAll(".tab").forEach(btn=>{
+document.querySelectorAll(".tab").forEach(button=>{
 
-  btn.addEventListener("click",()=>{
+  button.addEventListener("click",()=>{
 
-    const tab=btn.dataset.tab;
-
-    document.querySelectorAll(".tab")
-
-      .forEach(x=>x.classList.remove("active"));
-
-    btn.classList.add("active");
-
-    ["learn","practice","build","test","write","review"]
-
-      .forEach(id=>{
-
-        $(id).classList.toggle(
-
-          "hidden",
-
-          id!==tab
-
-        );
-
-      });
-
-    if(tab==="learn") renderLessons();
-
-    if(tab==="review") renderReview();
-
-    if(tab==="write"){
-
-      startWriting();
-
-    }
+    showTab(button.dataset.tab);
 
   });
 
 });
 
-function openTab(name){
 
-  document.querySelectorAll(".tab")
+function showTab(tab){
 
-    .forEach(x=>{
+  document.querySelectorAll(".tab").forEach(button=>{
 
-      x.classList.toggle(
+    button.classList.toggle(
+      "active",
+      button.dataset.tab === tab
+    );
 
-        "active",
+  });
 
-        x.dataset.tab===name
+  $("learnView").classList.toggle(
+    "hidden",
+    tab !== "learn"
+  );
 
-      );
+  $("practiceView").classList.toggle(
+    "hidden",
+    tab !== "practice"
+  );
 
-    });
+  $("writeView").classList.toggle(
+    "hidden",
+    tab !== "write"
+  );
 
-  ["learn","practice","build","test","write","review"]
+  $("reviewView").classList.toggle(
+    "hidden",
+    tab !== "review"
+  );
 
-    .forEach(id=>{
+  $("testView").classList.toggle(
+    "hidden",
+    tab !== "test"
+  );
 
-      $(id).classList.toggle(
+  if(tab === "learn"){
 
-        "hidden",
+    renderLessons();
 
-        id!==name
+  }
 
-      );
+  if(tab === "write"){
 
-    });
+    startWriting();
+
+  }
+
+  if(tab === "review"){
+
+    renderReview();
+
+  }
 
 }
 
+
 /* =========================================================
-
-   LEARN / LESSON LIST
-
+   LESSON LIST
 ========================================================= */
 
 function renderLessons(){
 
-  const list=$("lessonList");
+  const list = $("lessonList");
 
-  list.innerHTML="";
+  list.innerHTML = "";
 
-  for(let i=0;i<6;i++){
+  lessons.forEach((lesson,index)=>{
 
-    ensureLesson(i);
+    const unlocked = lessonUnlocked(index);
 
-    const lesson=lessonData(i);
+    const practiceDone = practiceComplete(index);
 
-    const unlocked=lessonUnlocked(i);
+    const buildDone = buildingComplete(index);
 
-    const passed=isTestPassed(i);
+    const ready = readyForTest(index);
 
-    let status="Locked";
+    const passed = testPassed(index);
 
-    if(passed) status="✓ Complete";
+    const card = document.createElement("div");
 
-    else if(unlocked) status="Learning";
+    card.className = "card";
 
-    const box=document.createElement("div");
+    let status = "";
 
-    box.className="lesson";
+    if(!unlocked){
 
-    box.innerHTML=`
+      status = "🔒 Locked";
 
-      <div class="lessonHead">
+    }else if(passed){
 
-        <div class="lessonNumber">
+      status = "✅ Test passed";
 
-          ${i+1}
+    }else{
 
-        </div>
+      status =
+        `Multiple Choice: ${Math.min(
+          100,
+          Math.round(
+            lessons[index].items.reduce(
+              (a,item)=>a+Math.min(3,practiceCount(item)),
+              0
+            ) /
+            (lesson.items.length*3) * 100
+          )
+        )}%`;
+
+      if(buildDone){
+
+        status += " • Building: ✅";
+
+      }else{
+
+        status += " • Building: ⏳";
+
+      }
+
+    }
+
+    card.innerHTML = `
+
+      <div class="lesson">
 
         <div class="lessonInfo">
 
           <div class="lessonName">
-
-            ${lesson.name}
-
+            ${index+1}. ${lesson.name}
           </div>
 
           <div class="lessonDesc">
-
             ${lesson.desc}
-
           </div>
 
-        </div>
-
-        <div class="status ${passed?"done":!unlocked?"locked":""}">
-
-          ${status}
-
-        </div>
-
-      </div>
-
-      <button
-
-        class="lessonButton"
-
-        ${!unlocked?"disabled":""}
-
-        id="learnBtn${i}">
-
-        ${passed?"Review Lesson":"Start Lesson"}
-
-      </button>
-
-      <div class="testRow">
-
-        <div class="testLabel">
-
-          TEST ${i+1}
+          <div class="lessonStatus">
+            ${status}
+          </div>
 
         </div>
 
         <button
-
           class="lessonButton"
-
-          id="testBtn${i}"
-
-          ${!unlocked || !practiceComplete(i) || !buildComplete(i) ? "disabled":""}>
-
+          ${unlocked ? "" : "disabled"}
+          onclick="openLesson(${index})"
+        >
           ${
-
-            passed
-
-            ? "Retake Test"
-
-            : practiceComplete(i) && buildComplete(i)
-
-              ? "Take Test"
-
-              : "Finish learning first"
-
+            !unlocked
+            ? "Locked"
+            : passed
+              ? "Review"
+              : ready
+                ? "Test"
+                : "Learn"
           }
-
         </button>
 
       </div>
 
     `;
 
-    list.appendChild(box);
+    list.appendChild(card);
 
-    const learnBtn=$(`learnBtn${i}`);
-
-    if(unlocked){
-
-      learnBtn.onclick=()=>{
-
-        currentLesson=i;
-
-        startPractice(i);
-
-      };
-
-    }
-
-    const testBtn=$(`testBtn${i}`);
-
-    if(
-
-      unlocked &&
-
-      practiceComplete(i) &&
-
-      buildComplete(i)
-
-    ){
-
-      testBtn.onclick=()=>{
-
-        currentLesson=i;
-
-        startTest(i);
-
-      };
-
-    }
-
-  }
-
-  const completed=
-
-    Object.values(s.testsPassed)
-
-      .filter(Boolean).length;
-
-  $("courseProgress").style.width=
-
-    ((completed/6)*100)+"%";
-
-  $("courseStatus").textContent=
-
-    completed>=6
-
-      ? "All lessons complete 🎉"
-
-      : `Lesson ${Math.min(s.unlockedLesson+1,6)} of 6`;
+  });
 
 }
+
 
 /* =========================================================
-
-   PRACTICE
-
+   OPEN LESSON
 ========================================================= */
 
-function startPractice(lessonIndex){
+function openLesson(index){
 
-  currentLesson=lessonIndex;
+  if(!lessonUnlocked(index)) return;
 
-  $("practiceTitle").textContent=
+  activeLesson = index;
 
-    lessonData(lessonIndex).name+
+  if(readyForTest(index) && !testPassed(index)){
 
-    " — Multiple Choice";
-
-  openTab("practice");
-
-  newPracticeQuestion();
-
-}
-
-function newPracticeQuestion(){
-
-  const lesson=lessonData(currentLesson);
-
-  const incomplete=lesson.items.filter(
-
-    item=>practiceCount(item)<3
-
-  );
-
-  /*
-
-    If all are complete, go to building.
-
-  */
-
-  if(!incomplete.length){
-
-    ensureLesson(currentLesson);
-
-    s.lessonProgress[currentLesson]
-
-      .practiceDone=true;
-
-    save();
-
-    $("feedback").textContent=
-
-      "Practice complete! 🧩";
-
-    setTimeout(()=>{
-
-      startBuild(currentLesson);
-
-    },700);
+    startTest(index);
 
     return;
 
   }
 
-  const item=rand(incomplete);
+  startPractice(index);
 
-  const right=item[1];
-
-  let wrongs=shuffle(
-
-    lesson.items
-
-      .filter(x=>x!==item)
-
-      .map(x=>x[1])
-
-  ).slice(0,3);
-
-  while(wrongs.length<3){
-
-    wrongs.push(
-
-      [
-
-        "g / k",
-
-        "n",
-
-        "d / t",
-
-        "r / l",
-
-        "m",
-
-        "b / p",
-
-        "s",
-
-        "ng / silent",
-
-        "j",
-
-        "ch",
-
-        "k",
-
-        "t",
-
-        "p",
-
-        "h",
-
-        "a",
-
-        "ya",
-
-        "eo",
-
-        "yeo",
-
-        "o",
-
-        "yo",
-
-        "u",
-
-        "yu",
-
-        "eu",
-
-        "i",
-
-        "ae",
-
-        "e"
-
-      ][Math.floor(Math.random()*26)]
-
-    );
-
-  }
-
-  const choices=shuffle(
-
-    [right,...wrongs]
-
-  );
-
-  practiceState={
-
-    item:item,
-
-    right:right,
-
-    selected:null,
-
-    locked:false
-
-  };
-
-  $("prompt").textContent=
-
-    "Which sound does this letter make?";
-
-  $("big").textContent=item[0];
-
-  $("practiceStatus").textContent=
-
-    `This character: ${practiceCount(item)}/3 correct`;
-
-  const answers=$("answers");
-
-  answers.innerHTML="";
-
-  choices.forEach(choice=>{
-
-    const b=document.createElement("button");
-
-    b.className="answer";
-
-    b.textContent=choice;
-
-    b.onclick=()=>{
-
-      if(practiceState.locked)return;
-
-      document.querySelectorAll("#answers .answer")
-
-        .forEach(x=>x.classList.remove("selected"));
-
-      b.classList.add("selected");
-
-      practiceState.selected=b;
-
-      $("checkPractice").disabled=false;
-
-    };
-
-    answers.appendChild(b);
-
-  });
-
-  $("feedback").textContent="";
-
-  $("checkPractice").disabled=true;
+  showTab("practice");
 
 }
 
-$("checkPractice").onclick=()=>{
 
-  if(
+/* =========================================================
+   PRACTICE
+========================================================= */
 
-    practiceState.locked ||
+function getIncompletePracticeItems(){
 
-    !practiceState.selected
+  return lessons[activeLesson].items.filter(
+    item => practiceCount(item) < 3
+  );
 
-  )return;
+}
 
-  practiceState.locked=true;
 
-  const selected=
+function startPractice(index){
 
-    practiceState.selected.textContent.trim();
+  activeLesson = index;
 
-  const right=
+  practiceState = {
+    item:null,
+    askSound:false,
+    selected:null,
+    locked:false
+  };
 
-    practiceState.right.trim();
+  newPracticeQuestion();
 
-  s.total++;
+  newBuildingQuestion();
 
-  if(selected===right){
+  showTab("practice");
+
+}
+
+
+function makeAnswerChoices(item,askSound){
+
+  const correct = askSound
+    ? item[1]
+    : item[0];
+
+  const wrongPool = lessons[activeLesson].items
+
+    .filter(x => x[0] !== item[0])
+
+    .map(x => askSound ? x[1] : x[0]);
+
+  const wrong = shuffle(wrongPool).slice(0,3);
+
+  return shuffle([
+    correct,
+    ...wrong
+  ]);
+
+}
+
+
+function newPracticeQuestion(){
+
+  const incomplete = getIncompletePracticeItems();
+
+  if(!incomplete.length){
+
+    renderPracticeComplete();
+
+    return;
+
+  }
+
+  const item = random(incomplete);
+
+  const askSound = Math.random() < .5;
+
+  practiceState.item = item;
+
+  practiceState.askSound = askSound;
+
+  practiceState.selected = null;
+
+  practiceState.locked = false;
+
+  const choices = makeAnswerChoices(
+    item,
+    askSound
+  );
+
+  const card = $("practiceCard");
+
+  const prompt = askSound
+    ? "Which sound matches this character?"
+    : "Which Korean character matches this sound?";
+
+  const main = askSound
+    ? item[0]
+    : item[1];
+
+  card.innerHTML = `
+
+    <div class="prompt">
+      ${prompt}
+    </div>
+
+    <div class="glyph">
+      ${main}
+    </div>
+
+    ${
+      askSound
+      ? `
+        <button
+          class="soundButton"
+          onclick="speak('${item[1].replace(/'/g,"\\'")}')"
+        >
+          🔊
+        </button>
+      `
+      : ""
+    }
+
+    <div class="choices" id="answerChoices"></div>
+
+    <button
+      id="practiceCheck"
+      class="checkButton"
+      disabled
+      onclick="checkPracticeAnswer()"
+    >
+      Check ✓
+    </button>
+
+    <div id="practiceFeedback"
+         class="feedback">
+    </div>
+
+    <div id="practiceStats"
+         class="stats">
+    </div>
+
+  `;
+
+  const choiceBox = $("answerChoices");
+
+  choices.forEach(choice=>{
+
+    const button = document.createElement("button");
+
+    button.className = "choice";
+
+    button.textContent = choice;
+
+    button.onclick = ()=>{
+
+      if(practiceState.locked) return;
+
+      document
+        .querySelectorAll("#answerChoices .choice")
+        .forEach(b=>b.classList.remove("selected"));
+
+      button.classList.add("selected");
+
+      practiceState.selected = choice;
+
+      $("practiceCheck").disabled = false;
+
+    };
+
+    choiceBox.appendChild(button);
+
+  });
+
+  updatePracticeStats();
+
+}
+
+
+function checkPracticeAnswer(){
+
+  if(practiceState.locked) return;
+
+  if(practiceState.selected === null) return;
+
+  practiceState.locked = true;
+
+  const item = practiceState.item;
+
+  const correctAnswer = practiceState.askSound
+    ? item[1]
+    : item[0];
+
+  const buttons =
+    document.querySelectorAll(
+      "#answerChoices .choice"
+    );
+
+  buttons.forEach(button=>{
+
+    if(button.textContent === correctAnswer){
+
+      button.classList.add("correct");
+
+    }
+
+    if(
+      button.textContent === practiceState.selected &&
+      practiceState.selected !== correctAnswer
+    ){
+
+      button.classList.add("wrong");
+
+    }
+
+  });
+
+  const feedback = $("practiceFeedback");
+
+  if(practiceState.selected === correctAnswer){
+
+    s.practice[itemKey(item)] =
+      practiceCount(item) + 1;
 
     s.correct++;
 
     s.streak++;
 
-    const k=keyFor(
+    feedback.textContent =
+      `Correct! ${Math.min(
+        3,
+        practiceCount(item)
+      )}/3`;
 
-      practiceState.item
+    feedback.className =
+      "feedback good";
 
-    );
-
-    s.practiceProgress[k]=
-
-      practiceCount(practiceState.item)+1;
-
-    practiceState.selected.classList.add("correct");
-
-    $("feedback").innerHTML=
-
-      `<span class="good">Correct! ✓ ${practiceCount(practiceState.item)}/3</span>`;
+    save();
 
   }else{
 
-    s.streak=0;
+    s.total++;
 
-    practiceState.selected.classList.add("wrong");
+    s.streak = 0;
 
-    document.querySelectorAll("#answers .answer")
+    feedback.textContent =
+      `Not quite — the answer is ${correctAnswer}`;
 
-      .forEach(x=>{
+    feedback.className =
+      "feedback bad";
 
-        if(x.textContent.trim()===right){
-
-          x.classList.add("correct");
-
-        }
-
-      });
-
-    $("feedback").innerHTML=
-
-      `<span class="bad">Not quite — ${right}</span>`;
+    save();
 
   }
 
-  save();
+  updatePracticeStats();
+
+  /*
+    IMPORTANT:
+    Whether RIGHT or WRONG, we move to another
+    random incomplete character.
+  */
 
   setTimeout(()=>{
 
-    newPracticeQuestion();
+    if(practiceComplete(activeLesson)){
 
-  },1000);
+      newBuildingQuestion();
 
-};
+    }else{
 
-/* =========================================================
+      newPracticeQuestion();
 
-   BUILDING BLOCKS
+    }
 
-========================================================= */
+    renderLessons();
 
-function startBuild(lessonIndex){
-
-  currentLesson=lessonIndex;
-
-  openTab("build");
-
-  $("buildStatus").textContent=
-
-    lessonData(lessonIndex).name+
-
-    " — Build each item 2 times";
-
-  newBuildQuestion();
+  },900);
 
 }
 
-function getBuildTarget(item){
 
-  const char=item[0];
+function updatePracticeStats(){
 
-  if(jamoBuild[char]){
+  const total =
+    lessons[activeLesson].items.length * 3;
 
-    return char;
+  const done =
+    lessons[activeLesson].items.reduce(
+      (sum,item)=>
+        sum + Math.min(3,practiceCount(item)),
+      0
+    );
 
-  }
+  const stats = $("practiceStats");
+
+  if(!stats) return;
+
+  stats.innerHTML = `
+
+    ${done}/${total} correct answers earned
+
+    <div class="progressBar">
+
+      <div
+        class="progressFill"
+        style="width:${(done/total)*100}%"
+      ></div>
+
+    </div>
+
+  `;
+
+}
+
+
+function renderPracticeComplete(){
+
+  $("practiceCard").innerHTML = `
+
+    <div class="empty">
+
+      <div style="font-size:50px">🎉</div>
+
+      <h2>Multiple Choice Complete!</h2>
+
+      <p>
+        Every character has 3 correct answers.
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   BUILDING BLOCKS
+========================================================= */
+
+function buildTargetFor(item){
+
+  const char = item[0];
 
   if(consonantToSyllable[char]){
 
@@ -2534,9 +1506,10 @@ function getBuildTarget(item){
 
 }
 
-function getPartsFor(item){
 
-  const target=getBuildTarget(item);
+function buildPartsFor(item){
+
+  const target = buildTargetFor(item);
 
   if(jamoBuild[target]){
 
@@ -2548,103 +1521,29 @@ function getPartsFor(item){
 
 }
 
-function newBuildQuestion(){
 
-  const lesson=lessonData(currentLesson);
+function getIncompleteBuildItems(){
 
-  const incomplete=lesson.items.filter(
-
-    item=>buildCount(item)<2
-
+  return lessons[activeLesson].items.filter(
+    item => buildCount(item) < 2
   );
-
-  if(!incomplete.length){
-
-    ensureLesson(currentLesson);
-
-    s.lessonProgress[currentLesson]
-
-      .buildDone=true;
-
-    save();
-
-    $("buildFeedback").innerHTML=
-
-      `<span class="good">
-
-        Building Blocks complete! ✓
-
-      </span>`;
-
-    setTimeout(()=>{
-
-      startTest(currentLesson);
-
-    },800);
-
-    return;
-
-  }
-
-  const item=rand(incomplete);
-
-  const target=getBuildTarget(item);
-
-  const parts=getPartsFor(item);
-
-  buildState={
-
-    item:item,
-
-    target:target,
-
-    needed:parts,
-
-    picked:[],
-
-    count:buildCount(item),
-
-    locked:false
-
-  };
-
-  $("buildResult").textContent="";
-
-  $("bs1").textContent="?";
-
-  $("bs2").textContent="?";
-
-  $("buildFeedback").textContent="";
-
-  renderBuildChoices();
 
 }
 
-function renderBuildChoices(){
 
-  const choices=$("buildChoices");
+function getBuildingChoices(item){
 
-  choices.innerHTML="";
+  const requiredParts = buildPartsFor(item);
 
-  const lesson=lessonData(currentLesson);
+  let pool = [];
 
-  let pool=[];
+  lessons[activeLesson].items.forEach(other=>{
 
-  /*
+    buildPartsFor(other).forEach(part=>{
 
-    Put all relevant jamo into the random choices.
+      if(!pool.includes(part)){
 
-  */
-
-  lesson.items.forEach(item=>{
-
-    const parts=getPartsFor(item);
-
-    parts.forEach(p=>{
-
-      if(!pool.includes(p)){
-
-        pool.push(p);
+        pool.push(part);
 
       }
 
@@ -2652,215 +1551,406 @@ function renderBuildChoices(){
 
   });
 
-  buildState.needed.forEach(p=>{
+  requiredParts.forEach(part=>{
 
-    if(!pool.includes(p)){
+    if(!pool.includes(part)){
 
-      pool.push(p);
-
-    }
-
-  });
-
-  pool=shuffle(pool).slice(0,8);
-
-  buildState.needed.forEach(p=>{
-
-    if(!pool.includes(p)){
-
-      pool[Math.floor(Math.random()*pool.length)]=p;
+      pool.push(part);
 
     }
 
   });
-
-  pool=shuffle(pool);
-
-  pool.forEach(choice=>{
-
-    const b=document.createElement("button");
-
-    b.className="buildChoice";
-
-    b.textContent=choice;
-
-    b.onclick=()=>chooseBuildPart(choice,b);
-
-    choices.appendChild(b);
-
-  });
-
-}
-
-function chooseBuildPart(choice,button){
-
-  if(buildState.locked)return;
-
-  const expected=
-
-    buildState.needed[
-
-      buildState.picked.length
-
-    ];
-
-  if(choice!==expected){
-
-    buildState.locked=true;
-
-    $("buildFeedback").innerHTML=
-
-      `<span class="bad">
-
-        Try again — the build was ${buildState.target}
-
-      </span>`;
-
-    setTimeout(()=>{
-
-      newBuildQuestion();
-
-    },900);
-
-    return;
-
-  }
-
-  buildState.picked.push(choice);
-
-  button.classList.add("selected");
-
-  if(buildState.picked.length===1){
-
-    $("bs1").textContent=choice;
-
-  }
-
-  if(buildState.picked.length===2){
-
-    $("bs2").textContent=choice;
-
-    const k=keyFor(buildState.item);
-
-    s.buildProgress[k]=
-
-      buildCount(buildState.item)+1;
-
-    save();
-
-    $("buildResult").textContent=
-
-      buildState.target;
-
-    $("buildFeedback").innerHTML=
-
-      `<span class="good">
-
-        Correct! ✓ ${buildCount(buildState.item)}/2
-
-      </span>`;
-
-    buildState.locked=true;
-
-    setTimeout(()=>{
-
-      newBuildQuestion();
-
-    },800);
-
-  }
-
-}
-
-/* =========================================================
-
-   TEST
-
-========================================================= */
-
-function startTest(lessonIndex){
-
-  if(
-
-    !practiceComplete(lessonIndex) ||
-
-    !buildComplete(lessonIndex)
-
-  ){
-
-    return;
-
-  }
-
-  currentLesson=lessonIndex;
-
-  openTab("test");
-
-  const lesson=lessonData(lessonIndex);
-
-  const letterTasks=lesson.items.map(
-
-    item=>({
-
-      type:"letter",
-
-      item:item
-
-    })
-
-  );
-
-  const buildTasks=lesson.items.map(
-
-    item=>({
-
-      type:"build",
-
-      item:item
-
-    })
-
-  );
 
   /*
+    Four choices.
 
-    Every character exactly once in each half,
-
-    then the entire test is randomized.
-
+    Required pieces are ALWAYS included.
   */
 
-  testState={
+  let choices = shuffle(pool).slice(0,4);
 
-    lesson:lessonIndex,
+  requiredParts.forEach(part=>{
 
-    tasks:shuffle([
+    if(!choices.includes(part)){
 
-      ...letterTasks,
+      choices[
+        Math.floor(Math.random()*choices.length)
+      ] = part;
 
-      ...buildTasks
+    }
 
-    ]),
+  });
 
-    index:0,
+  return shuffle(
+    [...new Set(choices)]
+  );
 
-    correct:0,
+}
+
+
+function newBuildingQuestion(){
+
+  const incomplete = getIncompleteBuildItems();
+
+  const card = $("builderCard");
+
+  if(!incomplete.length){
+
+    card.innerHTML = `
+
+      <div class="empty">
+
+        <div style="font-size:45px">🧱</div>
+
+        <h2>Building Complete!</h2>
+
+        <p>
+          Every item has been built correctly twice.
+        </p>
+
+        ${
+          readyForTest(activeLesson)
+          ? `
+            <button
+              class="checkButton"
+              onclick="startTest(${activeLesson})"
+            >
+              Take Test →
+            </button>
+          `
+          : ""
+        }
+
+      </div>
+
+    `;
+
+    renderLessons();
+
+    return;
+
+  }
+
+  const item = random(incomplete);
+
+  const target = buildTargetFor(item);
+
+  const parts = buildPartsFor(item);
+
+  buildState = {
+
+    item:item,
+
+    target:target,
+
+    parts:parts,
+
+    selected:[],
 
     locked:false
 
   };
 
-  $("testTitle").textContent=
+  const choices =
+    getBuildingChoices(item);
 
-    testData(lessonIndex).name;
+  card.innerHTML = `
 
-  renderTestTask();
+    <div class="prompt">
+      Building Blocks
+    </div>
+
+    <div class="builderTarget">
+      ${target}
+    </div>
+
+    <div class="builderEquation">
+
+      <div id="buildPiece0"
+           class="builderPiece">
+        ?
+      </div>
+
+      <div class="plus">
+        +
+      </div>
+
+      <div id="buildPiece1"
+           class="builderPiece">
+        ?
+      </div>
+
+    </div>
+
+    <div
+      id="buildChoices"
+      class="choices buildChoices">
+    </div>
+
+    <div
+      id="buildFeedback"
+      class="feedback">
+    </div>
+
+    <div
+      id="buildStats"
+      class="stats">
+    </div>
+
+  `;
+
+  const choiceBox =
+    $("buildChoices");
+
+  choices.forEach(choice=>{
+
+    const button =
+      document.createElement("button");
+
+    button.className = "choice";
+
+    button.textContent = choice;
+
+    button.onclick = ()=>{
+
+      chooseBuildingPart(
+        choice,
+        button
+      );
+
+    };
+
+    choiceBox.appendChild(button);
+
+  });
+
+  updateBuildingStats();
 
 }
 
+
+function chooseBuildingPart(part,button){
+
+  if(buildState.locked) return;
+
+  const required =
+    buildState.parts;
+
+  /*
+    Only add each piece once.
+  */
+
+  if(buildState.selected.includes(part)){
+
+    return;
+
+  }
+
+  buildState.selected.push(part);
+
+  button.classList.add("selected");
+
+  updateBuilderEquation();
+
+  /*
+    When enough pieces have been chosen,
+    automatically check the build.
+  */
+
+  if(buildState.selected.length >= required.length){
+
+    checkBuilding();
+
+  }
+
+}
+
+
+function updateBuilderEquation(){
+
+  const a = $("buildPiece0");
+
+  const b = $("buildPiece1");
+
+  if(!a || !b) return;
+
+  a.textContent =
+    buildState.selected[0] || "?";
+
+  b.textContent =
+    buildState.selected[1] || "?";
+
+}
+
+
+function checkBuilding(){
+
+  if(buildState.locked) return;
+
+  buildState.locked = true;
+
+  const required =
+    buildState.parts;
+
+  const selected =
+    buildState.selected;
+
+  const correct =
+    selected.length === required.length &&
+    selected.every(
+      (part,index)=>
+        part === required[index]
+    );
+
+  const feedback =
+    $("buildFeedback");
+
+  if(correct){
+
+    s.building[itemKey(buildState.item)] =
+      buildCount(buildState.item) + 1;
+
+    s.correct++;
+
+    feedback.textContent =
+      `Correct! ${Math.min(
+        2,
+        buildCount(buildState.item)
+      )}/2 builds`;
+
+    feedback.className =
+      "feedback good";
+
+    save();
+
+  }else{
+
+    s.total++;
+
+    s.streak = 0;
+
+    feedback.textContent =
+      `Not quite — ${required.join(" + ")}`;
+
+    feedback.className =
+      "feedback bad";
+
+    save();
+
+  }
+
+  updateBuildingStats();
+
+  /*
+    RIGHT OR WRONG:
+    move to another random build.
+  */
+
+  setTimeout(()=>{
+
+    newBuildingQuestion();
+
+    renderLessons();
+
+  },900);
+
+}
+
+
+function updateBuildingStats(){
+
+  const total =
+    lessons[activeLesson].items.length * 2;
+
+  const done =
+    lessons[activeLesson].items.reduce(
+      (sum,item)=>
+        sum + Math.min(2,buildCount(item)),
+      0
+    );
+
+  const stats = $("buildStats");
+
+  if(!stats) return;
+
+  stats.innerHTML = `
+
+    ${done}/${total} successful builds
+
+    <div class="progressBar">
+
+      <div
+        class="progressFill"
+        style="width:${(done/total)*100}%"
+      ></div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   TEST
+========================================================= */
+
+function startTest(index){
+
+  activeLesson = index;
+
+  testState = {
+
+    lesson:index,
+
+    tasks:[],
+
+    index:0,
+
+    score:0,
+
+    locked:false
+
+  };
+
+  /*
+    Every item appears twice:
+    1. Recognition
+    2. Building
+  */
+
+  lessons[index].items.forEach(item=>{
+
+    testState.tasks.push({
+      type:"recognition",
+      item:item
+    });
+
+    testState.tasks.push({
+      type:"build",
+      item:item
+    });
+
+  });
+
+  testState.tasks =
+    shuffle(testState.tasks);
+
+  renderTestTask();
+
+  showTab("test");
+
+}
+
+
 function renderTestTask(){
 
-  if(testState.index>=testState.tasks.length){
+  const card = $("testCard");
+
+  const task =
+    testState.tasks[testState.index];
+
+  if(!task){
 
     finishTest();
 
@@ -2868,699 +1958,716 @@ function renderTestTask(){
 
   }
 
-  testState.locked=false;
+  testState.locked = false;
 
-  const task=
+  if(task.type === "recognition"){
 
-    testState.tasks[testState.index];
-
-  $("testProgress").textContent=
-
-    `Question ${testState.index+1} of ${testState.tasks.length}`;
-
-  $("testFeedback").textContent="";
-
-  const area=$("testArea");
-
-  area.innerHTML="";
-
-  if(task.type==="letter"){
-
-    renderTestLetter(task,area);
+    renderLetterTest(task.item);
 
   }else{
 
-    renderTestBuild(task,area);
+    renderBuildTest(task.item);
 
   }
 
 }
 
-function renderTestLetter(task,area){
 
-  const item=task.item;
+function renderLetterTest(item){
 
-  const right=item[1];
+  const askSound =
+    Math.random() < .5;
 
-  const title=document.createElement("div");
+  const choices =
+    makeAnswerChoices(
+      item,
+      askSound
+    );
 
-  title.className="testType";
+  $("testCard").innerHTML = `
 
-  title.textContent=
+    <div class="testCounter">
 
-    "What sound does this letter make?";
+      Test ${testState.index+1}
+      / ${testState.tasks.length}
 
-  area.appendChild(title);
+    </div>
 
-  const big=document.createElement("div");
+    <div class="prompt">
 
-  big.className="testBig";
-
-  big.textContent=item[0];
-
-  area.appendChild(big);
-
-  const choices=document.createElement("div");
-
-  choices.className="testChoices";
-
-  let wrongs=shuffle(
-
-    lessonData(testState.lesson).items
-
-      .filter(x=>x!==item)
-
-      .map(x=>x[1])
-
-  ).slice(0,3);
-
-  const all=shuffle(
-
-    [right,...wrongs]
-
-  );
-
-  all.forEach(choice=>{
-
-    const b=document.createElement("button");
-
-    b.className="answer";
-
-    b.textContent=choice;
-
-    b.onclick=()=>{
-
-      if(testState.locked)return;
-
-      testState.locked=true;
-
-      const correct=choice===right;
-
-      if(correct){
-
-        testState.correct++;
-
-        b.classList.add("correct");
-
-        $("testFeedback").innerHTML=
-
-          `<span class="good">Correct! ✓</span>`;
-
-      }else{
-
-        b.classList.add("wrong");
-
-        document.querySelectorAll(
-
-          ".testChoices .answer"
-
-        ).forEach(x=>{
-
-          if(x.textContent===right){
-
-            x.classList.add("correct");
-
-          }
-
-        });
-
-        $("testFeedback").innerHTML=
-
-          `<span class="bad">The answer was ${right}</span>`;
-
+      ${
+        askSound
+        ? "Which sound matches this character?"
+        : "Which character matches this sound?"
       }
 
-      setTimeout(()=>{
+    </div>
 
-        testState.index++;
+    <div class="glyph">
 
-        renderTestTask();
+      ${
+        askSound
+        ? item[0]
+        : item[1]
+      }
 
-      },850);
+    </div>
+
+    ${
+      askSound
+      ? `
+        <button
+          class="soundButton"
+          onclick="speak('${item[1].replace(/'/g,"\\'")}')"
+        >
+          🔊
+        </button>
+      `
+      : ""
+    }
+
+    <div
+      class="choices"
+      id="testChoices">
+    </div>
+
+    <button
+      id="testCheck"
+      class="checkButton"
+      disabled
+      onclick="checkLetterTest('${item[0]}','${item[1]}',${askSound})"
+    >
+      Check ✓
+    </button>
+
+    <div
+      id="testFeedback"
+      class="feedback">
+    </div>
+
+  `;
+
+  const box =
+    $("testChoices");
+
+  choices.forEach(choice=>{
+
+    const button =
+      document.createElement("button");
+
+    button.className = "choice";
+
+    button.textContent = choice;
+
+    button.onclick = ()=>{
+
+      if(testState.locked) return;
+
+      box
+        .querySelectorAll(".choice")
+        .forEach(b=>
+          b.classList.remove("selected")
+        );
+
+      button.classList.add("selected");
+
+      button.dataset.selected = "true";
+
+      $("testCheck").disabled = false;
 
     };
 
-    choices.appendChild(b);
+    box.appendChild(button);
 
   });
-
-  area.appendChild(choices);
 
 }
 
-function renderTestBuild(task,area){
 
-  const item=task.item;
+function checkLetterTest(char,sound,askSound){
 
-  const target=getBuildTarget(item);
+  if(testState.locked) return;
 
-  const parts=getPartsFor(item);
+  const selectedButton =
+    document.querySelector(
+      "#testChoices .choice.selected"
+    );
 
-  const title=document.createElement("div");
+  if(!selectedButton) return;
 
-  title.className="testType";
+  testState.locked = true;
 
-  title.textContent=
+  const selected =
+    selectedButton.textContent;
 
-    "Build this syllable";
+  const correct =
+    askSound
+    ? sound
+    : char;
 
-  area.appendChild(title);
+  document
+    .querySelectorAll("#testChoices .choice")
+    .forEach(button=>{
 
-  const targetDisplay=document.createElement("div");
+      if(button.textContent === correct){
 
-  targetDisplay.className="testBig";
+        button.classList.add("correct");
 
-  targetDisplay.textContent=target;
+      }
 
-  area.appendChild(targetDisplay);
+      if(
+        button === selectedButton &&
+        selected !== correct
+      ){
 
-  const info=document.createElement("div");
+        button.classList.add("wrong");
 
-  info.className="small center";
-
-  info.textContent=
-
-    "Choose the building blocks in order.";
-
-  area.appendChild(info);
-
-  const slots=document.createElement("div");
-
-  slots.className="testBuild";
-
-  const slot1=document.createElement("div");
-
-  slot1.className="testBuildBox";
-
-  slot1.textContent="?";
-
-  const plus=document.createElement("div");
-
-  plus.textContent="+";
-
-  const slot2=document.createElement("div");
-
-  slot2.className="testBuildBox";
-
-  slot2.textContent="?";
-
-  slots.appendChild(slot1);
-
-  slots.appendChild(plus);
-
-  slots.appendChild(slot2);
-
-  area.appendChild(slots);
-
-  const choices=document.createElement("div");
-
-  choices.className="testChoices";
-
-  let pool=[];
-
-  lessonData(testState.lesson).items
-
-    .forEach(x=>{
-
-      getPartsFor(x).forEach(p=>{
-
-        if(!pool.includes(p)){
-
-          pool.push(p);
-
-        }
-
-      });
+      }
 
     });
 
-  parts.forEach(p=>{
+  const feedback =
+    $("testFeedback");
 
-    if(!pool.includes(p)){
+  if(selected === correct){
 
-      pool.push(p);
+    testState.score++;
+
+    feedback.textContent =
+      "Correct!";
+
+    feedback.className =
+      "feedback good";
+
+  }else{
+
+    feedback.textContent =
+      `Wrong — ${correct}`;
+
+    feedback.className =
+      "feedback bad";
+
+  }
+
+  setTimeout(()=>{
+
+    testState.index++;
+
+    renderTestTask();
+
+  },900);
+
+}
+
+
+function renderBuildTest(item){
+
+  const target =
+    buildTargetFor(item);
+
+  const required =
+    buildPartsFor(item);
+
+  let pool = [];
+
+  lessons[testState.lesson].items.forEach(other=>{
+
+    buildPartsFor(other).forEach(part=>{
+
+      if(!pool.includes(part)){
+
+        pool.push(part);
+
+      }
+
+    });
+
+  });
+
+  required.forEach(part=>{
+
+    if(!pool.includes(part)){
+
+      pool.push(part);
 
     }
 
   });
 
-  pool=shuffle(pool).slice(0,4);
+  let choices =
+    shuffle(pool).slice(0,4);
 
-  parts.forEach(p=>{
+  required.forEach(part=>{
 
-    if(!pool.includes(p)){
+    if(!choices.includes(part)){
 
-      pool[0]=p;
+      choices[
+        Math.floor(Math.random()*choices.length)
+      ] = part;
 
     }
 
   });
 
-  pool=shuffle(pool);
+  choices =
+    shuffle([...new Set(choices)]);
 
-  let picked=[];
+  $("testCard").innerHTML = `
 
-  pool.forEach(choice=>{
+    <div class="testCounter">
 
-    const b=document.createElement("button");
+      Test ${testState.index+1}
+      / ${testState.tasks.length}
 
-    b.className="answer";
+    </div>
 
-    b.textContent=choice;
+    <div class="prompt">
+      Build this syllable.
+    </div>
 
-    b.onclick=()=>{
+    <div class="builderTarget">
+      ${target}
+    </div>
 
-      if(testState.locked)return;
+    <div class="builderEquation">
 
-      const expected=parts[picked.length];
+      <div id="testBuild0"
+           class="builderPiece">
+        ?
+      </div>
 
-      if(choice!==expected){
+      <div class="plus">
+        +
+      </div>
 
-        testState.locked=true;
+      <div id="testBuild1"
+           class="builderPiece">
+        ?
+      </div>
 
-        b.classList.add("wrong");
+    </div>
 
-        $("testFeedback").innerHTML=
+    <div
+      class="choices buildChoices"
+      id="testBuildChoices">
+    </div>
 
-          `<span class="bad">
+    <button
+      id="testBuildCheck"
+      class="checkButton"
+      disabled
+      onclick="checkBuildTest()"
+    >
+      Check ✓
+    </button>
 
-            Incorrect — ${target}
+    <div
+      id="testBuildFeedback"
+      class="feedback">
+    </div>
 
-          </span>`;
+  `;
 
-        setTimeout(()=>{
+  testState.buildRequired = required;
 
-          testState.index++;
+  testState.buildSelected = [];
 
-          renderTestTask();
+  const box =
+    $("testBuildChoices");
 
-        },850);
+  choices.forEach(choice=>{
+
+    const button =
+      document.createElement("button");
+
+    button.className = "choice";
+
+    button.textContent = choice;
+
+    button.onclick = ()=>{
+
+      if(testState.locked) return;
+
+      if(
+        testState.buildSelected.includes(choice)
+      ){
 
         return;
 
       }
 
-      b.classList.add("correct");
+      testState.buildSelected.push(choice);
 
-      picked.push(choice);
+      button.classList.add("selected");
 
-      if(picked.length===1){
+      $("testBuild0").textContent =
+        testState.buildSelected[0] || "?";
 
-        slot1.textContent=choice;
+      $("testBuild1").textContent =
+        testState.buildSelected[1] || "?";
 
-      }
+      if(
+        testState.buildSelected.length >=
+        testState.buildRequired.length
+      ){
 
-      if(picked.length===2){
-
-        slot2.textContent=choice;
-
-        testState.correct++;
-
-        testState.locked=true;
-
-        $("testFeedback").innerHTML=
-
-          `<span class="good">
-
-            Correct! ✓
-
-          </span>`;
-
-        setTimeout(()=>{
-
-          testState.index++;
-
-          renderTestTask();
-
-        },850);
+        $("testBuildCheck").disabled = false;
 
       }
 
     };
 
-    choices.appendChild(b);
+    box.appendChild(button);
 
   });
 
-  area.appendChild(choices);
+}
+
+
+function checkBuildTest(){
+
+  if(testState.locked) return;
+
+  const selected =
+    testState.buildSelected;
+
+  const required =
+    testState.buildRequired;
+
+  const correct =
+    selected.length === required.length &&
+    selected.every(
+      (part,index)=>
+        part === required[index]
+    );
+
+  testState.locked = true;
+
+  const feedback =
+    $("testBuildFeedback");
+
+  if(correct){
+
+    testState.score++;
+
+    feedback.textContent =
+      "Correct!";
+
+    feedback.className =
+      "feedback good";
+
+  }else{
+
+    feedback.textContent =
+      `Wrong — ${required.join(" + ")}`;
+
+    feedback.className =
+      "feedback bad";
+
+  }
+
+  setTimeout(()=>{
+
+    testState.index++;
+
+    renderTestTask();
+
+  },900);
 
 }
 
+
 function finishTest(){
 
-  const total=testState.tasks.length;
+  const total =
+    testState.tasks.length;
 
-  const percent=
-
+  const percent =
     Math.round(
-
-      (testState.correct/total)*100
-
+      testState.score / total * 100
     );
 
-  $("testProgress").textContent=
+  const passed =
+    percent >= 70;
 
-    `Score: ${percent}%`;
+  $("testCard").innerHTML = `
 
-  if(percent>=70){
+    <div class="prompt">
+      Test Complete
+    </div>
 
-    s.testsPassed[testState.lesson]=true;
+    <div class="testScore">
+      ${percent}%
+    </div>
 
-    /*
+    <div class="empty">
 
-      Unlock the next lesson.
+      ${
+        passed
+        ? `
+          <div style="font-size:50px">🎉</div>
 
-    */
+          <h2>Passed!</h2>
 
-    if(testState.lesson<5){
+          <p>
+            ${testState.score}/${total} correct
+          </p>
+        `
+        : `
+          <div style="font-size:50px">📚</div>
 
-      s.unlockedLesson=
+          <h2>Keep Practicing</h2>
 
-        Math.max(
+          <p>
+            You need at least 70%.
+            Your score was ${testState.score}/${total}.
+          </p>
+        `
+      }
 
-          s.unlockedLesson,
+    </div>
 
-          testState.lesson+1
+    <button
+      class="checkButton"
+      onclick="${
+        passed
+        ? `showTab('learn')`
+        : `startTest(${activeLesson})`
+      }"
+    >
 
-        );
+      ${
+        passed
+        ? "Back to Lessons"
+        : "Retake Test"
+      }
+
+    </button>
+
+  `;
+
+  if(passed){
+
+    s.tests[activeLesson] = true;
+
+    if(
+      activeLesson === s.unlocked &&
+      s.unlocked < lessons.length-1
+    ){
+
+      s.unlocked++;
 
     }
 
     save();
 
-    $("testArea").innerHTML=`
-
-      <div class="center">
-
-        <div style="font-size:70px">🎉</div>
-
-        <div style="font-size:23px;font-weight:750">
-
-          Test Passed!
-
-        </div>
-
-        <div class="small" style="margin:7px 0 16px">
-
-          ${percent}% — You passed with 70% or higher.
-
-        </div>
-
-        <button
-
-          class="primary"
-
-          id="continueAfterTest">
-
-          Continue
-
-        </button>
-
-      </div>
-
-    `;
-
-    $("continueAfterTest").onclick=()=>{
-
-      renderLessons();
-
-      openTab("learn");
-
-    };
-
-  }else{
-
-    $("testArea").innerHTML=`
-
-      <div class="center">
-
-        <div style="font-size:65px">📚</div>
-
-        <div style="font-size:23px;font-weight:750">
-
-          Keep Practicing
-
-        </div>
-
-        <div class="small" style="margin:7px 0 16px">
-
-          You scored ${percent}%. You need 70%.
-
-        </div>
-
-        <button
-
-          class="primary"
-
-          id="retryTest">
-
-          Retake Test
-
-        </button>
-
-      </div>
-
-    `;
-
-    $("retryTest").onclick=()=>{
-
-      startTest(testState.lesson);
-
-    };
+    renderLessons();
 
   }
 
 }
 
+
 /* =========================================================
-
-   WRITING TARGETS
-
+   WRITING
 ========================================================= */
 
+const COMBINED_REVIEW_DAYS = 7;
+
+
 /*
+  A section becomes combined-writing practice after
+  passing its test.
 
-  IMPORTANT:
-
-  Before a lesson's test is passed:
-
-      its characters are individual letters.
-
-  After the test is passed:
-
-      the basic consonants/vowels become combined
-
-      syllable blocks.
-
-  Therefore a completed Consonants 1 section becomes:
-
-      가 나 다 라 마 바 사
-
-  instead of:
-
-      ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ
-
+  After 7 days, it returns to individual letters
+  for spaced review.
 */
+
+function sectionIsCurrentlyCombined(index){
+
+  if(!testPassed(index)){
+
+    return false;
+
+  }
+
+  const lastReview =
+    s.tests[index + "_review"];
+
+  if(!lastReview){
+
+    return true;
+
+  }
+
+  const age =
+    Date.now() - lastReview;
+
+  const days =
+    age / 86400000;
+
+  return days < COMBINED_REVIEW_DAYS;
+
+}
+
 
 function writingTargets(){
 
-  const result=[];
+  let targets = [];
 
-  /*
+  for(let i=0;i<lessons.length;i++){
 
-    Only use the lessons that have been unlocked.
+    if(!lessonUnlocked(i)) continue;
 
-    Current/uncompleted learning stays as individual letters.
+    const lesson =
+      lessons[i];
 
-  */
-
-  for(let i=0;i<=s.unlockedLesson && i<6;i++){
-
-    const lesson=lessonData(i);
-
-    const passed=isTestPassed(i);
-
-    lesson.items.forEach(item=>{
-
-      const char=item[0];
-
-      let target=item;
+    if(
+      i < 4 &&
+      sectionIsCurrentlyCombined(i)
+    ){
 
       /*
+        Consonants become syllables:
+        ㄱ -> 가
 
-        Consonants 1 / 2
-
+        Vowels become:
+        ㅏ -> 아
       */
 
-      if(
+      lesson.items.forEach(item=>{
 
-        passed &&
+        let target = null;
 
-        consonantToSyllable[char]
+        if(consonantToSyllable[item[0]]){
 
-      ){
+          target =
+            consonantToSyllable[item[0]];
 
-        const syllable=
+        }else if(vowelToSyllable[item[0]]){
 
-          consonantToSyllable[char];
+          target =
+            vowelToSyllable[item[0]];
 
-        target=[
+        }
 
-          syllable,
+        if(target){
 
-          jamoBuild[syllable]
+          targets.push({
+            char:target,
+            sourceSection:i
+          });
 
-            ? syllable
+        }
 
-            : item[1]
+      });
 
-        ];
+    }else{
 
-      }
+      lesson.items.forEach(item=>{
 
-      /*
+        targets.push({
+          char:item[0],
+          sourceSection:i
+        });
 
-        Vowels 1 / 2
+      });
 
-      */
-
-      if(
-
-        passed &&
-
-        vowelToSyllable[char]
-
-      ){
-
-        const syllable=
-
-          vowelToSyllable[char];
-
-        target=[
-
-          syllable,
-
-          item[1]
-
-        ];
-
-      }
-
-      /*
-
-        Syllable Blocks and Reading remain
-
-        syllable/reading targets.
-
-      */
-
-      if(!result.some(x=>x[0]===target[0])){
-
-        result.push(target);
-
-      }
-
-    });
+    }
 
   }
 
-  return result;
+  /*
+    Remove duplicates.
+  */
+
+  const seen = new Set();
+
+  return targets.filter(obj=>{
+
+    if(seen.has(obj.char)){
+
+      return false;
+
+    }
+
+    seen.add(obj.char);
+
+    return true;
+
+  });
 
 }
+
+
+function getIncompleteWritingTargets(){
+
+  return writingTargets().filter(
+    obj => writeCount(obj.char) < 3
+  );
+
+}
+
 
 function startWriting(){
 
-  const targets=writingTargets();
+  const targets =
+    getIncompleteWritingTargets();
 
   if(!targets.length){
 
-    return;
+    $("writePrompt").textContent =
+      "All currently available characters completed! 🎉";
 
-  }
+    $("writeStats").textContent = "";
 
-  /*
-
-    Keep current target if it is still available.
-
-    Otherwise choose a random one.
-
-  */
-
-  const available=targets.filter(
-
-    item=>writingCount(item[0])<3
-
-  );
-
-  if(!available.length){
-
-    $("writeTarget").textContent=
-
-      "Writing complete 🎉";
-
-    $("writeAttempt").textContent=
-
-      "All available characters have 3 readable drawings.";
+    $("guide").textContent = "";
 
     return;
 
   }
 
-  if(
-
-    !writeState.target ||
-
-    writingCount(writeState.target[0])>=3 ||
-
-    !available.some(
-
-      x=>x[0]===writeState.target[0]
-
-    )
-
-  ){
-
-    chooseNewWriteTarget(available);
-
-  }
-
-  updateWritingUI();
+  chooseNewWritingTarget();
 
 }
 
-function chooseNewWriteTarget(available=null){
 
-  const pool=
+function chooseNewWritingTarget(){
 
-    available ||
+  const targets =
+    getIncompleteWritingTargets();
 
-    writingTargets().filter(
+  if(!targets.length){
 
-      item=>writingCount(item[0])<3
+    currentWriteTarget = null;
 
-    );
+    updateWritingUI();
 
-  if(!pool.length)return;
+    return;
 
-  writeState.target=rand(pool);
+  }
 
   /*
-
-    This is the number of successful drawings
-
-    already accumulated for THIS character.
-
+    Try not to immediately repeat the same character
+    when more than one is available.
   */
 
-  writeState.success=
+  let pool = targets;
 
-    writingCount(
+  if(
+    currentWriteTarget &&
+    targets.length > 1
+  ){
 
-      writeState.target[0]
-
+    pool = targets.filter(
+      x =>
+        x.char !== currentWriteTarget.char
     );
 
-  writeState.attempts=0;
+  }
+
+  currentWriteTarget =
+    random(pool);
 
   clearCanvas();
 
@@ -3568,523 +2675,400 @@ function chooseNewWriteTarget(available=null){
 
 }
 
+
 function updateWritingUI(){
 
-  if(!writeState.target)return;
+  const guide =
+    $("guide");
 
-  const char=writeState.target[0];
+  if(!currentWriteTarget){
 
-  const count=writingCount(char);
+    guide.textContent = "";
 
-  $("writeTarget").textContent=
+    return;
 
-    char;
+  }
 
-  $("writeAttempt").textContent=
+  guide.textContent =
+    writeMode === "trace"
+    ? currentWriteTarget.char
+    : "";
 
-    `${count}/3 readable drawings`;
+  $("writePrompt").textContent =
+    writeMode === "trace"
+    ? `Trace ${currentWriteTarget.char}`
+    : `Write ${currentWriteTarget.char} from memory`;
 
-  $("guideText").textContent=char;
-
-  $("guide").style.display=
-
-    writeState.mode==="trace"
-
-      ? "block"
-
-      : "none";
+  $("writeStats").textContent =
+    `${Math.min(
+      3,
+      writeCount(currentWriteTarget.char)
+    )}/3 successful drawings`;
 
 }
 
-/* =========================================================
 
-   TRACE / WRITE TOGGLE
+function setWriteMode(mode){
 
-========================================================= */
+  writeMode = mode;
 
-$("traceMode").onclick=()=>{
+  $("traceModeButton")
+    .classList.toggle(
+      "active",
+      mode === "trace"
+    );
 
-  writeState.mode="trace";
-
-  $("traceMode").classList.add("active");
-
-  $("writeMode").classList.remove("active");
-
-  updateWritingUI();
-
-};
-
-$("writeMode").onclick=()=>{
-
-  writeState.mode="write";
-
-  $("writeMode").classList.add("active");
-
-  $("traceMode").classList.remove("active");
+  $("writeModeButton")
+    .classList.toggle(
+      "active",
+      mode === "write"
+    );
 
   updateWritingUI();
 
-};
+}
 
-/* =========================================================
 
-   CANVAS
+const canvas =
+  $("writeCanvas");
 
-========================================================= */
+const ctx =
+  canvas.getContext("2d");
 
-const canvas=$("canvas");
-
-const ctx=canvas.getContext("2d");
-
-let cssSize=500;
 
 function resizeCanvas(){
 
-  const rect=canvas.getBoundingClientRect();
+  const rect =
+    canvas.getBoundingClientRect();
 
-  const dpr=
+  const ratio =
+    window.devicePixelRatio || 1;
 
-    Math.max(1,window.devicePixelRatio||1);
+  canvas.width =
+    rect.width * ratio;
 
-  cssSize=rect.width;
-
-  canvas.width=
-
-    Math.round(rect.width*dpr);
-
-  canvas.height=
-
-    Math.round(rect.height*dpr);
+  canvas.height =
+    rect.height * ratio;
 
   ctx.setTransform(
-
-    dpr,0,0,dpr,0,0
-
+    ratio,
+    0,
+    0,
+    ratio,
+    0,
+    0
   );
 
-  ctx.lineCap="round";
+  ctx.lineCap = "round";
 
-  ctx.lineJoin="round";
+  ctx.lineJoin = "round";
 
-  ctx.lineWidth=13;
+  ctx.lineWidth = 8;
 
-  ctx.strokeStyle="#111";
+  ctx.strokeStyle = "#111";
 
 }
 
+
 window.addEventListener(
-
   "resize",
-
   resizeCanvas
-
 );
 
 resizeCanvas();
 
-function pointerPosition(e){
 
-  const rect=canvas.getBoundingClientRect();
+let drawing = false;
+
+
+function getCanvasPoint(event){
+
+  const rect =
+    canvas.getBoundingClientRect();
 
   return {
 
-    x:e.clientX-rect.left,
+    x:
+      event.clientX - rect.left,
 
-    y:e.clientY-rect.top
+    y:
+      event.clientY - rect.top
 
   };
 
 }
 
+
 canvas.addEventListener(
-
   "pointerdown",
+  event=>{
 
-  e=>{
+    drawing = true;
 
-    e.preventDefault();
-
-    canvas.setPointerCapture(e.pointerId);
-
-    const p=pointerPosition(e);
-
-    writeState.drawing=true;
-
-    writeState.lastX=p.x;
-
-    writeState.lastY=p.y;
-
-    ctx.beginPath();
-
-    ctx.moveTo(p.x,p.y);
-
-    ctx.lineTo(
-
-      p.x+.1,
-
-      p.y+.1
-
+    canvas.setPointerCapture(
+      event.pointerId
     );
 
-    ctx.stroke();
-
-  }
-
-);
-
-canvas.addEventListener(
-
-  "pointermove",
-
-  e=>{
-
-    if(!writeState.drawing)return;
-
-    e.preventDefault();
-
-    const p=pointerPosition(e);
+    const p =
+      getCanvasPoint(event);
 
     ctx.beginPath();
 
     ctx.moveTo(
-
-      writeState.lastX,
-
-      writeState.lastY
-
+      p.x,
+      p.y
     );
 
-    ctx.lineTo(p.x,p.y);
+  }
+);
+
+
+canvas.addEventListener(
+  "pointermove",
+  event=>{
+
+    if(!drawing) return;
+
+    const p =
+      getCanvasPoint(event);
+
+    ctx.lineTo(
+      p.x,
+      p.y
+    );
 
     ctx.stroke();
 
-    writeState.lastX=p.x;
-
-    writeState.lastY=p.y;
-
   }
-
 );
 
-canvas.addEventListener(
 
+canvas.addEventListener(
   "pointerup",
-
-  e=>{
-
-    writeState.drawing=false;
-
+  ()=>{
+    drawing = false;
   }
-
 );
+
 
 canvas.addEventListener(
-
   "pointercancel",
-
-  e=>{
-
-    writeState.drawing=false;
-
+  ()=>{
+    drawing = false;
   }
-
 );
+
 
 function clearCanvas(){
 
+  const rect =
+    canvas.getBoundingClientRect();
+
   ctx.clearRect(
-
     0,
-
     0,
-
-    canvas.clientWidth,
-
-    canvas.clientHeight
-
+    rect.width,
+    rect.height
   );
 
 }
 
+
 /* =========================================================
-
    WRITING RECOGNITION
-
 ========================================================= */
 
-function writingScore(){
+function canvasMask(){
+
+  const size = 100;
+
+  const off =
+    document.createElement("canvas");
+
+  off.width = size;
+
+  off.height = size;
+
+  const octx =
+    off.getContext("2d");
+
+  const rect =
+    canvas.getBoundingClientRect();
 
   /*
-
-    Downsample both the user's drawing and the target.
-
-    The target is intentionally made thicker and the
-
-    comparison uses a generous tolerance.
-
+    Draw user's canvas into a 100x100 mask.
   */
 
-  const size=100;
-
-  const source=document.createElement("canvas");
-
-  source.width=size;
-
-  source.height=size;
-
-  const sc=source.getContext("2d");
-
-  sc.fillStyle="#fff";
-
-  sc.fillRect(
-
-    0,0,size,size
-
-  );
-
-  /*
-
-    Scale the user's canvas into the 100x100 image.
-
-  */
-
-  sc.drawImage(
-
+  octx.drawImage(
     canvas,
-
-    0,0,
-
-    canvas.width,
-
-    canvas.height,
-
-    0,0,
-
-    size,size
-
+    0,
+    0,
+    size,
+    size
   );
 
-  const userData=
-
-    sc.getImageData(
-
-      0,0,size,size
-
+  const data =
+    octx.getImageData(
+      0,
+      0,
+      size,
+      size
     ).data;
 
-  /*
+  const mask =
+    new Uint8Array(
+      size*size
+    );
 
-    Render the target.
+  for(let i=0;i<mask.length;i++){
 
-    Use a very thick target so recognition is forgiving.
+    const alpha =
+      data[i*4+3];
 
-  */
+    const r =
+      data[i*4];
 
-  const target=document.createElement("canvas");
+    const g =
+      data[i*4+1];
 
-  target.width=size;
-
-  target.height=size;
-
-  const tc=target.getContext("2d");
-
-  tc.fillStyle="#fff";
-
-  tc.fillRect(
-
-    0,0,size,size
-
-  );
-
-  tc.fillStyle="#000";
-
-  tc.textAlign="center";
-
-  tc.textBaseline="middle";
-
-  tc.font=
-
-    '500 74px "Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif';
-
-  tc.fillText(
-
-    writeState.target[0],
-
-    size/2,
-
-    size/2
-
-  );
-
-  const targetData=
-
-    tc.getImageData(
-
-      0,0,size,size
-
-    ).data;
-
-  /*
-
-    Convert images into binary masks.
-
-  */
-
-  const userMask=
-
-    new Uint8Array(size*size);
-
-  const targetMask=
-
-    new Uint8Array(size*size);
-
-  for(let i=0;i<size*size;i++){
-
-    const ui=i*4;
+    const b =
+      data[i*4+2];
 
     /*
-
-      Any dark-ish user pixel counts.
-
+      Treat dark pixels as handwriting.
     */
 
-    if(userData[ui]<235){
-
-      userMask[i]=1;
-
-    }
-
-    /*
-
-      Target.
-
-    */
-
-    if(targetData[ui]<240){
-
-      targetMask[i]=1;
-
-    }
-
-  }
-
-  let userPixels=0;
-
-  let targetPixels=0;
-
-  for(let i=0;i<userMask.length;i++){
-
-    userPixels+=userMask[i];
-
-    targetPixels+=targetMask[i];
-
-  }
-
-  /*
-
-    Empty drawing.
-
-  */
-
-  if(userPixels<15){
-
-    return 0;
-
-  }
-
-  /*
-
-    Expand both masks with a generous radius.
-
-  */
-
-  const tolerance=5;
-
-  function near(mask,x,y){
-
-    for(
-
-      let yy=-tolerance;
-
-      yy<=tolerance;
-
-      yy++
-
+    if(
+      alpha > 30 &&
+      (r+g+b) < 650
     ){
 
+      mask[i] = 1;
+
+    }
+
+  }
+
+  return mask;
+
+}
+
+
+function makeTargetMask(char){
+
+  const size = 100;
+
+  const off =
+    document.createElement("canvas");
+
+  off.width = size;
+
+  off.height = size;
+
+  const octx =
+    off.getContext("2d");
+
+  octx.fillStyle = "#000";
+
+  octx.font =
+    '70px "Arial Unicode MS", "Noto Sans KR", sans-serif';
+
+  octx.textAlign = "center";
+
+  octx.textBaseline = "middle";
+
+  octx.fillText(
+    char,
+    size/2,
+    size/2
+  );
+
+  const data =
+    octx.getImageData(
+      0,
+      0,
+      size,
+      size
+    ).data;
+
+  const mask =
+    new Uint8Array(
+      size*size
+    );
+
+  for(let i=0;i<mask.length;i++){
+
+    if(
+      data[i*4+3] > 40
+    ){
+
+      mask[i] = 1;
+
+    }
+
+  }
+
+  return mask;
+
+}
+
+
+function dilateMask(mask,size,tolerance){
+
+  const out =
+    new Uint8Array(
+      mask.length
+    );
+
+  for(let y=0;y<size;y++){
+
+    for(let x=0;x<size;x++){
+
+      let found = false;
+
       for(
-
-        let xx=-tolerance;
-
-        xx<=tolerance;
-
-        xx++
-
+        let dy=-tolerance;
+        dy<=tolerance && !found;
+        dy++
       ){
 
-        const nx=x+xx;
-
-        const ny=y+yy;
-
-        if(
-
-          nx<0 ||
-
-          ny<0 ||
-
-          nx>=size ||
-
-          ny>=size
-
-        )continue;
-
-        if(
-
-          xx*xx+yy*yy <=
-
-          tolerance*tolerance &&
-
-          mask[ny*size+nx]
-
+        for(
+          let dx=-tolerance;
+          dx<=tolerance;
+          dx++
         ){
 
-          return true;
+          const nx = x+dx;
+          const ny = y+dy;
+
+          if(
+            nx<0 ||
+            ny<0 ||
+            nx>=size ||
+            ny>=size
+          ){
+
+            continue;
+
+          }
+
+          if(
+            mask[ny*size+nx]
+          ){
+
+            found = true;
+
+            break;
+
+          }
 
         }
 
       }
 
-    }
+      if(found){
 
-    return false;
-
-  }
-
-  /*
-
-    How much of the user's stroke is near the
-
-    actual character?
-
-  */
-
-  let userNear=0;
-
-  for(let y=0;y<size;y++){
-
-    for(let x=0;x<size;x++){
-
-      const i=y*size+x;
-
-      if(
-
-        userMask[i] &&
-
-        near(targetMask,x,y)
-
-      ){
-
-        userNear++;
+        out[y*size+x] = 1;
 
       }
 
@@ -4092,31 +3076,69 @@ function writingScore(){
 
   }
 
+  return out;
+
+}
+
+
+function writingScore(char){
+
+  const size = 100;
+
+  const user =
+    canvasMask();
+
+  const target =
+    makeTargetMask(char);
+
   /*
-
-    How much of the target is covered by
-
-    the user's stroke?
-
+    Slight tolerance so handwriting doesn't have
+    to perfectly overlap the font.
   */
 
-  let targetNear=0;
+  const tolerance = 6;
 
-  for(let y=0;y<size;y++){
+  const expandedUser =
+    dilateMask(
+      user,
+      size,
+      tolerance
+    );
 
-    for(let x=0;x<size;x++){
+  const expandedTarget =
+    dilateMask(
+      target,
+      size,
+      tolerance
+    );
 
-      const i=y*size+x;
+  let userPixels = 0;
+  let targetPixels = 0;
 
-      if(
+  let coveredTarget = 0;
+  let acceptedUser = 0;
 
-        targetMask[i] &&
+  for(let i=0;i<user.length;i++){
 
-        near(userMask,x,y)
+    if(user[i]){
 
-      ){
+      userPixels++;
 
-        targetNear++;
+      if(expandedTarget[i]){
+
+        acceptedUser++;
+
+      }
+
+    }
+
+    if(target[i]){
+
+      targetPixels++;
+
+      if(expandedUser[i]){
+
+        coveredTarget++;
 
       }
 
@@ -4124,278 +3146,222 @@ function writingScore(){
 
   }
 
-  const precision=
+  if(
+    userPixels === 0 ||
+    targetPixels === 0
+  ){
 
-    userNear/Math.max(1,userPixels);
-
-  const coverage=
-
-    targetNear/Math.max(1,targetPixels);
-
-  /*
-
-    Coverage matters more than exact precision.
-
-    This makes the recognition much more forgiving.
-
-  */
-
-  let score=
-
-    coverage*.75+
-
-    precision*.25;
-
-  /*
-
-    Small bonus for having a reasonable amount
-
-    of the target represented.
-
-  */
-
-  if(coverage>=.55){
-
-    score+=.08;
+    return 0;
 
   }
 
-  if(coverage>=.75){
+  const coverage =
+    coveredTarget / targetPixels;
 
-    score+=.05;
+  const precision =
+    acceptedUser / userPixels;
+
+  /*
+    Coverage is weighted more heavily because
+    handwriting may extend outside the guide.
+  */
+
+  let score =
+    coverage * 0.78 +
+    precision * 0.22;
+
+  /*
+    Forgiveness bonuses.
+  */
+
+  if(coverage >= .50){
+
+    score += .08;
+
+  }
+
+  if(coverage >= .70){
+
+    score += .08;
 
   }
 
   return Math.min(
-
     1,
-
     score
-
   );
 
 }
 
-/* =========================================================
 
-   WRITING CHECK
+function checkWriting(){
 
-========================================================= */
+  if(!currentWriteTarget){
 
-$("checkWrite").onclick=()=>{
+    return;
 
-  if(!writeState.target)return;
+  }
 
-  const score=
+  const score =
+    writingScore(
+      currentWriteTarget.char
+    );
 
-    writingScore();
-
-  const percent=
-
+  const percent =
     Math.round(score*100);
 
-  const char=
+  const feedback =
+    $("writeFeedback");
 
-    writeState.target[0];
+  if(percent >= 70){
 
-  writeState.attempts++;
+    s.writing[
+      currentWriteTarget.char
+    ] =
+      writeCount(
+        currentWriteTarget.char
+      ) + 1;
 
-  if(percent>=70){
+    feedback.textContent =
+      `Great! ${percent}% — ${
+        Math.min(
+          3,
+          writeCount(currentWriteTarget.char)
+        )
+      }/3`;
+
+    feedback.className =
+      "feedback good";
 
     /*
-
-      SUCCESS:
-
-      Add ONE to this character's total.
-
-      It does NOT need to be consecutive.
-
+      If this was a combined syllable review,
+      mark the source section as reviewed.
     */
 
-    s.writingProgress[char]=
+    if(
+      currentWriteTarget.sourceSection !== undefined
+    ){
 
-      writingCount(char)+1;
+      s.tests[
+        currentWriteTarget.sourceSection + "_review"
+      ] = Date.now();
+
+    }
 
     save();
 
-    $("writeFeedback").innerHTML=
-
-      `<span class="good">
-
-        Readable! ✓ ${writingCount(char)}/3
-
-        (${percent}%)
-
-      </span>`;
-
   }else{
 
-    /*
+    feedback.textContent =
+      `${percent}% — try again with the next character`;
 
-      WRONG:
-
-      Do NOT remove any previous successful progress.
-
-      Do NOT reset the character.
-
-      Just move on.
-
-    */
-
-    $("writeFeedback").innerHTML=
-
-      `<span class="bad">
-
-        Practice more — ${percent}%
-
-      </span>`;
+    feedback.className =
+      "feedback bad";
 
   }
 
   /*
+    BOTH right and wrong advance.
 
-    IMPORTANT:
+    Right:
+      count increases.
 
-    Whether RIGHT or WRONG, always go to
+    Wrong:
+      count stays the same.
 
-    another random character after the result.
-
+    Either way:
+      next random incomplete character.
   */
 
   setTimeout(()=>{
 
-    const targets=
+    feedback.textContent = "";
 
-      writingTargets().filter(
+    feedback.className =
+      "feedback";
 
-        item=>writingCount(item[0])<3
+    chooseNewWritingTarget();
 
-      );
+  },1000);
 
-    if(!targets.length){
+}
 
-      $("writeTarget").textContent=
-
-        "Writing complete 🎉";
-
-      $("writeAttempt").textContent=
-
-        "You've reached 3 readable drawings for everything available.";
-
-      clearCanvas();
-
-      return;
-
-    }
-
-    /*
-
-      Prefer a different character when possible.
-
-    */
-
-    let choices=targets.filter(
-
-      item=>item[0]!==char
-
-    );
-
-    if(!choices.length){
-
-      choices=targets;
-
-    }
-
-    chooseNewWriteTarget(choices);
-
-    $("writeFeedback").textContent="";
-
-  },1100);
-
-};
 
 /* =========================================================
-
    REVIEW
-
 ========================================================= */
 
 function renderReview(){
 
-  $("statCorrect").textContent=
+  const content =
+    $("reviewContent");
 
-    s.correct;
+  let html = "";
 
-  $("statTotal").textContent=
+  lessons.forEach((lesson,index)=>{
 
-    s.total;
+    if(!lessonUnlocked(index)) return;
 
-  $("statStreak").textContent=
+    html += `
 
-    s.streak;
+      <div style="
+        padding:12px 0;
+        border-bottom:1px solid #eee;
+      ">
 
-  const list=$("reviewList");
+        <strong>
+          ${index+1}. ${lesson.name}
+        </strong>
 
-  list.innerHTML="";
+        <br>
 
-  for(let i=0;i<6;i++){
+        <span style="color:#777">
 
-    const lesson=lessonData(i);
+          MC:
+          ${lesson.items.filter(
+            item=>practiceCount(item)>=3
+          ).length}/${lesson.items.length}
 
-    lesson.items.forEach(item=>{
+          &nbsp; • &nbsp;
 
-      const char=item[0];
+          Builds:
+          ${lesson.items.filter(
+            item=>buildCount(item)>=2
+          ).length}/${lesson.items.length}
 
-      const row=document.createElement("div");
+          &nbsp; • &nbsp;
 
-      row.className="reviewItem";
+          ${
+            testPassed(index)
+            ? "Test: ✅"
+            : "Test: ⏳"
+          }
 
-      row.innerHTML=`
+        </span>
 
-        <div>
+      </div>
 
-          <div class="char">${char}</div>
+    `;
 
-          <div class="small">${item[1]}</div>
+  });
 
-        </div>
+  if(!html){
 
-        <div style="text-align:right">
-
-          <div class="small">
-
-            MC: ${practiceCount(item)}/3
-
-          </div>
-
-          <div class="small">
-
-            Build: ${buildCount(item)}/2
-
-          </div>
-
-          <div class="small">
-
-            Write: ${writingCount(char)}/3
-
-          </div>
-
-        </div>
-
-      `;
-
-      list.appendChild(row);
-
-    });
+    html = `
+      <div class="empty">
+        No lessons unlocked yet.
+      </div>
+    `;
 
   }
 
+  content.innerHTML = html;
+
 }
 
+
 /* =========================================================
-
-   SOUND
-
+   SPEECH
 ========================================================= */
 
 function speak(text){
@@ -4408,60 +3374,29 @@ function speak(text){
 
   speechSynthesis.cancel();
 
-  const u=
-
+  const utterance =
     new SpeechSynthesisUtterance(text);
 
-  u.lang="ko-KR";
+  utterance.lang = "ko-KR";
 
-  u.rate=.75;
+  utterance.rate = .8;
 
-  speechSynthesis.speak(u);
+  speechSynthesis.speak(
+    utterance
+  );
 
 }
 
-$("soundBtn").onclick=()=>{
-
-  if(practiceState.item){
-
-    speak(
-
-      practiceState.item[0]
-
-    );
-
-  }else if(writeState.target){
-
-    speak(
-
-      writeState.target[0]
-
-    );
-
-  }
-
-};
 
 /* =========================================================
-
    INITIALIZE
-
 ========================================================= */
-
-for(let i=0;i<6;i++){
-
-  ensureLesson(i);
-
-}
 
 renderLessons();
 
-renderReview();
-
-startWriting();
+showTab("learn");
 
 </script>
 
 </body>
-
 </html>
