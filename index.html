@@ -3480,282 +3480,127 @@ $("canvas")
    FORGIVING WRITING SCORE
 ===================================================== */
 
+
 function writingScore(){
+  const size = 80;
 
-  const size=80;
+  const userCanvas = document.createElement("canvas");
+  const guideCanvas = document.createElement("canvas");
 
+  userCanvas.width = userCanvas.height = size;
+  guideCanvas.width = guideCanvas.height = size;
 
-  const userCanvas =
-    document.createElement(
-      "canvas"
-    );
+  const uc = userCanvas.getContext("2d");
+  const gc = guideCanvas.getContext("2d");
 
+  // Draw user's handwriting
+  uc.drawImage(writeCanvas, 0, 0, size, size);
 
-  const guideCanvas =
-    document.createElement(
-      "canvas"
-    );
+  // Draw guide
+  gc.fillStyle = "#000";
+  gc.font = '130px "Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  gc.textAlign = "center";
+  gc.textBaseline = "middle";
+  gc.fillText(writeTarget, size / 2, size / 2 + 3);
 
+  const user = uc.getImageData(0, 0, size, size).data;
+  const guide = gc.getImageData(0, 0, size, size).data;
 
-  userCanvas.width=size;
-  userCanvas.height=size;
+  function makeMask(data){
+    const mask = new Uint8Array(size * size);
 
-  guideCanvas.width=size;
-  guideCanvas.height=size;
+    for(let y = 0; y < size; y++){
+      for(let x = 0; x < size; x++){
+        const i = (y * size + x) * 4;
 
-
-  const uc =
-    userCanvas.getContext("2d");
-
-
-  const gc =
-    guideCanvas.getContext("2d");
-
-
-  uc.drawImage(
-    $("canvas"),
-    0,
-    0,
-    size,
-    size
-  );
-
-
-  gc.fillStyle="#000";
-
-  gc.font =
-    '130px "Apple SD Gothic Neo","Noto Sans KR",sans-serif';
-
-  gc.textAlign="center";
-
-  gc.textBaseline="middle";
-
-
-  gc.fillText(
-    writeTarget[0],
-    size/2,
-    size/2+4
-  );
-
-
-  const ud =
-    uc.getImageData(
-      0,
-      0,
-      size,
-      size
-    ).data;
-
-
-  const gd =
-    gc.getImageData(
-      0,
-      0,
-      size,
-      size
-    ).data;
-
-
-  const userMask =
-    new Uint8Array(
-      size*size
-    );
-
-
-  const guideMask =
-    new Uint8Array(
-      size*size
-    );
-
-
-  let user=0;
-
-  let guide=0;
-
-
-  for(
-    let i=0;
-    i<size*size;
-    i++
-  ){
-
-    if(
-      ud[i*4+3]>25
-    ){
-
-      userMask[i]=1;
-
-      user++;
-
+        // Slightly more forgiving threshold
+        if(data[i + 3] > 15){
+          mask[y * size + x] = 1;
+        }
+      }
     }
 
-
-    if(
-      gd[i*4+3]>25
-    ){
-
-      guideMask[i]=1;
-
-      guide++;
-
-    }
-
+    return mask;
   }
 
+  const u = makeMask(user);
+  const g = makeMask(guide);
 
-  if(
-    !user ||
-    !guide
-  )
+  let userCount = 0;
+  let guideCount = 0;
+  let userHit = 0;
+  let guideHit = 0;
+
+  // Larger tolerance than before: ±2 pixels
+  const tolerance = 2;
+
+  for(let y = 0; y < size; y++){
+    for(let x = 0; x < size; x++){
+      const index = y * size + x;
+
+      if(u[index]){
+        userCount++;
+
+        let hit = false;
+
+        for(let dy = -tolerance; dy <= tolerance && !hit; dy++){
+          for(let dx = -tolerance; dx <= tolerance; dx++){
+            const nx = x + dx;
+            const ny = y + dy;
+
+            if(
+              nx >= 0 && nx < size &&
+              ny >= 0 && ny < size &&
+              g[ny * size + nx]
+            ){
+              hit = true;
+              break;
+            }
+          }
+        }
+
+        if(hit) userHit++;
+      }
+
+      if(g[index]){
+        guideCount++;
+
+        let hit = false;
+
+        for(let dy = -tolerance; dy <= tolerance && !hit; dy++){
+          for(let dx = -tolerance; dx <= tolerance; dx++){
+            const nx = x + dx;
+            const ny = y + dy;
+
+            if(
+              nx >= 0 && nx < size &&
+              ny >= 0 && ny < size &&
+              u[ny * size + nx]
+            ){
+              hit = true;
+              break;
+            }
+          }
+        }
+
+        if(hit) guideHit++;
+      }
+    }
+  }
+
+  if(userCount === 0 || guideCount === 0){
     return 0;
-
-
-  let nearGuide=0;
-
-  let nearUser=0;
-
-
-  /*
-    One-cell tolerance.
-
-    This is the small amount of
-    extra forgiveness requested.
-  */
-
-  for(
-    let y=0;
-    y<size;
-    y++
-  ){
-
-    for(
-      let x=0;
-      x<size;
-      x++
-    ){
-
-      const i =
-        y*size+x;
-
-
-      if(userMask[i]){
-
-        let hit=false;
-
-
-        for(
-          let dy=-1;
-          dy<=1 && !hit;
-          dy++
-        ){
-
-          for(
-            let dx=-1;
-            dx<=1;
-            dx++
-          ){
-
-            const xx=x+dx;
-
-            const yy=y+dy;
-
-
-            if(
-              xx>=0 &&
-              xx<size &&
-              yy>=0 &&
-              yy<size &&
-              guideMask[
-                yy*size+xx
-              ]
-            ){
-
-              hit=true;
-
-              break;
-
-            }
-
-          }
-
-        }
-
-
-        if(hit)
-          nearGuide++;
-
-      }
-
-
-      if(guideMask[i]){
-
-        let hit=false;
-
-
-        for(
-          let dy=-1;
-          dy<=1 && !hit;
-          dy++
-        ){
-
-          for(
-            let dx=-1;
-            dx<=1;
-            dx++
-          ){
-
-            const xx=x+dx;
-
-            const yy=y+dy;
-
-
-            if(
-              xx>=0 &&
-              xx<size &&
-              yy>=0 &&
-              yy<size &&
-              userMask[
-                yy*size+xx
-              ]
-            ){
-
-              hit=true;
-
-              break;
-
-            }
-
-          }
-
-        }
-
-
-        if(hit)
-          nearUser++;
-
-      }
-
-    }
-
   }
 
+  const precision = userHit / userCount;
+  const coverage = guideHit / guideCount;
 
-  const precision =
-    nearGuide/user;
+  // More forgiving overall scoring
+  const score =
+    (precision * 0.40) +
+    (coverage * 0.60);
 
-
-  const coverage =
-    nearUser/guide;
-
-
-  return Math.round(
-    Math.min(
-      1,
-      precision*.45+
-      coverage*.55
-    )*100
-  );
-
+  return Math.round(Math.min(1, score) * 100);
 }
 
 
