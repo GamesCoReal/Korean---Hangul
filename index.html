@@ -2467,15 +2467,14 @@ function renderTestTask(){
     [
       ...$("answers").children
     ]
-    .forEach(b=>
-      b.onclick=>
+    .forEach(b=>{
+      b.onclick=()=>{
         testLetterAnswer(
           b,
           right
-        )
-    );
-
-  }
+        );
+      };
+    });
   else{
 
     buildState={
