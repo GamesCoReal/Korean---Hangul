@@ -2,977 +2,966 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f7f7f9">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f5f5f7">
+
 <title>Hangul Quest</title>
 
 <style>
-:root{
-  --bg:#f7f7f9;
-  --card:#ffffff;
-  --ink:#17171a;
-  --muted:#73747d;
-  --line:#e5e5ea;
-  --accent:#111827;
-  --good:#16803c;
-  --bad:#d92d20;
-  --soft:#f0f0f4;
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+:root{
+    --bg:#f5f5f7;
+    --card:#ffffff;
+    --text:#111111;
+    --secondary:#777;
+    --border:#dedee3;
+    --accent:#007aff;
+    --green:#34c759;
+    --red:#ff3b30;
+    --yellow:#ffcc00;
 }
 
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",sans-serif;
-  min-height:100svh;
-}
-
-button,input{
-  font:inherit;
-  color:inherit;
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
+                 "SF Pro Text",Arial,sans-serif;
 }
 
 button{
-  cursor:pointer;
-  -webkit-tap-highlight-color:transparent;
-}
-
-button:active{
-  transform:scale(.98);
+    font:inherit;
 }
 
 .app{
-  max-width:640px;
-  margin:auto;
-  padding:
-    env(safe-area-inset-top)
-    17px
-    calc(25px + env(safe-area-inset-bottom));
+    width:100%;
+    max-width:850px;
+    margin:auto;
+    padding:18px 16px 35px;
 }
 
 header{
-  padding:18px 3px 10px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.headerLeft{
-  min-width:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
 }
 
 h1{
-  font-size:29px;
-  letter-spacing:-.7px;
-  margin:0;
+    margin:0;
+    font-size:28px;
+    font-weight:800;
 }
 
-.sub{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:3px;
-}
-
-.headerButtons{
-  display:flex;
-  gap:7px;
-  align-items:center;
-  flex:none;
-}
-
-.iconbtn,
-.langbtn{
-  border:0;
-  border-radius:13px;
-  padding:10px 12px;
-}
-
-.iconbtn{
-  background:var(--soft);
-}
-
-.langbtn{
-  background:var(--accent);
-  color:#fff;
-  font-size:12px;
-  font-weight:800;
+.langButton{
+    border:0;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:9px 13px;
+    font-weight:700;
 }
 
 nav{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:6px;
-  margin:8px 0 14px;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:6px;
+    margin-bottom:18px;
 }
 
 nav button{
-  border:0;
-  background:transparent;
-  border-radius:13px;
-  padding:10px 3px;
-  font-size:12px;
-  font-weight:700;
-  color:var(--muted);
+    border:0;
+    background:#e5e5ea;
+    border-radius:12px;
+    padding:10px 4px;
+    font-size:12px;
+    font-weight:700;
 }
 
 nav button.active{
-  background:var(--accent);
-  color:#fff;
+    background:var(--text);
+    color:white;
 }
 
-.view{
-  display:none;
+section{
+    display:none;
 }
 
-.view.active{
-  display:block;
+section.active{
+    display:block;
 }
 
 .card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:20px;
-  box-shadow:0 6px 25px #00000008;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:20px;
+    margin-bottom:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,.035);
 }
 
 .hero{
-  padding:24px 20px;
+    text-align:center;
+    padding:28px 20px;
 }
 
-.eyebrow{
-  text-transform:uppercase;
-  letter-spacing:1px;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:800;
+.hero h2{
+    margin:0 0 8px;
+    font-size:24px;
 }
 
-h2{
-  font-size:24px;
-  margin:5px 0 7px;
-  letter-spacing:-.4px;
+.muted{
+    color:var(--secondary);
 }
 
-p{
-  line-height:1.45;
+.progressOuter{
+    height:10px;
+    background:#e5e5ea;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:15px;
 }
 
-.coursebar{
-  margin-top:18px;
-  background:var(--soft);
-  border-radius:15px;
-  padding:12px;
-}
-
-.coursebarTop{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  font-size:12px;
-  font-weight:750;
-}
-
-.progress{
-  height:7px;
-  background:#e8e8ed;
-  border-radius:99px;
-  overflow:hidden;
-  margin:9px 0 2px;
-}
-
-.progress div{
-  height:100%;
-  background:var(--accent);
-  width:0;
-  transition:.25s;
-}
-
-.lesson-list{
-  display:grid;
-  gap:10px;
-  margin-top:14px;
+.progressInner{
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition:.25s;
 }
 
 .lesson{
-  display:flex;
-  align-items:center;
-  gap:13px;
-  width:100%;
-  text-align:left;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:19px;
-  padding:14px;
+    display:flex;
+    align-items:center;
+    gap:13px;
 }
 
-.lesson.locked{
-  opacity:.5;
+.lessonNumber{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#e5e5ea;
+    font-weight:800;
+    flex-shrink:0;
 }
 
-.num{
-  width:40px;
-  height:40px;
-  border-radius:14px;
-  background:var(--soft);
-  display:grid;
-  place-items:center;
-  font-weight:800;
-  flex:none;
+.lessonInfo{
+    flex:1;
 }
 
-.lesson b{
-  display:block;
+.lessonInfo strong{
+    display:block;
+    margin-bottom:4px;
 }
 
-.lesson small{
-  color:var(--muted);
+.lessonInfo small{
+    color:var(--secondary);
 }
 
-.xp{
-  margin-left:auto;
-  font-size:12px;
-  color:var(--muted);
+.lesson button{
+    border:0;
+    background:var(--accent);
+    color:white;
+    border-radius:12px;
+    padding:9px 12px;
+    font-weight:700;
 }
 
-.primary{
-  width:100%;
-  border:0;
-  background:var(--accent);
-  color:white;
-  border-radius:16px;
-  padding:15px;
-  font-weight:750;
-  margin-top:10px;
+.lesson button.locked{
+    background:#e5e5ea;
+    color:#999;
 }
 
-.secondary{
-  border:1px solid var(--line);
-  background:white;
-  border-radius:14px;
-  padding:12px 14px;
-  font-weight:700;
+.stageBadge{
+    display:inline-block;
+    background:#eaf2ff;
+    color:var(--accent);
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:12px;
+    font-weight:800;
+    margin-bottom:12px;
 }
 
-.glyph{
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  font-size:100px;
-  text-align:center;
-  line-height:1.05;
-  padding:13px 0;
+.stageTitle{
+    margin:0 0 5px;
+    font-size:22px;
 }
 
-.prompt{
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-  font-weight:700;
+.stageDescription{
+    margin:0;
+    color:var(--secondary);
+}
+
+.questionCard{
+    text-align:center;
+}
+
+.questionMode{
+    color:var(--secondary);
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.bigLetter{
+    font-size:100px;
+    line-height:1.05;
+    margin:10px 0 22px;
+    font-weight:500;
 }
 
 .answers{
-  display:grid;
-  gap:9px;
-  margin-top:13px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
 }
 
 .answer{
-  border:1.5px solid var(--line);
-  background:#fff;
-  border-radius:16px;
-  padding:15px;
-  text-align:left;
-  font-size:17px;
-  font-weight:700;
-  min-height:56px;
+    border:1px solid var(--border);
+    background:#fafafa;
+    border-radius:16px;
+    padding:15px 10px;
+    font-size:20px;
+    font-weight:700;
+    min-height:58px;
+}
+
+.answer:active{
+    transform:scale(.98);
 }
 
 .answer.correct{
-  border-color:var(--good);
-  background:#effaf2;
-  color:var(--good);
+    background:#dff7e5;
+    border-color:var(--green);
 }
 
 .answer.wrong{
-  border-color:var(--bad);
-  background:#fff1ef;
-  color:var(--bad);
+    background:#ffe1df;
+    border-color:var(--red);
 }
 
 .feedback{
-  text-align:center;
-  font-weight:750;
-  min-height:24px;
-  margin:12px 0 0;
+    min-height:25px;
+    margin-top:13px;
+    font-weight:800;
+}
+
+.feedback.good{
+    color:var(--green);
+}
+
+.feedback.bad{
+    color:var(--red);
+}
+
+.progressText{
+    text-align:center;
+    font-size:14px;
+    color:var(--secondary);
+    margin-top:13px;
 }
 
 .stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin:12px 0;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
 }
 
 .stat{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:15px;
-  padding:12px 5px;
-  text-align:center;
+    background:#f5f5f7;
+    border-radius:15px;
+    padding:12px;
+    text-align:center;
 }
 
-.stat b{
-  font-size:19px;
-  display:block;
+.stat strong{
+    display:block;
+    font-size:20px;
 }
 
-.stat span{
-  font-size:10px;
-  color:var(--muted);
+.stat small{
+    color:var(--secondary);
 }
 
-.sectionGap{
-  margin-top:14px;
+.builderCard{
+    display:none;
 }
 
-.choices{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-top:14px;
+.builderTarget{
+    text-align:center;
+    font-size:52px;
+    margin:12px 0 18px;
 }
 
-.choices button{
-  min-height:76px;
-  border:1.5px solid var(--line);
-  background:#fff;
-  border-radius:17px;
-  font-weight:750;
-  font-size:20px;
+.builderSlots{
+    display:grid;
+    grid-template-columns:1fr 30px 1fr;
+    gap:8px;
+    align-items:center;
+    margin-bottom:16px;
 }
 
-.builder{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:7px;
-  min-height:92px;
-  border:1px dashed #cfcfd5;
-  border-radius:18px;
-  font-size:52px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+.builderSlot{
+    min-height:65px;
+    border:2px dashed var(--border);
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    font-weight:700;
 }
 
-.slot{
-  width:72px;
-  height:72px;
-  border:2px dashed #ccc;
-  border-radius:15px;
-  display:grid;
-  place-items:center;
+.builderPlus{
+    text-align:center;
+    color:var(--secondary);
+    font-weight:800;
+}
+
+.builderChoices{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+}
+
+.buildChoice{
+    min-height:55px;
+    border:1px solid var(--border);
+    background:#fafafa;
+    border-radius:14px;
+    font-size:22px;
+    font-weight:700;
+}
+
+.buildChoice.correct{
+    background:#dff7e5;
+    border-color:var(--green);
+}
+
+.buildChoice.wrong{
+    background:#ffe1df;
+    border-color:var(--red);
+}
+
+.buildInstruction{
+    text-align:center;
+    color:var(--secondary);
+    margin-bottom:8px;
+    font-weight:700;
+}
+
+.testResult{
+    text-align:center;
+    display:none;
+}
+
+.testScore{
+    font-size:58px;
+    font-weight:900;
+    margin:10px 0;
 }
 
 .writeCard{
-  overflow:hidden;
-}
-
-.writeGlyph{
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  font-size:100px;
-  text-align:center;
-  line-height:1;
-  margin:4px 0 10px;
-}
-
-.writeInstructions{
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:12px;
-}
-
-.canvasWrap{
-  position:relative;
-  width:100%;
-  aspect-ratio:1/1;
-  max-width:420px;
-  margin:auto;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:22px;
-  overflow:hidden;
-  touch-action:none;
-}
-
-#guide{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  opacity:.13;
+    text-align:center;
 }
 
 #drawCanvas{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  touch-action:none;
+    width:100%;
+    max-width:600px;
+    aspect-ratio:1;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:20px;
+    touch-action:none;
 }
 
-.writeScore{
-  text-align:center;
-  font-size:28px;
-  font-weight:850;
-  margin-top:14px;
-  min-height:34px;
+#guideCanvas{
+    display:none;
 }
 
-.scoreHint{
-  text-align:center;
-  color:var(--muted);
-  font-size:12px;
-  min-height:18px;
+.writeWord{
+    font-size:72px;
+    margin:5px 0 10px;
 }
 
 .writeButtons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-top:12px;
+    display:flex;
+    gap:8px;
+    margin-top:12px;
 }
 
-.writeButtons button{
-  margin:0;
+.primary,
+.secondaryButton{
+    flex:1;
+    border:0;
+    border-radius:14px;
+    padding:14px;
+    font-weight:800;
 }
 
-.writeFeedback{
-  text-align:center;
-  min-height:25px;
-  margin-top:10px;
-  font-weight:750;
+.primary{
+    background:var(--accent);
+    color:white;
 }
 
-.wordHero{
-  text-align:center;
+.secondaryButton{
+    background:#e5e5ea;
 }
 
-.wordKorean{
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  font-size:64px;
-  font-weight:800;
-  margin:16px 0 4px;
-}
-
-.wordMeaning{
-  color:var(--muted);
-  font-size:16px;
-  margin-bottom:15px;
-}
-
-.wordInput{
-  width:100%;
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:16px;
-  padding:14px;
-  font-size:19px;
-  text-align:center;
-  outline:none;
-}
-
-.wordInput:focus{
-  border-color:#999;
-}
-
-.wordStatus{
-  min-height:25px;
-  text-align:center;
-  margin-top:10px;
-  font-weight:750;
-}
-
-.wordAttempts{
-  text-align:center;
-  color:var(--muted);
-  font-size:12px;
-  min-height:18px;
-}
-
-.calendarHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px;
-}
-
-.calendarHeader button{
-  border:0;
-  background:var(--soft);
-  border-radius:12px;
-  width:38px;
-  height:38px;
-}
-
-.calendarTitle{
-  font-weight:800;
-  text-align:center;
+.writeResult{
+    min-height:27px;
+    margin-top:10px;
+    font-weight:800;
 }
 
 .calendar{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:5px;
-}
-
-.weekday{
-  text-align:center;
-  color:var(--muted);
-  font-size:10px;
-  font-weight:750;
-  padding:4px 0;
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:5px;
 }
 
 .day{
-  position:relative;
-  min-height:42px;
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:11px;
-  display:grid;
-  place-items:center;
-  font-size:12px;
+    aspect-ratio:1;
+    border-radius:9px;
+    background:#e5e5ea;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:700;
 }
 
-.day.empty{
-  border-color:transparent;
-  background:transparent;
+.day.done{
+    background:#34c759;
+    color:white;
 }
 
-.day.future{
-  opacity:.3;
+.day.partial{
+    background:#ffcc00;
 }
 
-.day.selected{
-  outline:2px solid var(--accent);
-  outline-offset:-2px;
+.wordBig{
+    font-size:72px;
+    text-align:center;
+    margin:10px 0;
 }
 
-.mark{
-  position:absolute;
-  right:4px;
-  bottom:3px;
-  font-size:9px;
-  font-weight:900;
+.wordMeaning{
+    text-align:center;
+    font-size:18px;
 }
 
-.mark.green{
-  color:var(--good);
-}
-
-.mark.yellow{
-  color:#b77900;
-}
-
-.mark.red{
-  color:var(--bad);
-}
-
-.mark.mix-yellow{
-  color:#b77900;
-}
-
-.mark.mix-red-yellow{
-  color:var(--bad);
-}
-
-.calendarHint{
-  color:var(--muted);
-  font-size:12px;
-  margin:12px 0 0;
-}
-
-.reviewList{
-  display:grid;
-  gap:8px;
-  margin-top:14px;
+.wordAttempts{
+    text-align:center;
+    color:var(--secondary);
+    margin:10px;
 }
 
 .reviewItem{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:16px;
-  padding:12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
 }
 
-.reviewGlyph{
-  width:48px;
-  font-size:30px;
-  text-align:center;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+.reviewLetter{
+    font-size:30px;
+    width:60px;
 }
 
-.reviewInfo{
-  flex:1;
+.reviewBar{
+    flex:1;
+    height:8px;
+    background:#e5e5ea;
+    border-radius:20px;
+    overflow:hidden;
+    margin:0 12px;
 }
 
-.reviewInfo b{
-  display:block;
+.reviewFill{
+    height:100%;
+    background:var(--accent);
 }
 
-.reviewInfo small{
-  color:var(--muted);
-}
+@media(max-width:500px){
+    .bigLetter{
+        font-size:80px;
+    }
 
-.emptyReview{
-  text-align:center;
-  color:var(--muted);
-  padding:20px 5px;
-}
+    .builderChoices{
+        grid-template-columns:repeat(4,1fr);
+    }
 
-@media(max-width:400px){
-  h1{font-size:26px}
-  .glyph{font-size:88px}
-  .writeGlyph{font-size:88px}
-  .wordKorean{font-size:56px}
+    .writeWord{
+        font-size:60px;
+    }
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
 <header>
-  <div class="headerLeft">
     <h1>Hangul Quest</h1>
-    <div class="sub" id="subtitle"></div>
-  </div>
-
-  <div class="headerButtons">
-    <button class="iconbtn" id="sound" aria-label="Sound">🔊</button>
-    <button class="langbtn" id="language"></button>
-  </div>
+    <button class="langButton" id="languageButton" onclick="toggleLanguage()">
+        한국어
+    </button>
 </header>
 
 <nav id="nav">
-  <button data-view="home" class="active"></button>
-  <button data-view="practice"></button>
-  <button data-view="write"></button>
-  <button data-view="word"></button>
-  <button data-view="review"></button>
+    <button data-view="home" onclick="setView('home')">Learn</button>
+    <button data-view="practice" onclick="setView('practice')">Practice</button>
+    <button data-view="write" onclick="setView('write')">Write</button>
+    <button data-view="word" onclick="setView('word')">Word</button>
+    <button data-view="review" onclick="setView('review')">Review</button>
 </nav>
 
 <!-- HOME -->
-<section class="view active" id="home">
-  <div class="card hero">
-    <div class="eyebrow" id="courseEyebrow"></div>
-    <h2 id="homeTitle"></h2>
-    <p id="homeDescription"></p>
 
-    <div class="coursebar">
-      <div class="coursebarTop">
-        <span id="courseText"></span>
-        <span id="coursePercent">0%</span>
-      </div>
-      <div class="progress">
-        <div id="courseProgress"></div>
-      </div>
+<section id="home">
+
+    <div class="card hero">
+        <h2 id="homeTitle">Learn Hangul step by step</h2>
+        <p class="muted" id="homeSubtitle">
+            Master each lesson before moving to the next.
+        </p>
+
+        <div class="progressOuter">
+            <div class="progressInner" id="courseProgress"></div>
+        </div>
+
+        <p class="muted" id="courseProgressText"></p>
     </div>
-  </div>
 
-  <div class="lesson-list" id="lessons"></div>
+    <div id="lessonList"></div>
+
 </section>
+
 
 <!-- PRACTICE -->
-<section class="view" id="practice">
 
-  <div class="card">
-    <div class="eyebrow" id="lessonPracticeLabel"></div>
+<section id="practice">
 
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:7px">
-      <b id="qnum"></b>
-      <span id="qmode" style="font-size:11px;color:var(--muted)"></span>
+    <div class="card">
+        <div class="stageBadge" id="stageBadge">Stage 1 of 4</div>
+        <h2 class="stageTitle" id="stageTitle"></h2>
+        <p class="stageDescription" id="stageDescription"></p>
     </div>
 
-    <div class="progress">
-      <div id="qbar"></div>
+    <div class="card questionCard" id="questionCard">
+
+        <div class="questionMode" id="questionMode"></div>
+
+        <div class="bigLetter" id="bigLetter"></div>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <div class="progressText" id="practiceProgress"></div>
+
     </div>
 
-    <div class="prompt" id="prompt"></div>
-    <div class="glyph" id="big"></div>
 
-    <div class="answers" id="answers"></div>
-    <div class="feedback" id="feedback"></div>
-  </div>
+    <div class="card builderCard" id="builderCard">
 
-  <div class="stats">
-    <div class="stat">
-      <b id="correctStat">0</b>
-      <span id="correctLabel"></span>
+        <div class="buildInstruction" id="buildInstruction"></div>
+
+        <div class="builderTarget" id="builderTarget">?</div>
+
+        <div class="builderSlots">
+            <div class="builderSlot" id="builderSlot1">?</div>
+            <div class="builderPlus">+</div>
+            <div class="builderSlot" id="builderSlot2">?</div>
+        </div>
+
+        <div class="builderChoices" id="builderChoices"></div>
+
+        <div class="feedback" id="buildFeedback"></div>
+
+        <div class="progressText" id="buildProgress"></div>
+
     </div>
 
-    <div class="stat">
-      <b id="streakStat">0</b>
-      <span id="streakLabel"></span>
+
+    <div class="card testResult" id="testResult">
+        <div class="stageBadge" id="testResultBadge"></div>
+        <div class="testScore" id="testScore"></div>
+        <p id="testResultText"></p>
     </div>
 
-    <div class="stat">
-      <b id="accuracyStat">0%</b>
-      <span id="accuracyLabel"></span>
+
+    <div class="card stats">
+        <div class="stat">
+            <strong id="statCorrect">0</strong>
+            <small id="statCorrectLabel">Correct</small>
+        </div>
+
+        <div class="stat">
+            <strong id="statWrong">0</strong>
+            <small id="statWrongLabel">Wrong</small>
+        </div>
+
+        <div class="stat">
+            <strong id="statAccuracy">0%</strong>
+            <small id="statAccuracyLabel">Accuracy</small>
+        </div>
     </div>
-  </div>
-
-  <div class="card sectionGap">
-    <div class="eyebrow" id="builderEyebrow"></div>
-    <h2 id="builderTitle"></h2>
-
-    <div class="builder" id="builder"></div>
-    <div class="choices" id="buildChoices"></div>
-    <div class="feedback" id="buildFeedback"></div>
-  </div>
 
 </section>
+
 
 <!-- WRITE -->
-<section class="view" id="write">
 
-  <div class="card writeCard">
-    <div class="eyebrow" id="writingLabel"></div>
+<section id="write">
 
-    <div class="writeGlyph" id="writeGlyph"></div>
+    <div class="card writeCard">
 
-    <div class="writeInstructions" id="writeInstructions"></div>
+        <div class="stageBadge" id="writeBadge">Writing Practice</div>
 
-    <div class="canvasWrap">
-      <canvas id="guide"></canvas>
-      <canvas id="drawCanvas"></canvas>
+        <div class="writeWord" id="writeWord">가</div>
+
+        <p class="muted" id="writeInstruction">
+            Trace the character.
+        </p>
+
+        <canvas id="guideCanvas"></canvas>
+        <canvas id="drawCanvas"></canvas>
+
+        <div class="writeButtons">
+            <button class="secondaryButton"
+                    id="clearButton"
+                    onclick="clearDrawing()">
+                Clear
+            </button>
+
+            <button class="primary"
+                    id="checkButton"
+                    onclick="checkWriting()">
+                Check
+            </button>
+        </div>
+
+        <div class="writeResult" id="writeResult"></div>
+
+        <p class="muted" id="writeProgress"></p>
+
     </div>
-
-    <div class="writeScore" id="writeScore"></div>
-    <div class="scoreHint" id="scoreHint"></div>
-
-    <div class="writeButtons">
-      <button class="secondary" id="erase"></button>
-      <button class="primary" id="checkWrite"></button>
-    </div>
-
-    <button class="secondary" id="newWrite" style="width:100%;margin-top:9px"></button>
-
-    <div class="writeFeedback" id="writeFeedback"></div>
-  </div>
 
 </section>
+
 
 <!-- WORD -->
-<section class="view" id="word">
 
-  <div class="card wordHero">
-    <div class="eyebrow" id="wordEyebrow"></div>
-    <h2 id="wordTitle"></h2>
+<section id="word">
 
-    <div id="wordDate"></div>
-    <div class="wordKorean" id="wordKorean"></div>
-    <div class="wordMeaning" id="wordMeaning"></div>
+    <div class="card hero">
 
-    <input
-      id="wordInput"
-      class="wordInput"
-      type="text"
-      autocomplete="off"
-      autocorrect="off"
-      autocapitalize="none"
-      spellcheck="false"
-    >
+        <div class="stageBadge" id="wordBadge">
+            Word of the Day
+        </div>
 
-    <button class="primary" id="wordCheck"></button>
+        <div class="wordBig" id="wordBig"></div>
 
-    <div class="wordStatus" id="wordStatus"></div>
-    <div class="wordAttempts" id="wordAttempts"></div>
-  </div>
+        <div class="wordMeaning" id="wordMeaning"></div>
 
-  <div class="card sectionGap">
-    <div class="calendarHeader">
-      <button id="prevMonth" aria-label="Previous month">‹</button>
-      <div class="calendarTitle" id="calendarTitle"></div>
-      <button id="nextMonth" aria-label="Next month">›</button>
+        <div class="wordAttempts" id="wordAttempts"></div>
+
+        <div id="wordQuestion"></div>
+
     </div>
 
-    <div class="calendar" id="calendar"></div>
-    <p class="calendarHint" id="calendarHint"></p>
-  </div>
+    <div class="card">
+        <h3 id="calendarTitle">Calendar</h3>
+        <div class="calendar" id="calendar"></div>
+    </div>
 
 </section>
 
+
 <!-- REVIEW -->
-<section class="view" id="review">
 
-  <div class="card">
-    <div class="eyebrow" id="reviewEyebrow"></div>
-    <h2 id="reviewTitle"></h2>
-    <p id="reviewDescription"></p>
+<section id="review">
 
-    <div class="reviewList" id="reviewList"></div>
+    <div class="card">
 
-    <button class="primary" id="startReview"></button>
-  </div>
+        <h2 id="reviewTitle">Review</h2>
+
+        <p class="muted" id="reviewSubtitle">
+            Characters that still need practice.
+        </p>
+
+        <div id="reviewList"></div>
+
+    </div>
 
 </section>
 
 </div>
 
+
 <script>
+
 /* =========================================================
    DATA
 ========================================================= */
 
 const units = [
-  {
-    name:"Consonants 1",
-    ko:"자음 1",
-    desc:"The first 7 consonants",
-    koDesc:"처음 배우는 7개의 자음",
-    items:[
-      ["ㄱ","g / k"],
-      ["ㄴ","n"],
-      ["ㄷ","d / t"],
-      ["ㄹ","r / l"],
-      ["ㅁ","m"],
-      ["ㅂ","b / p"],
-      ["ㅅ","s"]
-    ]
-  },
-  {
-    name:"Consonants 2",
-    ko:"자음 2",
-    desc:"More consonants",
-    koDesc:"더 많은 자음",
-    items:[
-      ["ㅇ","ng / silent"],
-      ["ㅈ","j"],
-      ["ㅊ","ch"],
-      ["ㅋ","k"],
-      ["ㅌ","t"],
-      ["ㅍ","p"],
-      ["ㅎ","h"]
-    ]
-  },
-  {
-    name:"Vowels 1",
-    ko:"모음 1",
-    desc:"Basic vowels",
-    koDesc:"기본 모음",
-    items:[
-      ["ㅏ","a"],
-      ["ㅑ","ya"],
-      ["ㅓ","eo"],
-      ["ㅕ","yeo"],
-      ["ㅗ","o"],
-      ["ㅛ","yo"],
-      ["ㅜ","u"]
-    ]
-  },
-  {
-    name:"Vowels 2",
-    ko:"모음 2",
-    desc:"The remaining basic vowels",
-    koDesc:"나머지 기본 모음",
-    items:[
-      ["ㅠ","yu"],
-      ["ㅡ","eu"],
-      ["ㅣ","i"],
-      ["ㅐ","ae"],
-      ["ㅔ","e"]
-    ]
-  },
-  {
-    name:"Syllable Blocks",
-    ko:"음절 블록",
-    desc:"Combine consonants + vowels",
-    koDesc:"자음과 모음을 결합해요",
-    items:[
-      ["가","ga"],
-      ["나","na"],
-      ["다","da"],
-      ["마","ma"],
-      ["바","ba"],
-      ["사","sa"]
-    ]
-  },
-  {
-    name:"Reading",
-    ko:"읽기",
-    desc:"Simple Korean blocks",
-    koDesc:"간단한 한국어 음절",
-    items:[
-      ["너","neo"],
-      ["미","mi"],
-      ["고","go"],
-      ["아","a"],
-      ["우","u"],
-      ["하","ha"]
-    ]
-  }
+
+    {
+        name:"Basic Consonants",
+        ko:"기본 자음",
+        items:[
+            ["ㄱ","g/k"],
+            ["ㄴ","n"],
+            ["ㄷ","d/t"],
+            ["ㄹ","r/l"],
+            ["ㅁ","m"],
+            ["ㅂ","b/p"],
+            ["ㅅ","s"]
+        ]
+    },
+
+    {
+        name:"More Consonants",
+        ko:"나머지 자음",
+        items:[
+            ["ㅇ","ng/silent"],
+            ["ㅈ","j"],
+            ["ㅊ","ch"],
+            ["ㅋ","k"],
+            ["ㅌ","t"],
+            ["ㅍ","p"],
+            ["ㅎ","h"]
+        ]
+    },
+
+    {
+        name:"Basic Vowels",
+        ko:"기본 모음",
+        items:[
+            ["ㅏ","a"],
+            ["ㅑ","ya"],
+            ["ㅓ","eo"],
+            ["ㅕ","yeo"],
+            ["ㅗ","o"],
+            ["ㅛ","yo"],
+            ["ㅜ","u"]
+        ]
+    },
+
+    {
+        name:"More Vowels",
+        ko:"나머지 모음",
+        items:[
+            ["ㅠ","yu"],
+            ["ㅡ","eu"],
+            ["ㅣ","i"],
+            ["ㅐ","ae"],
+            ["ㅔ","e"]
+        ]
+    },
+
+    {
+        name:"Syllable Blocks",
+        ko:"음절 블록",
+        items:[
+            ["가","ga"],
+            ["나","na"],
+            ["다","da"],
+            ["마","ma"],
+            ["바","ba"],
+            ["사","sa"]
+        ]
+    },
+
+    {
+        name:"Reading Practice",
+        ko:"읽기 연습",
+        items:[
+            ["너","neo"],
+            ["미","mi"],
+            ["고","go"],
+            ["아","a"],
+            ["우","u"],
+            ["하","ha"]
+        ]
+    }
+
 ];
 
-const all = units.flatMap((u,ui)=>
-  u.items.map(x=>({...x,unit:ui}))
-);
 
-/* Korean labels used when the interface is Korean */
+/* Korean pronunciation data */
+
 const koSounds = {
-  "ㄱ":"기역",
-  "ㄴ":"니은",
-  "ㄷ":"디귿",
-  "ㄹ":"리을",
-  "ㅁ":"미음",
-  "ㅂ":"비읍",
-  "ㅅ":"시옷",
-  "ㅇ":"이응",
-  "ㅈ":"지읒",
-  "ㅊ":"치읓",
-  "ㅋ":"키읔",
-  "ㅌ":"티읕",
-  "ㅍ":"피읖",
-  "ㅎ":"히읗",
+    "ㄱ":"기역",
+    "ㄴ":"니은",
+    "ㄷ":"디귿",
+    "ㄹ":"리을",
+    "ㅁ":"미음",
+    "ㅂ":"비읍",
+    "ㅅ":"시옷",
+    "ㅇ":"이응",
+    "ㅈ":"지읒",
+    "ㅊ":"치읓",
+    "ㅋ":"키읔",
+    "ㅌ":"티읕",
+    "ㅍ":"피읖",
+    "ㅎ":"히읗",
 
-  "ㅏ":"아",
-  "ㅑ":"야",
-  "ㅓ":"어",
-  "ㅕ":"여",
-  "ㅗ":"오",
-  "ㅛ":"요",
-  "ㅜ":"우",
-  "ㅠ":"유",
-  "ㅡ":"으",
-  "ㅣ":"이",
-  "ㅐ":"애",
-  "ㅔ":"에",
-
-  "가":"가",
-  "나":"나",
-  "다":"다",
-  "마":"마",
-  "바":"바",
-  "사":"사",
-  "너":"너",
-  "미":"미",
-  "고":"고",
-  "아":"아",
-  "우":"우",
-  "하":"하"
+    "ㅏ":"아",
+    "ㅑ":"야",
+    "ㅓ":"어",
+    "ㅕ":"여",
+    "ㅗ":"오",
+    "ㅛ":"요",
+    "ㅜ":"우",
+    "ㅠ":"유",
+    "ㅡ":"으",
+    "ㅣ":"이",
+    "ㅐ":"애",
+    "ㅔ":"에"
 };
+
+
+/* Syllable decomposition */
+
+const syllables = {
+
+    "가":["ㄱ","ㅏ"],
+    "나":["ㄴ","ㅏ"],
+    "다":["ㄷ","ㅏ"],
+    "라":["ㄹ","ㅏ"],
+    "마":["ㅁ","ㅏ"],
+    "바":["ㅂ","ㅏ"],
+    "사":["ㅅ","ㅏ"],
+
+    "너":["ㄴ","ㅓ"],
+    "미":["ㅁ","ㅣ"],
+    "고":["ㄱ","ㅗ"],
+    "아":["ㅇ","ㅏ"],
+    "우":["ㅇ","ㅜ"],
+    "하":["ㅎ","ㅏ"]
+};
+
+
+/* Vowels build with ㅇ */
+
+const vowelSyllables = {
+    "ㅏ":"아",
+    "ㅑ":"야",
+    "ㅓ":"어",
+    "ㅕ":"여",
+    "ㅗ":"오",
+    "ㅛ":"요",
+    "ㅜ":"우",
+    "ㅠ":"유",
+    "ㅡ":"으",
+    "ㅣ":"이",
+    "ㅐ":"애",
+    "ㅔ":"에"
+};
+
+
+/* Consonants build with ㅏ */
+
+const consonantSyllables = {
+    "ㄱ":"가",
+    "ㄴ":"나",
+    "ㄷ":"다",
+    "ㄹ":"라",
+    "ㅁ":"마",
+    "ㅂ":"바",
+    "ㅅ":"사",
+    "ㅇ":"아",
+    "ㅈ":"자",
+    "ㅊ":"차",
+    "ㅋ":"카",
+    "ㅌ":"타",
+    "ㅍ":"파",
+    "ㅎ":"하"
+};
+
+
+/* Word of day */
+
+const wordData = [
+
+    {
+        word:"사랑",
+        en:"love",
+        ko:"사랑"
+    },
+
+    {
+        word:"친구",
+        en:"friend",
+        ko:"친구"
+    },
+
+    {
+        word:"가족",
+        en:"family",
+        ko:"가족"
+    },
+
+    {
+        word:"학교",
+        en:"school",
+        ko:"학교"
+    },
+
+    {
+        word:"하늘",
+        en:"sky",
+        ko:"하늘"
+    },
+
+    {
+        word:"물",
+        en:"water",
+        ko:"물"
+    },
+
+    {
+        word:"집",
+        en:"house / home",
+        ko:"집"
+    },
+
+    {
+        word:"사과",
+        en:"apple",
+        ko:"사과"
+    },
+
+    {
+        word:"고양이",
+        en:"cat",
+        ko:"고양이"
+    },
+
+    {
+        word:"강아지",
+        en:"puppy / dog",
+        ko:"강아지"
+    }
+
+];
+
 
 /* =========================================================
    TRANSLATIONS
@@ -980,1287 +969,2380 @@ const koSounds = {
 
 const UI = {
 
-  en:{
-    subtitle:"Read it • build it • write it • remember it",
+    en:{
 
-    courseEyebrow:"Your course",
-    homeTitle:"Start learning Hangul",
-    homeDescription:"Short lessons take you from individual letters to real Korean syllable blocks.",
-    courseText:"Course progress",
+        learn:"Learn",
+        practice:"Practice",
+        write:"Write",
+        word:"Word",
+        review:"Review",
 
-    lessonPracticeLabel:"Lesson practice",
-    correctLabel:"Correct",
-    streakLabel:"Streak",
-    accuracyLabel:"Accuracy",
+        homeTitle:"Learn Hangul step by step",
+        homeSubtitle:"Master each lesson before moving to the next.",
 
-    builderEyebrow:"Syllable builder",
-    builderBuild:"Build",
-    builderTryAgain:"Try again",
-    builderCorrect:"Correct!",
-    builderComplete:"Complete!",
+        progress:"Course Progress",
 
-    writingLabel:"Writing practice",
-    writeInstructions:"Trace the guide with your finger. Your strokes stay on this device.",
-    erase:"Clear",
-    checkWrite:"Check ✓",
-    newWrite:"Next letter →",
-    scoreHint:"Your score is based on how closely your strokes follow the guide.",
-    writingExcellent:"Excellent!",
-    writingGood:"Good job!",
-    writingKeep:"Keep practicing!",
-    writingNoInk:"Draw the letter first.",
+        start:"Start",
+        locked:"Locked",
+        passed:"Passed",
 
-    wordEyebrow:"Word of the day",
-    wordTitle:"Type today's Korean word",
-    wordCheck:"Check",
-    wordInputPlaceholder:"Type the Korean word",
-    wordCorrect:"Correct! ✓",
-    wordWrong:"Not quite.",
-    wordTryAgain:"Try again.",
-    wordTypeFirst:"Type the word first.",
-    wordAttemptsLeft:"tries left",
-    wordFailed:"No tries left for today.",
-    wordAttemptsLabel:"Attempts",
+        practiceStage:"Practice",
+        practiceTitle:"Master each letter",
+        practiceDescription:
+            "Get every letter correct 3 times. Completed letters will stop appearing.",
 
-    calendarHint:"Select a date to practice that day's word.",
+        buildStage:"Build",
+        buildTitle:"Build each one",
+        buildDescription:
+            "Build the syllable for every letter successfully 2 times.",
 
-    reviewEyebrow:"Spaced repetition",
-    reviewTitle:"Review what needs work",
-    reviewDescription:"Letters you miss come back sooner. Strong letters wait longer.",
-    startReview:"Start review",
-    nothingUrgent:"Nothing urgent right now. Keep practicing!",
-    reviewCorrect:"correct",
-    reviewMissed:"missed",
+        writeStage:"Writing",
+        writeTitle:"Write it 3 times",
+        writeDescription:
+            "Trace the same word 3 times in a row.",
 
-    previousMonth:"Previous month",
-    nextMonth:"Next month",
-    sound:"Play pronunciation",
+        testStage:"Final Test",
+        testTitle:"Final Test",
+        testDescription:
+            "Guess each letter once and build each one once.",
 
-    questionSound:"Which sound matches this Korean letter?",
-    questionLetter:"Which Korean letter matches this sound?",
-    questionRead:"How is this Korean block read?",
-    answerLabel:"Answer",
+        guess:"Guess the letter",
+        choose:"Choose the correct answer.",
 
-    correctFeedback:"Correct! ✓",
-    nextComing:"Next word in 1.25 seconds…",
+        buildInstruction:"Build this syllable:",
+        chooseFirst:"Choose the first part.",
+        chooseSecond:"Choose the second part.",
 
-    lockedLesson:"Locked",
-    lessonReady:"Start",
-    lessonComplete:"Completed"
-  },
+        correct:"Correct! ✓",
+        wrong:"Not quite.",
 
-  ko:{
-    subtitle:"읽고 • 만들고 • 쓰고 • 기억해요",
+        correctLabel:"Correct",
+        wrongLabel:"Wrong",
+        accuracyLabel:"Accuracy",
 
-    courseEyebrow:"나의 코스",
-    homeTitle:"한글 배우기 시작",
-    homeDescription:"짧은 레슨으로 글자부터 실제 한국어 음절 블록까지 배워요.",
-    courseText:"코스 진행률",
+        readable:"Readable! ✓",
+        practiceMore:"Practice more.",
 
-    lessonPracticeLabel:"레슨 연습",
-    correctLabel:"정답",
-    streakLabel:"연속",
-    accuracyLabel:"정확도",
+        check:"Check",
+        clear:"Clear",
+        trace:"Trace the character.",
 
-    builderEyebrow:"음절 블록 만들기",
-    builderBuild:"만들기",
-    builderTryAgain:"다시 해보세요",
-    builderCorrect:"정답이에요!",
-    builderComplete:"완성!",
+        writingProgress:"Attempt",
 
-    writingLabel:"쓰기 연습",
-    writeInstructions:"가이드를 손가락으로 따라 써 보세요. 획은 이 기기에만 남아요.",
-    erase:"지우기",
-    checkWrite:"확인 ✓",
-    newWrite:"다음 글자 →",
-    scoreHint:"획이 가이드와 얼마나 가까운지에 따라 점수가 계산돼요.",
-    writingExcellent:"아주 잘했어요!",
-    writingGood:"잘했어요!",
-    writingKeep:"계속 연습해 보세요!",
-    writingNoInk:"먼저 글자를 써 주세요.",
+        passedTest:"Passed!",
+        retest:"Retest",
+        testScore:"Score",
 
-    wordEyebrow:"오늘의 단어",
-    wordTitle:"오늘의 한국어 단어를 입력하세요",
-    wordCheck:"확인",
-    wordInputPlaceholder:"한국어 단어 입력",
-    wordCorrect:"정답이에요! ✓",
-    wordWrong:"아직 맞지 않아요.",
-    wordTryAgain:"다시 해보세요.",
-    wordTypeFirst:"먼저 단어를 입력하세요.",
-    wordAttemptsLeft:"번 남았어요",
-    wordFailed:"오늘의 기회를 모두 사용했어요.",
-    wordAttemptsLabel:"시도",
+        reviewTitle:"Review",
+        reviewSubtitle:"Characters that still need practice.",
 
-    calendarHint:"날짜를 선택하면 그날의 단어를 다시 풀 수 있어요.",
+        wordOfDay:"Word of the Day",
+        attempts:"Attempts",
+        calendar:"Calendar",
 
-    reviewEyebrow:"간격 반복",
-    reviewTitle:"복습이 필요한 것을 확인하세요",
-    reviewDescription:"틀린 글자는 더 빨리 다시 나오고, 익숙한 글자는 더 오래 기다려요.",
-    startReview:"복습 시작",
-    nothingUrgent:"지금은 급한 복습이 없어요. 계속 연습해 보세요!",
-    reviewCorrect:"정답",
-    reviewMissed:"오답",
+        noReview:"Nothing needs extra review right now! 🎉",
 
-    previousMonth:"이전 달",
-    nextMonth:"다음 달",
-    sound:"발음 듣기",
+        stage:"Stage",
 
-    questionSound:"이 한글 글자의 이름은 무엇인가요?",
-    questionLetter:"이 소리에 맞는 한글은 무엇인가요?",
-    questionRead:"이 한국어 음절은 어떻게 읽나요?",
-    answerLabel:"정답",
+        practiceShort:"Practice",
+        buildShort:"Build",
+        writeShort:"Write",
+        testShort:"Test",
 
-    correctFeedback:"정답이에요! ✓",
-    nextComing:"1.25초 후 다음 문제…",
+        completed:"Completed"
+    },
 
-    lockedLesson:"잠김",
-    lessonReady:"시작",
-    lessonComplete:"완료"
-  }
+    ko:{
+
+        learn:"학습",
+        practice:"연습",
+        write:"쓰기",
+        word:"단어",
+        review:"복습",
+
+        homeTitle:"한글을 단계별로 배워요",
+        homeSubtitle:"각 수업을 완성하면 다음 수업이 열려요.",
+
+        progress:"학습 진행도",
+
+        start:"시작",
+        locked:"잠김",
+        passed:"완료",
+
+        practiceStage:"연습",
+        practiceTitle:"각 글자를 익혀요",
+        practiceDescription:
+            "모든 글자를 3번씩 맞혀요. 완료한 글자는 더 이상 나오지 않아요.",
+
+        buildStage:"만들기",
+        buildTitle:"하나씩 만들어 봐요",
+        buildDescription:
+            "각 글자의 음절을 2번씩 성공적으로 만들어 봐요.",
+
+        writeStage:"쓰기",
+        writeTitle:"3번 연속으로 써요",
+        writeDescription:
+            "같은 글자를 3번 연속으로 따라 써요.",
+
+        testStage:"최종 시험",
+        testTitle:"최종 시험",
+        testDescription:
+            "각 글자를 한 번씩 맞히고 한 번씩 만들어 봐요.",
+
+        guess:"글자를 맞혀요",
+        choose:"정답을 선택하세요.",
+
+        buildInstruction:"이 음절을 만들어 보세요:",
+        chooseFirst:"첫 번째 부분을 선택하세요.",
+        chooseSecond:"두 번째 부분을 선택하세요.",
+
+        correct:"정답! ✓",
+        wrong:"아쉬워요.",
+
+        correctLabel:"정답",
+        wrongLabel:"오답",
+        accuracyLabel:"정확도",
+
+        readable:"읽을 수 있어요! ✓",
+        practiceMore:"조금 더 연습해요.",
+
+        check:"확인",
+        clear:"지우기",
+        trace:"글자를 따라 써 보세요.",
+
+        writingProgress:"시도",
+
+        passedTest:"통과!",
+        retest:"재시험",
+        testScore:"점수",
+
+        reviewTitle:"복습",
+        reviewSubtitle:"조금 더 연습해야 하는 글자예요.",
+
+        wordOfDay:"오늘의 단어",
+        attempts:"시도",
+        calendar:"달력",
+
+        noReview:"지금은 추가 복습이 필요하지 않아요! 🎉",
+
+        stage:"단계",
+
+        practiceShort:"연습",
+        buildShort:"만들기",
+        writeShort:"쓰기",
+        testShort:"시험",
+
+        completed:"완료"
+    }
+
 };
 
-function T(key){
-  return UI[language][key] ?? UI.en[key] ?? key;
-}
 
 /* =========================================================
    STATE
 ========================================================= */
 
-let s;
+let saved = localStorage.getItem("hangulQuestState");
 
-try{
-  s=JSON.parse(localStorage.getItem("hangulQuest")||"{}");
-}catch(e){
-  s={};
-}
+let s = saved
+    ? JSON.parse(saved)
+    : {
+        language:"en",
+        unlocked:1,
+        mastery:{},
+        lessonProgress:{},
+        wordAttempts:{}
+    };
 
-s.correct ??= 0;
-s.total ??= 0;
-s.streak ??= 0;
-s.unlocked ??= 1;
-s.mastery ??= {};
-s.wordDays ??= {};
 
-let language=s.language==="ko" ? "ko" : "en";
+if(!s.language) s.language="en";
+if(!s.unlocked) s.unlocked=1;
+if(!s.mastery) s.mastery={};
+if(!s.lessonProgress) s.lessonProgress={};
+if(!s.wordAttempts) s.wordAttempts={};
 
-let q=0;
-let qTotal=10;
-let current=null;
-let locked=false;
-let activeUnit=0;
-let answerTimer=null;
 
-let lastAnswerCorrect=null;
-let lastAnswerRight="";
+/* Initialize every lesson */
 
-let wi=0;
-let writeTimer=null;
-let writeLocked=false;
+units.forEach((unit,index)=>{
 
-let builderTarget=null;
-let builderStep=0;
+    if(!s.lessonProgress[index]){
+        s.lessonProgress[index] = {
+            practice:{},
+            build:{},
+            writing:{},
+            test:{
+                passed:false,
+                lastScore:null,
+                attempts:0
+            }
+        };
+    }
 
-let selectedDateKey=null;
-let calendarDate=new Date();
+    const p = s.lessonProgress[index];
 
-function $(id){
-  return document.getElementById(id);
-}
+    if(!p.practice) p.practice={};
+    if(!p.build) p.build={};
+    if(!p.writing) p.writing={};
+    if(!p.test){
+        p.test={
+            passed:false,
+            lastScore:null,
+            attempts:0
+        };
+    }
+
+    unit.items.forEach(item=>{
+
+        const key=item[0];
+
+        if(typeof p.practice[key] !== "number"){
+            p.practice[key]=0;
+        }
+
+        if(typeof p.build[key] !== "number"){
+            p.build[key]=0;
+        }
+
+        if(typeof p.writing[key] !== "number"){
+            p.writing[key]=0;
+        }
+
+        if(!s.mastery[key]){
+            s.mastery[key]={
+                correct:0,
+                wrong:0
+            };
+        }
+
+    });
+
+    /*
+      Preserve older unlocked progress.
+      Lessons before the currently unlocked lesson are considered passed.
+    */
+
+    if(index < s.unlocked-1){
+        p.test.passed=true;
+    }
+
+});
+
 
 function save(){
-  s.language=language;
-
-  try{
-    localStorage.setItem("hangulQuest",JSON.stringify(s));
-  }catch(e){}
+    localStorage.setItem("hangulQuestState",JSON.stringify(s));
 }
 
-function shuffle(a){
-  return [...a].sort(()=>Math.random()-.5);
-}
-
-function getMastery(key){
-  s.mastery[key] ??= {
-    correct:0,
-    wrong:0,
-    next:0
-  };
-
-  s.mastery[key].correct ??= 0;
-  s.mastery[key].wrong ??= 0;
-  s.mastery[key].next ??= 0;
-
-  return s.mastery[key];
-}
-
-function updateMastery(key,ok){
-  const m=getMastery(key);
-
-  if(ok){
-    m.correct++;
-  }else{
-    m.wrong++;
-  }
-
-  save();
-}
-
-function masteredCount(){
-  return all.filter(x=>getMastery(x[0]).correct>=2).length;
-}
-
-function soundLabel(item){
-  return language==="ko"
-    ? (koSounds[item[0]] || item[1])
-    : item[1];
-}
 
 /* =========================================================
-   LANGUAGE
+   HELPERS
 ========================================================= */
+
+function T(key){
+    return UI[s.language][key] || key;
+}
+
+
+function toggleLanguage(){
+
+    s.language = s.language==="en" ? "ko" : "en";
+
+    save();
+
+    updateLanguageUI();
+    renderLessons();
+
+    if(currentView==="practice"){
+        renderLessonStage();
+    }
+
+    if(currentView==="write"){
+        renderWriting();
+    }
+
+    if(currentView==="word"){
+        renderWord();
+    }
+
+    if(currentView==="review"){
+        renderReview();
+    }
+}
+
 
 function updateLanguageUI(){
 
-  document.documentElement.lang=language;
+    const navButtons = document.querySelectorAll("#nav button");
 
-  $("language").textContent=
-    language==="ko" ? "English" : "한국어";
+    navButtons.forEach(button=>{
+        const view=button.dataset.view;
+        button.textContent=T(view);
+    });
 
-  $("subtitle").textContent=T("subtitle");
+    document.getElementById("homeTitle").textContent=T("homeTitle");
+    document.getElementById("homeSubtitle").textContent=T("homeSubtitle");
 
-  $("courseEyebrow").textContent=T("courseEyebrow");
-  $("homeTitle").textContent=T("homeTitle");
-  $("homeDescription").textContent=T("homeDescription");
-  $("courseText").textContent=T("courseText");
+    document.getElementById("statCorrectLabel").textContent=T("correctLabel");
+    document.getElementById("statWrongLabel").textContent=T("wrongLabel");
+    document.getElementById("statAccuracyLabel").textContent=T("accuracyLabel");
 
-  $("lessonPracticeLabel").textContent=T("lessonPracticeLabel");
+    document.getElementById("writeInstruction").textContent=T("trace");
+    document.getElementById("clearButton").textContent=T("clear");
+    document.getElementById("checkButton").textContent=T("check");
 
-  $("correctLabel").textContent=T("correctLabel");
-  $("streakLabel").textContent=T("streakLabel");
-  $("accuracyLabel").textContent=T("accuracyLabel");
+    document.getElementById("reviewTitle").textContent=T("reviewTitle");
+    document.getElementById("reviewSubtitle").textContent=T("reviewSubtitle");
 
-  $("builderEyebrow").textContent=T("builderEyebrow");
+    document.getElementById("calendarTitle").textContent=T("calendar");
 
-  $("writingLabel").textContent=T("writingLabel");
-  $("writeInstructions").textContent=T("writeInstructions");
-  $("erase").textContent=T("erase");
-  $("checkWrite").textContent=T("checkWrite");
-  $("newWrite").textContent=T("newWrite");
-  $("scoreHint").textContent=T("scoreHint");
+    document.getElementById("wordBadge").textContent=T("wordOfDay");
 
-  $("wordEyebrow").textContent=T("wordEyebrow");
-  $("wordTitle").textContent=T("wordTitle");
-  $("wordCheck").textContent=T("wordCheck");
-  $("wordInput").placeholder=T("wordInputPlaceholder");
+    document.getElementById("languageButton").textContent =
+        s.language==="en" ? "한국어" : "English";
 
-  $("calendarHint").textContent=T("calendarHint");
-
-  $("reviewEyebrow").textContent=T("reviewEyebrow");
-  $("reviewTitle").textContent=T("reviewTitle");
-  $("reviewDescription").textContent=T("reviewDescription");
-  $("startReview").textContent=T("startReview");
-
-  $("sound").title=T("sound");
-  $("sound").ariaLabel=T("sound");
-
-  $("prevMonth").title=T("previousMonth");
-  $("prevMonth").ariaLabel=T("previousMonth");
-
-  $("nextMonth").title=T("nextMonth");
-  $("nextMonth").ariaLabel=T("nextMonth");
-
-  const names=language==="ko"
-    ? {
-        home:"학습",
-        practice:"연습",
-        write:"쓰기",
-        word:"단어",
-        review:"복습"
-      }
-    : {
-        home:"Learn",
-        practice:"Practice",
-        write:"Write",
-        word:"Word",
-        review:"Review"
-      };
-
-  document.querySelectorAll("#nav button").forEach(btn=>{
-    btn.textContent=names[btn.dataset.view];
-  });
-
-  renderLessons();
-  stats();
-  updateMasteryDisplay();
-  renderReview();
-  renderWord();
-
-  if(current){
-    if(!locked){
-      renderCurrentQuestion();
-    }else{
-      $("prompt").textContent=
-        current.mode==="sound"
-          ? (current.item.unit>=4 ? T("questionRead") : T("questionSound"))
-          : T("questionLetter");
-
-      if(lastAnswerCorrect!==null){
-        $("feedback").textContent=
-          lastAnswerCorrect
-            ? T("correctFeedback")+" "+T("nextComing")
-            : `${T("answerLabel")}: ${lastAnswerRight} • ${T("nextComing")}`;
-      }
-    }
-  }
-
-  updateBuilderLanguage();
+    renderHomeProgress();
 }
 
+
+let currentView="home";
+let activeUnit=0;
+
+
 /* =========================================================
-   NAVIGATION
+   VIEW
 ========================================================= */
 
 function setView(view){
 
-  document.querySelectorAll(".view").forEach(v=>{
-    v.classList.toggle("active",v.id===view);
-  });
+    currentView=view;
 
-  document.querySelectorAll("#nav button").forEach(b=>{
-    b.classList.toggle("active",b.dataset.view===view);
-  });
+    document.querySelectorAll("section").forEach(section=>{
+        section.classList.remove("active");
+    });
 
-  if(view==="practice" && !current){
-    newQuestion();
-  }
+    document.getElementById(view).classList.add("active");
 
-  if(view==="write"){
-    resizeCanvases();
-  }
+    document.querySelectorAll("#nav button").forEach(button=>{
+        button.classList.toggle(
+            "active",
+            button.dataset.view===view
+        );
+    });
 
-  if(view==="review"){
-    renderReview();
-  }
+    if(view==="home"){
+        renderLessons();
+    }
 
-  if(view==="word"){
-    renderWord();
-  }
+    if(view==="practice"){
+        renderLessonStage();
+    }
+
+    if(view==="write"){
+        renderWriting();
+    }
+
+    if(view==="word"){
+        renderWord();
+    }
+
+    if(view==="review"){
+        renderReview();
+    }
 }
 
-document.querySelectorAll("#nav button").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    setView(btn.dataset.view);
-  });
-});
 
 /* =========================================================
-   HOME / LESSONS
+   LESSON PROGRESSION
 ========================================================= */
+
+function lessonProgress(index){
+
+    return s.lessonProgress[index];
+}
+
+
+function practiceComplete(index){
+
+    const p=lessonProgress(index);
+
+    return units[index].items.every(item=>{
+        return p.practice[item[0]]>=3;
+    });
+}
+
+
+function buildComplete(index){
+
+    const p=lessonProgress(index);
+
+    return units[index].items.every(item=>{
+        return p.build[item[0]]>=2;
+    });
+}
+
+
+function writingComplete(index){
+
+    const p=lessonProgress(index);
+
+    return units[index].items.every(item=>{
+        return p.writing[item[0]]>=3;
+    });
+}
+
+
+function lessonPassed(index){
+
+    return !!lessonProgress(index).test.passed;
+}
+
+
+function getStage(index){
+
+    if(lessonPassed(index)){
+        return "passed";
+    }
+
+    if(!practiceComplete(index)){
+        return "practice";
+    }
+
+    if(!buildComplete(index)){
+        return "build";
+    }
+
+    if(!writingComplete(index)){
+        return "write";
+    }
+
+    return "test";
+}
+
+
+function stageNumber(index){
+
+    const stage=getStage(index);
+
+    if(stage==="practice") return 1;
+    if(stage==="build") return 2;
+    if(stage==="write") return 3;
+    if(stage==="test") return 4;
+
+    return 4;
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function renderHomeProgress(){
+
+    const passed=units.filter((_,i)=>lessonPassed(i)).length;
+
+    const percent=Math.round(
+        (passed/units.length)*100
+    );
+
+    document.getElementById("courseProgress").style.width =
+        percent+"%";
+
+    document.getElementById("courseProgressText").textContent =
+        `${percent}% — ${passed}/${units.length} ${T("completed")}`;
+}
+
 
 function renderLessons(){
 
-  const box=$("lessons");
-  box.innerHTML="";
+    renderHomeProgress();
 
-  units.forEach((u,i)=>{
+    const container=document.getElementById("lessonList");
 
-    const unlocked=i<s.unlocked;
-    const mastered=u.items.every(x=>getMastery(x[0]).correct>=2);
+    container.innerHTML="";
 
-    const btn=document.createElement("button");
-    btn.className="lesson"+(unlocked?"":" locked");
-    btn.disabled=!unlocked;
+    units.forEach((unit,index)=>{
 
-    btn.innerHTML=`
-      <div class="num">${unlocked ? i+1 : "🔒"}</div>
-      <div style="min-width:0;flex:1">
-        <b>${language==="ko"?u.ko:u.name}</b>
-        <small>${language==="ko"?u.koDesc:u.desc}</small>
-      </div>
-      <div class="xp">${mastered ? "✓" : unlocked ? "▶" : ""}</div>
-    `;
+        const unlocked=index < s.unlocked;
+        const stage=getStage(index);
 
-    btn.addEventListener("click",()=>{
-      if(unlocked){
-        startLesson(i);
-      }
+        let statusText="";
+
+        if(lessonPassed(index)){
+            statusText=T("passed");
+        }
+        else if(!unlocked){
+            statusText=T("locked");
+        }
+        else if(stage==="practice"){
+            const p=lessonProgress(index);
+
+            const done=unit.items.filter(
+                item=>p.practice[item[0]]>=3
+            ).length;
+
+            statusText=`${T("practiceShort")} ${done}/${unit.items.length}`;
+        }
+        else if(stage==="build"){
+            const p=lessonProgress(index);
+
+            const done=unit.items.filter(
+                item=>p.build[item[0]]>=2
+            ).length;
+
+            statusText=`${T("buildShort")} ${done}/${unit.items.length}`;
+        }
+        else if(stage==="write"){
+            const p=lessonProgress(index);
+
+            const done=unit.items.filter(
+                item=>p.writing[item[0]]>=3
+            ).length;
+
+            statusText=`${T("writeShort")} ${done}/${unit.items.length}`;
+        }
+        else{
+            statusText=T("testShort");
+        }
+
+        const card=document.createElement("div");
+        card.className="card lesson";
+
+        const number=document.createElement("div");
+        number.className="lessonNumber";
+        number.textContent=index+1;
+
+        const info=document.createElement("div");
+        info.className="lessonInfo";
+
+        const strong=document.createElement("strong");
+        strong.textContent=
+            s.language==="en"
+                ? unit.name
+                : unit.ko;
+
+        const small=document.createElement("small");
+        small.textContent=statusText;
+
+        info.appendChild(strong);
+        info.appendChild(small);
+
+        const button=document.createElement("button");
+
+        if(!unlocked){
+
+            button.className="locked";
+            button.textContent="🔒";
+            button.disabled=true;
+
+        }
+        else if(lessonPassed(index)){
+
+            button.textContent="✓";
+
+            button.onclick=()=>{
+                startLesson(index);
+            };
+
+        }
+        else{
+
+            button.textContent=T("start");
+
+            button.onclick=()=>{
+                startLesson(index);
+            };
+
+        }
+
+        card.appendChild(number);
+        card.appendChild(info);
+        card.appendChild(button);
+
+        container.appendChild(card);
+
     });
 
-    box.appendChild(btn);
-  });
-
-  const total=all.length;
-  const mastered=masteredCount();
-  const percent=total ? Math.round(mastered/total*100) : 0;
-
-  $("courseProgress").style.width=percent+"%";
-  $("coursePercent").textContent=percent+"%";
 }
+
+
+/* =========================================================
+   START LESSON
+========================================================= */
 
 function startLesson(index){
 
-  clearTimeout(answerTimer);
-  answerTimer=null;
+    if(index>=s.unlocked) return;
 
-  activeUnit=index;
-  q=0;
-  locked=false;
-  current=null;
-  lastAnswerCorrect=null;
-  lastAnswerRight="";
+    activeUnit=index;
 
-  setView("practice");
-  newQuestion();
+    setView("practice");
+
+    renderLessonStage();
 }
+
 
 /* =========================================================
-   PRACTICE
+   PRACTICE STAGE
 ========================================================= */
 
-function newQuestion(){
+let currentQuestion=null;
+let questionLocked=false;
 
-  locked=false;
-  lastAnswerCorrect=null;
-  lastAnswerRight="";
 
-  const pool=units[activeUnit].items;
+/*
+  IMPORTANT:
+  Only unfinished letters are selected.
+*/
 
-  const item=pool[Math.floor(Math.random()*pool.length)];
+function getIncompletePracticeItems(){
 
-  const mode=Math.random()<.5 ? "sound" : "letter";
+    const p=lessonProgress(activeUnit);
 
-  current={
-    item,
-    mode
-  };
-
-  renderCurrentQuestion();
-}
-
-function renderCurrentQuestion(){
-
-  if(!current)return;
-
-  const item=current.item;
-
-  $("qnum").textContent=`${q+1} / ${qTotal}`;
-
-  $("qbar").style.width=(q/qTotal*100)+"%";
-
-  $("qmode").textContent=
-    current.mode==="sound"
-      ? T("questionSound")
-      : T("questionLetter");
-
-  if(current.mode==="sound"){
-    $("prompt").textContent=
-      item[0].length===1 || activeUnit<4
-        ? T("questionSound")
-        : T("questionRead");
-
-    $("big").textContent=item[0];
-  }else{
-    $("prompt").textContent=T("questionLetter");
-    $("big").textContent=soundLabel(item);
-  }
-
-  const wrongPool=shuffle(
-    units[activeUnit].items.filter(x=>x[0]!==item[0])
-  ).slice(0,3);
-
-  let choices;
-
-  if(current.mode==="sound"){
-    choices=[
-      soundLabel(item),
-      ...wrongPool.map(x=>soundLabel(x))
-    ];
-  }else{
-    choices=[
-      item[0],
-      ...wrongPool.map(x=>x[0])
-    ];
-  }
-
-  choices=shuffle(choices);
-
-  const box=$("answers");
-  box.innerHTML="";
-
-  choices.forEach(choice=>{
-
-    const b=document.createElement("button");
-    b.className="answer";
-    b.textContent=choice;
-
-    b.addEventListener("click",()=>{
-      answer(b,choice);
+    return units[activeUnit].items.filter(item=>{
+        return p.practice[item[0]]<3;
     });
-
-    box.appendChild(b);
-  });
-
-  $("feedback").textContent="";
 }
 
-function answer(button,choice){
 
-  if(locked || !current)return;
+function chooseRandom(arr){
 
-  locked=true;
-
-  const item=current.item;
-
-  const right=
-    current.mode==="sound"
-      ? soundLabel(item)
-      : item[0];
-
-  const ok=choice===right;
-
-  lastAnswerCorrect=ok;
-  lastAnswerRight=right;
-
-  document.querySelectorAll("#answers .answer").forEach(b=>{
-    b.disabled=true;
-
-    if(b.textContent===right){
-      b.classList.add("correct");
-    }
-  });
-
-  if(!ok){
-    button.classList.add("wrong");
-  }
-
-  if(ok){
-    s.correct++;
-    s.total++;
-    s.streak++;
-
-    updateMastery(item[0],true);
-
-    $("feedback").textContent=
-      T("correctFeedback")+" "+T("nextComing");
-  }else{
-    s.total++;
-    s.streak=0;
-
-    updateMastery(item[0],false);
-
-    $("feedback").textContent=
-      `${T("answerLabel")}: ${right} • ${T("nextComing")}`;
-  }
-
-  save();
-  stats();
-  updateMasteryDisplay();
-
-  clearTimeout(answerTimer);
-
-  answerTimer=setTimeout(()=>{
-
-    answerTimer=null;
-    q++;
-
-    if(q>=qTotal){
-
-      if(activeUnit===s.unlocked && s.unlocked<units.length){
-        s.unlocked++;
-      }
-
-      save();
-      renderLessons();
-
-      current=null;
-      locked=false;
-
-      setView("home");
-
-    }else{
-      newQuestion();
-    }
-
-  },1250);
+    return arr[
+        Math.floor(Math.random()*arr.length)
+    ];
 }
 
-function stats(){
 
-  $("correctStat").textContent=s.correct;
-  $("streakStat").textContent=s.streak;
+function makeLetterChoices(correct){
 
-  const accuracy=s.total
-    ? Math.round(s.correct/s.total*100)
-    : 0;
+    const items=units[activeUnit].items
+        .map(item=>item[0]);
 
-  $("accuracyStat").textContent=accuracy+"%";
-}
+    const others=items.filter(x=>x!==correct);
 
-function updateMasteryDisplay(){
+    const choices=[correct];
 
-  /* Keeps the home progress synchronized */
-  renderLessons();
-}
+    while(
+        choices.length<Math.min(4,items.length)
+    ){
 
-/* =========================================================
-   SYLLABLE BUILDER
-========================================================= */
+        const option=chooseRandom(others);
 
-function build(){
-
-  const consonants=["ㄱ","ㄴ","ㄷ","ㅁ","ㅂ","ㅅ"];
-  const vowels=["ㅏ","ㅓ","ㅗ","ㅜ","ㅡ","ㅣ"];
-
-  const c=consonants[Math.floor(Math.random()*consonants.length)];
-  const v=vowels[Math.floor(Math.random()*vowels.length)];
-
-  const syllableMap={
-    "ㄱㅏ":"가",
-    "ㄱㅓ":"거",
-    "ㄱㅗ":"고",
-    "ㄱㅜ":"구",
-    "ㄱㅡ":"그",
-    "ㄱㅣ":"기",
-
-    "ㄴㅏ":"나",
-    "ㄴㅓ":"너",
-    "ㄴㅗ":"노",
-    "ㄴㅜ":"누",
-    "ㄴㅡ":"느",
-    "ㄴㅣ":"니",
-
-    "ㄷㅏ":"다",
-    "ㄷㅓ":"더",
-    "ㄷㅗ":"도",
-    "ㄷㅜ":"두",
-    "ㄷㅡ":"드",
-    "ㄷㅣ":"디",
-
-    "ㅁㅏ":"마",
-    "ㅁㅓ":"머",
-    "ㅁㅗ":"모",
-    "ㅁㅜ":"무",
-    "ㅁㅡ":"므",
-    "ㅁㅣ":"미",
-
-    "ㅂㅏ":"바",
-    "ㅂㅓ":"버",
-    "ㅂㅗ":"보",
-    "ㅂㅜ":"부",
-    "ㅂㅡ":"브",
-    "ㅂㅣ":"비",
-
-    "ㅅㅏ":"사",
-    "ㅅㅓ":"서",
-    "ㅅㅗ":"소",
-    "ㅅㅜ":"수",
-    "ㅅㅡ":"스",
-    "ㅅㅣ":"시"
-  };
-
-  builderTarget={
-    c,
-    v,
-    answer:syllableMap[c+v]
-  };
-
-  builderStep=0;
-
-  $("builder").innerHTML=`
-    <div class="slot" id="slotC">${c}</div>
-    <div class="slot" id="slotV">${v}</div>
-  `;
-
-  makeBuilderChoices();
-
-  $("buildFeedback").textContent="";
-  updateBuilderLanguage();
-}
-
-function updateBuilderLanguage(){
-
-  if(!builderTarget)return;
-
-  const target=builderTarget;
-
-  if(builderStep===0){
-    $("builderTitle").textContent=
-      `${T("builderBuild")} ${target.answer}`;
-  }else if(builderStep===1){
-    $("builderTitle").textContent=
-      `${T("builderBuild")} ${target.answer}`;
-  }else{
-    $("builderTitle").textContent=
-      `${T("builderComplete")} ${target.answer}`;
-  }
-}
-
-function makeBuilderChoices(){
-
-  const choices=[
-    builderTarget.c,
-    builderTarget.v
-  ];
-
-  const extraConsonants=["ㄱ","ㄴ","ㄷ","ㅁ","ㅂ","ㅅ","ㅎ"];
-  const extraVowels=["ㅏ","ㅓ","ㅗ","ㅜ","ㅡ","ㅣ","ㅔ"];
-
-  if(builderStep===0){
-    while(choices.length<4){
-      const x=extraConsonants[
-        Math.floor(Math.random()*extraConsonants.length)
-      ];
-
-      if(!choices.includes(x))choices.push(x);
-    }
-  }else{
-    while(choices.length<4){
-      const x=extraVowels[
-        Math.floor(Math.random()*extraVowels.length)
-      ];
-
-      if(!choices.includes(x))choices.push(x);
-    }
-  }
-
-  const box=$("buildChoices");
-  box.innerHTML="";
-
-  shuffle(choices).forEach(choice=>{
-
-    const b=document.createElement("button");
-    b.textContent=choice;
-
-    b.addEventListener("click",()=>{
-
-      if(builderStep===0){
-
-        if(choice===builderTarget.c){
-          $("slotC").textContent=choice;
-          builderStep=1;
-          $("buildFeedback").textContent="✓";
-          makeBuilderChoices();
-          updateBuilderLanguage();
-        }else{
-          $("buildFeedback").textContent=T("builderTryAgain");
+        if(!choices.includes(option)){
+            choices.push(option);
         }
 
-      }else{
+    }
 
-        if(choice===builderTarget.v){
-
-          $("slotV").textContent=choice;
-          builderStep=2;
-
-          $("buildFeedback").textContent=T("builderCorrect");
-          updateBuilderLanguage();
-
-          setTimeout(build,1000);
-
-        }else{
-          $("buildFeedback").textContent=T("builderTryAgain");
-        }
-      }
-    });
-
-    box.appendChild(b);
-  });
+    return choices.sort(()=>Math.random()-.5);
 }
 
+
+function startPracticeQuestion(){
+
+    const incomplete=getIncompletePracticeItems();
+
+    if(incomplete.length===0){
+
+        startBuildStage();
+        return;
+    }
+
+    /*
+      Only select something the user still needs.
+    */
+
+    const item=chooseRandom(incomplete);
+
+    const mode=Math.random()<0.5
+        ? "soundToLetter"
+        : "letterToSound";
+
+    currentQuestion={
+        type:"practice",
+        item:item,
+        mode:mode
+    };
+
+    questionLocked=false;
+
+    renderPracticeQuestion();
+}
+
+
+function renderPracticeQuestion(){
+
+    document.getElementById("questionCard").style.display="block";
+    document.getElementById("builderCard").style.display="none";
+    document.getElementById("testResult").style.display="none";
+
+    const item=currentQuestion.item;
+    const letter=item[0];
+    const sound=item[1];
+
+    const mode=currentQuestion.mode;
+
+    document.getElementById("questionMode").textContent =
+        mode==="soundToLetter"
+            ? T("guess")+" — "+sound
+            : letter;
+
+    document.getElementById("bigLetter").textContent =
+        mode==="soundToLetter"
+            ? "?"
+            : letter;
+
+    const answers=document.getElementById("answers");
+
+    answers.innerHTML="";
+
+    const correctAnswer =
+        mode==="soundToLetter"
+            ? letter
+            : sound;
+
+    makeLetterChoices(
+        mode==="soundToLetter"
+            ? letter
+            : letter
+    ).forEach(choice=>{
+
+        const button=document.createElement("button");
+
+        button.className="answer";
+
+        button.textContent =
+            mode==="soundToLetter"
+                ? choice
+                : units[activeUnit]
+                    .find(x=>x[0]===choice)?.[1] || choice;
+
+        button.onclick=()=>{
+            answerPractice(button,correctAnswer);
+        };
+
+        answers.appendChild(button);
+
+    });
+
+    const p=lessonProgress(activeUnit);
+
+    const completed=units[activeUnit].items.filter(
+        x=>p.practice[x[0]]>=3
+    ).length;
+
+    document.getElementById("practiceProgress").textContent =
+        `${completed}/${units[activeUnit].items.length}`;
+
+    document.getElementById("feedback").textContent="";
+    document.getElementById("feedback").className="feedback";
+
+}
+
+
+function answerPractice(button,correctAnswer){
+
+    if(questionLocked) return;
+
+    questionLocked=true;
+
+    const selected=button.textContent;
+
+    const isCorrect=selected===correctAnswer;
+
+    const letter=currentQuestion.item[0];
+
+    const mastery=s.mastery[letter];
+
+    if(isCorrect){
+
+        mastery.correct++;
+
+        const p=lessonProgress(activeUnit);
+
+        p.practice[letter]=Math.min(
+            3,
+            p.practice[letter]+1
+        );
+
+        button.classList.add("correct");
+
+        document.getElementById("feedback").textContent =
+            T("correct");
+
+        document.getElementById("feedback").className =
+            "feedback good";
+
+    }
+    else{
+
+        mastery.wrong++;
+
+        button.classList.add("wrong");
+
+        document.getElementById("feedback").textContent =
+            T("wrong");
+
+        document.getElementById("feedback").className =
+            "feedback bad";
+
+        document.querySelectorAll(".answer").forEach(b=>{
+            if(b.textContent===correctAnswer){
+                b.classList.add("correct");
+            }
+        });
+
+    }
+
+    save();
+    updateStats();
+    renderHomeProgress();
+
+    setTimeout(()=>{
+
+        questionLocked=false;
+
+        if(practiceComplete(activeUnit)){
+            startBuildStage();
+        }
+        else{
+            startPracticeQuestion();
+        }
+
+    },1250);
+
+}
+
+
 /* =========================================================
-   WRITING
+   BUILD STAGE
 ========================================================= */
 
-const drawCanvas=$("drawCanvas");
-const guideCanvas=$("guide");
+let builderState=null;
 
-const dctx=drawCanvas.getContext("2d");
-const gctx=guideCanvas.getContext("2d");
+
+/*
+  Every lesson item gets its own build target.
+  We never randomly choose a completed item.
+*/
+
+function getBuildData(letter){
+
+    if(syllables[letter]){
+
+        return {
+            target:letter,
+            parts:syllables[letter]
+        };
+
+    }
+
+    if(consonantSyllables[letter]){
+
+        return {
+            target:consonantSyllables[letter],
+            parts:[letter,"ㅏ"]
+        };
+
+    }
+
+    if(vowelSyllables[letter]){
+
+        return {
+            target:vowelSyllables[letter],
+            parts:["ㅇ",letter]
+        };
+
+    }
+
+    return {
+        target:letter,
+        parts:[letter]
+    };
+}
+
+
+function getIncompleteBuildItems(){
+
+    const p=lessonProgress(activeUnit);
+
+    return units[activeUnit].items.filter(item=>{
+        return p.build[item[0]]<2;
+    });
+}
+
+
+function startBuildStage(){
+
+    if(!practiceComplete(activeUnit)){
+        startPracticeQuestion();
+        return;
+    }
+
+    const incomplete=getIncompleteBuildItems();
+
+    if(incomplete.length===0){
+
+        startWritingStage();
+        return;
+    }
+
+    const item=chooseRandom(incomplete);
+
+    const data=getBuildData(item[0]);
+
+    builderState={
+        mode:"build",
+        item:item,
+        data:data,
+        partIndex:0,
+        failed:false
+    };
+
+    renderBuilder();
+}
+
+
+function makeBuildChoices(correct,partIndex){
+
+    let pool=[];
+
+    if(partIndex===0){
+
+        pool=units[activeUnit].items.map(x=>x[0]);
+
+        /*
+          Make sure there are useful distractors.
+        */
+
+        const common=[
+            "ㄱ","ㄴ","ㄷ","ㄹ","ㅁ","ㅂ","ㅅ",
+            "ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"
+        ];
+
+        pool=[...new Set([...pool,...common])];
+
+    }
+    else{
+
+        pool=[
+            "ㅏ","ㅑ","ㅓ","ㅕ","ㅗ","ㅛ",
+            "ㅜ","ㅠ","ㅡ","ㅣ","ㅐ","ㅔ"
+        ];
+
+    }
+
+    pool=pool.filter(x=>x!==correct);
+
+    const choices=[correct];
+
+    while(choices.length<4 && pool.length){
+
+        const choice=chooseRandom(pool);
+
+        if(!choices.includes(choice)){
+            choices.push(choice);
+        }
+
+    }
+
+    return choices.sort(()=>Math.random()-.5);
+}
+
+
+function renderBuilder(){
+
+    document.getElementById("questionCard").style.display="none";
+    document.getElementById("builderCard").style.display="block";
+    document.getElementById("testResult").style.display="none";
+
+    const target=builderState.data.target;
+    const parts=builderState.data.parts;
+
+    document.getElementById("builderTarget").textContent=target;
+
+    document.getElementById("builderSlot1").textContent =
+        builderState.partIndex>0
+            ? parts[0]
+            : "?";
+
+    document.getElementById("builderSlot2").textContent =
+        builderState.partIndex>1
+            ? parts[1]
+            : "?";
+
+    document.getElementById("buildInstruction").textContent =
+        builderState.mode==="test"
+            ? T("buildInstruction")
+            : builderState.partIndex===0
+                ? T("chooseFirst")
+                : T("chooseSecond");
+
+    const choices=document.getElementById("builderChoices");
+
+    choices.innerHTML="";
+
+    const correct=parts[builderState.partIndex];
+
+    makeBuildChoices(
+        correct,
+        builderState.partIndex
+    ).forEach(choice=>{
+
+        const button=document.createElement("button");
+
+        button.className="buildChoice";
+        button.textContent=choice;
+
+        button.onclick=()=>{
+            answerBuild(button,choice);
+        };
+
+        choices.appendChild(button);
+
+    });
+
+    document.getElementById("buildFeedback").textContent="";
+    document.getElementById("buildFeedback").className="feedback";
+
+    if(builderState.mode==="build"){
+
+        const p=lessonProgress(activeUnit);
+
+        const done=units[activeUnit].items.filter(
+            x=>p.build[x[0]]>=2
+        ).length;
+
+        document.getElementById("buildProgress").textContent =
+            `${done}/${units[activeUnit].items.length}`;
+
+    }
+    else{
+
+        document.getElementById("buildProgress").textContent="";
+
+    }
+
+}
+
+
+function answerBuild(button,choice){
+
+    if(builderState.locked) return;
+
+    builderState.locked=true;
+
+    const correct=
+        builderState.data.parts[
+            builderState.partIndex
+        ];
+
+    if(choice===correct){
+
+        button.classList.add("correct");
+
+        builderState.partIndex++;
+
+        /*
+          Both parts are correct.
+        */
+
+        if(builderState.partIndex>=builderState.data.parts.length){
+
+            document.getElementById("buildFeedback").textContent =
+                T("correct");
+
+            document.getElementById("buildFeedback").className =
+                "feedback good";
+
+            if(builderState.mode==="build"){
+
+                const letter=builderState.item[0];
+
+                const p=lessonProgress(activeUnit);
+
+                p.build[letter]=Math.min(
+                    2,
+                    p.build[letter]+1
+                );
+
+                save();
+
+            }
+
+            setTimeout(()=>{
+
+                builderState.locked=false;
+
+                if(builderState.mode==="test"){
+
+                    finishTestTask(true);
+
+                }
+                else if(buildComplete(activeUnit)){
+
+                    startWritingStage();
+
+                }
+                else{
+
+                    startBuildStage();
+
+                }
+
+            },1250);
+
+        }
+        else{
+
+            /*
+              First component was correct.
+              Give the user the second component.
+            */
+
+            document.getElementById("buildFeedback").textContent =
+                T("correct");
+
+            document.getElementById("buildFeedback").className =
+                "feedback good";
+
+            setTimeout(()=>{
+
+                builderState.locked=false;
+                renderBuilder();
+
+            },350);
+
+        }
+
+    }
+    else{
+
+        button.classList.add("wrong");
+
+        document.getElementById("buildFeedback").textContent =
+            T("wrong");
+
+        document.getElementById("buildFeedback").className =
+            "feedback bad";
+
+        /*
+          The whole build attempt fails.
+        */
+
+        setTimeout(()=>{
+
+            builderState.locked=false;
+
+            if(builderState.mode==="test"){
+
+                finishTestTask(false);
+
+            }
+            else{
+
+                startBuildStage();
+
+            }
+
+        },1250);
+
+    }
+
+}
+
+
+/* =========================================================
+   WRITING STAGE
+========================================================= */
+
+let writingState={
+    item:null,
+    streak:0
+};
+
+
+/*
+  Writing is NOT random after it starts.
+
+  The same item remains until it has been
+  successfully drawn 3 times in a row.
+*/
+
+function getIncompleteWritingItems(){
+
+    const p=lessonProgress(activeUnit);
+
+    return units[activeUnit].items.filter(item=>{
+        return p.writing[item[0]]<3;
+    });
+}
+
+
+function startWritingStage(){
+
+    if(!buildComplete(activeUnit)){
+        startBuildStage();
+        return;
+    }
+
+    const incomplete=getIncompleteWritingItems();
+
+    if(incomplete.length===0){
+
+        startTestStage();
+        return;
+    }
+
+    /*
+      Pick the next thing that needs writing.
+      Once selected, it remains the same word
+      for all 3 consecutive attempts.
+    */
+
+    const item=chooseRandom(incomplete);
+
+    writingState={
+        item:item,
+        streak:0
+    };
+
+    setView("write");
+    renderWriting();
+}
+
+
+function renderWriting(){
+
+    if(!writingState.item){
+
+        const incomplete=getIncompleteWritingItems();
+
+        if(incomplete.length){
+
+            writingState={
+                item:incomplete[0],
+                streak:0
+            };
+
+        }
+        else{
+
+            writingState={
+                item:units[activeUnit].items[0],
+                streak:0
+            };
+
+        }
+
+    }
+
+    const item=writingState.item;
+
+    document.getElementById("writeWord").textContent=item[0];
+
+    document.getElementById("writeBadge").textContent =
+        `${T("writeStage")} — ${writingState.streak}/3`;
+
+    document.getElementById("writeProgress").textContent =
+        `${T("writingProgress")} ${writingState.streak}/3`;
+
+    setupGuide(item[0]);
+
+    clearDrawing();
+
+    document.getElementById("writeResult").textContent="";
+}
+
+
+function setupGuide(letter){
+
+    const drawCanvas=document.getElementById("drawCanvas");
+    const guideCanvas=document.getElementById("guideCanvas");
+
+    const size=600;
+
+    drawCanvas.width=size;
+    drawCanvas.height=size;
+
+    guideCanvas.width=size;
+    guideCanvas.height=size;
+
+    const gctx=guideCanvas.getContext("2d");
+
+    gctx.clearRect(0,0,size,size);
+
+    gctx.fillStyle="black";
+
+    gctx.textAlign="center";
+    gctx.textBaseline="middle";
+
+    /*
+      Large guide character.
+    */
+
+    gctx.font='500 430px "Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+
+    gctx.fillText(
+        letter,
+        size/2,
+        size/2+15
+    );
+
+}
+
+
+/* =========================================================
+   DRAWING
+========================================================= */
+
+const drawCanvas=document.getElementById("drawCanvas");
 
 let drawing=false;
-let hasInk=false;
+let lastX=0;
+let lastY=0;
 
-const writeItems=[
-  "ㄱ","ㄴ","ㄷ","ㄹ","ㅁ","ㅂ","ㅅ",
-  "ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ",
-  "ㅏ","ㅑ","ㅓ","ㅕ","ㅗ","ㅛ","ㅜ",
-  "ㅠ","ㅡ","ㅣ","ㅐ","ㅔ",
-  "가","나","다","마","바","사",
-  "너","미","고","아","우","하"
-];
 
-function resizeCanvases(){
+function canvasPoint(event){
 
-  const rect=drawCanvas.parentElement.getBoundingClientRect();
+    const rect=drawCanvas.getBoundingClientRect();
 
-  const dpr=Math.min(window.devicePixelRatio||1,2);
+    const source=
+        event.touches
+            ? event.touches[0]
+            : event;
 
-  drawCanvas.width=Math.round(rect.width*dpr);
-  drawCanvas.height=Math.round(rect.height*dpr);
+    return {
+        x:(source.clientX-rect.left) *
+            (drawCanvas.width/rect.width),
 
-  guideCanvas.width=Math.round(rect.width*dpr);
-  guideCanvas.height=Math.round(rect.height*dpr);
+        y:(source.clientY-rect.top) *
+            (drawCanvas.height/rect.height)
+    };
 
-  dctx.setTransform(dpr,0,0,dpr,0,0);
-  gctx.setTransform(dpr,0,0,dpr,0,0);
-
-  drawGuide();
 }
 
-function drawGuide(){
 
-  const rect=drawCanvas.parentElement.getBoundingClientRect();
+function startDrawing(event){
 
-  gctx.clearRect(0,0,rect.width,rect.height);
+    event.preventDefault();
 
-  gctx.font=
-    `${Math.min(rect.width*.72,300)}px "Apple SD Gothic Neo","Noto Sans KR",sans-serif`;
+    drawing=true;
 
-  gctx.textAlign="center";
-  gctx.textBaseline="middle";
-  gctx.fillText(
-    writeItems[wi],
-    rect.width/2,
-    rect.height/2
-  );
+    const p=canvasPoint(event);
+
+    lastX=p.x;
+    lastY=p.y;
+
 }
 
-function clearCanvas(){
 
-  const rect=drawCanvas.parentElement.getBoundingClientRect();
+function draw(event){
 
-  dctx.clearRect(0,0,rect.width,rect.height);
-  hasInk=false;
+    if(!drawing) return;
 
-  $("writeScore").textContent="";
-  $("writeFeedback").textContent="";
+    event.preventDefault();
+
+    const p=canvasPoint(event);
+
+    const ctx=drawCanvas.getContext("2d");
+
+    ctx.strokeStyle="black";
+    ctx.lineWidth=17;
+    ctx.lineCap="round";
+    ctx.lineJoin="round";
+
+    ctx.beginPath();
+
+    ctx.moveTo(lastX,lastY);
+    ctx.lineTo(p.x,p.y);
+
+    ctx.stroke();
+
+    lastX=p.x;
+    lastY=p.y;
+
 }
 
-function writeNew(){
-
-  clearTimeout(writeTimer);
-  writeTimer=null;
-  writeLocked=false;
-
-  $("writeGlyph").textContent=writeItems[wi];
-
-  clearCanvas();
-
-  resizeCanvases();
-}
-
-function getPoint(e){
-
-  const rect=drawCanvas.getBoundingClientRect();
-
-  const source=e.touches ? e.touches[0] : e;
-
-  return {
-    x:source.clientX-rect.left,
-    y:source.clientY-rect.top
-  };
-}
-
-function startDrawing(e){
-
-  e.preventDefault();
-
-  if(writeLocked)return;
-
-  drawing=true;
-  hasInk=true;
-
-  const p=getPoint(e);
-
-  dctx.beginPath();
-  dctx.moveTo(p.x,p.y);
-}
-
-function draw(e){
-
-  if(!drawing || writeLocked)return;
-
-  e.preventDefault();
-
-  const p=getPoint(e);
-
-  dctx.lineTo(p.x,p.y);
-  dctx.lineWidth=7;
-  dctx.lineCap="round";
-  dctx.lineJoin="round";
-  dctx.stroke();
-}
 
 function stopDrawing(){
 
-  if(!drawing)return;
+    drawing=false;
 
-  drawing=false;
 }
 
-drawCanvas.addEventListener("mousedown",startDrawing);
-drawCanvas.addEventListener("mousemove",draw);
-window.addEventListener("mouseup",stopDrawing);
 
-drawCanvas.addEventListener("touchstart",startDrawing,{passive:false});
-drawCanvas.addEventListener("touchmove",draw,{passive:false});
-drawCanvas.addEventListener("touchend",stopDrawing);
+drawCanvas.addEventListener("pointerdown",startDrawing);
+drawCanvas.addEventListener("pointermove",draw);
+drawCanvas.addEventListener("pointerup",stopDrawing);
+drawCanvas.addEventListener("pointercancel",stopDrawing);
+drawCanvas.addEventListener("pointerleave",stopDrawing);
+
+
+function clearDrawing(){
+
+    const ctx=drawCanvas.getContext("2d");
+
+    ctx.clearRect(
+        0,
+        0,
+        drawCanvas.width,
+        drawCanvas.height
+    );
+
+}
+
+
+/*
+  Slightly forgiving tracing recognition.
+
+  The canvas is reduced to a small grid and each
+  drawn cell is allowed to be close to the guide.
+
+  This gives a small tolerance without making
+  completely incorrect writing pass.
+*/
 
 function calculateWritingScore(){
 
-  if(writeLocked)return;
+    const size=80;
 
-  if(!hasInk){
-    $("writeFeedback").textContent=T("writingNoInk");
-    return;
-  }
+    const userCanvas=document.createElement("canvas");
+    const guideCanvas=document.createElement("canvas");
 
-  writeLocked=true;
+    userCanvas.width=size;
+    userCanvas.height=size;
 
-  /*
-    Forgiving score:
-    We compare the user's ink pixels with the guide's glyph area.
-    This intentionally isn't strict handwriting recognition.
-  */
+    guideCanvas.width=size;
+    guideCanvas.height=size;
 
-  const w=drawCanvas.width;
-  const h=drawCanvas.height;
+    const uctx=userCanvas.getContext("2d");
+    const gctx=guideCanvas.getContext("2d");
 
-  const userData=dctx.getImageData(0,0,w,h).data;
-  const guideData=gctx.getImageData(0,0,w,h).data;
-
-  let userCount=0;
-  let guideCount=0;
-  let overlap=0;
-
-  for(let i=3;i<userData.length;i+=4){
-
-    const u=userData[i]>20;
-    const g=guideData[i]>10;
-
-    if(u)userCount++;
-    if(g)guideCount++;
-    if(u && g)overlap++;
-  }
-
-  let score=0;
-
-  if(userCount>0 && guideCount>0){
-
-    const precision=overlap/userCount;
-    const coverage=overlap/guideCount;
-
-    score=Math.round(
-      Math.min(
-        100,
-        (precision*.45 + coverage*.55)*100
-      )
+    uctx.drawImage(
+        drawCanvas,
+        0,0,size,size
     );
-  }
 
-  score=Math.max(0,Math.min(100,score));
+    gctx.drawImage(
+        document.getElementById("guideCanvas"),
+        0,0,size,size
+    );
 
-  $("writeScore").textContent=score+"%";
+    const userData=uctx.getImageData(
+        0,0,size,size
+    ).data;
 
-  if(score>=80){
-    $("writeFeedback").textContent=T("writingExcellent");
-  }else if(score>=55){
-    $("writeFeedback").textContent=T("writingGood");
-  }else{
-    $("writeFeedback").textContent=T("writingKeep");
-  }
+    const guideData=gctx.getImageData(
+        0,0,size,size
+    ).data;
 
-  clearTimeout(writeTimer);
+    const userMask=new Uint8Array(size*size);
+    const guideMask=new Uint8Array(size*size);
 
-  /*
-    IMPORTANT:
-    Regardless of whether the score is good or bad,
-    automatically advance after exactly 1.25 seconds.
-  */
+    let userCount=0;
+    let guideCount=0;
 
-  writeTimer=setTimeout(()=>{
+    for(let y=0;y<size;y++){
 
-    writeTimer=null;
-    wi=(wi+1)%writeItems.length;
+        for(let x=0;x<size;x++){
 
-    writeNew();
+            const i=(y*size+x)*4;
 
-  },1250);
+            if(userData[i+3]>25){
+
+                userMask[y*size+x]=1;
+                userCount++;
+
+            }
+
+            if(guideData[i+3]>25){
+
+                guideMask[y*size+x]=1;
+                guideCount++;
+
+            }
+
+        }
+
+    }
+
+    if(userCount===0 || guideCount===0){
+        return 0;
+    }
+
+
+    /*
+      Small tolerance:
+      one nearby grid cell counts as a match.
+    */
+
+    const radius=1;
+
+    let userMatched=0;
+    let guideMatched=0;
+
+    for(let y=0;y<size;y++){
+
+        for(let x=0;x<size;x++){
+
+            const index=y*size+x;
+
+            if(userMask[index]){
+
+                let found=false;
+
+                for(let dy=-radius;dy<=radius;dy++){
+
+                    for(let dx=-radius;dx<=radius;dx++){
+
+                        const nx=x+dx;
+                        const ny=y+dy;
+
+                        if(
+                            nx>=0 &&
+                            nx<size &&
+                            ny>=0 &&
+                            ny<size &&
+                            guideMask[ny*size+nx]
+                        ){
+
+                            found=true;
+                            break;
+
+                        }
+
+                    }
+
+                    if(found) break;
+
+                }
+
+                if(found) userMatched++;
+
+            }
+
+            if(guideMask[index]){
+
+                let found=false;
+
+                for(let dy=-radius;dy<=radius;dy++){
+
+                    for(let dx=-radius;dx<=radius;dx++){
+
+                        const nx=x+dx;
+                        const ny=y+dy;
+
+                        if(
+                            nx>=0 &&
+                            nx<size &&
+                            ny>=0 &&
+                            ny<size &&
+                            userMask[ny*size+nx]
+                        ){
+
+                            found=true;
+                            break;
+
+                        }
+
+                    }
+
+                    if(found) break;
+
+                }
+
+                if(found) guideMatched++;
+
+            }
+
+        }
+
+    }
+
+
+    const precision=
+        userMatched/userCount;
+
+    const coverage=
+        guideMatched/guideCount;
+
+    /*
+      Coverage matters slightly more because
+      the user needs to actually trace the character.
+    */
+
+    const score=
+        (precision*0.45)+(coverage*0.55);
+
+    return Math.max(
+        0,
+        Math.min(
+            100,
+            Math.round(score*100)
+        )
+    );
+
 }
 
-$("checkWrite").addEventListener("click",calculateWritingScore);
 
-$("erase").addEventListener("click",()=>{
+function checkWriting(){
 
-  clearTimeout(writeTimer);
-  writeTimer=null;
-  writeLocked=false;
+    const score=calculateWritingScore();
 
-  clearCanvas();
+    const result=document.getElementById("writeResult");
 
-});
+    if(score>=70){
 
-$("newWrite").addEventListener("click",()=>{
+        result.textContent=
+            `${score}% — ${T("readable")}`;
 
-  wi=(wi+1)%writeItems.length;
-  writeNew();
+        result.style.color="var(--green)";
 
-});
+        writingState.streak++;
 
-window.addEventListener("resize",()=>{
-  resizeCanvases();
-});
+        const p=lessonProgress(activeUnit);
+
+        const letter=writingState.item[0];
+
+        p.writing[letter]=Math.min(
+            3,
+            writingState.streak
+        );
+
+        save();
+
+        /*
+          Same word stays on screen until
+          all 3 consecutive attempts succeed.
+        */
+
+        if(writingState.streak>=3){
+
+            result.textContent=
+                `${score}% — ${T("readable")} 🎉`;
+
+            setTimeout(()=>{
+
+                if(writingComplete(activeUnit)){
+
+                    startTestStage();
+
+                }
+                else{
+
+                    startWritingStage();
+
+                }
+
+            },1250);
+
+        }
+        else{
+
+            /*
+              Clear canvas but KEEP SAME WORD.
+            */
+
+            setTimeout(()=>{
+
+                clearDrawing();
+
+                document.getElementById("writeResult").textContent="";
+
+                document.getElementById("writeBadge").textContent =
+                    `${T("writeStage")} — ${writingState.streak}/3`;
+
+                document.getElementById("writeProgress").textContent =
+                    `${T("writingProgress")} ${writingState.streak}/3`;
+
+            },1250);
+
+        }
+
+    }
+    else{
+
+        result.textContent=
+            `${score}% — ${T("practiceMore")}`;
+
+        result.style.color="var(--red)";
+
+        /*
+          A failed drawing resets the consecutive streak.
+          The same word remains selected.
+        */
+
+        writingState.streak=0;
+
+        const p=lessonProgress(activeUnit);
+
+        p.writing[writingState.item[0]]=0;
+
+        save();
+
+        setTimeout(()=>{
+
+            clearDrawing();
+
+            document.getElementById("writeResult").textContent="";
+
+            document.getElementById("writeBadge").textContent =
+                `${T("writeStage")} — 0/3`;
+
+            document.getElementById("writeProgress").textContent =
+                `${T("writingProgress")} 0/3`;
+
+        },1250);
+
+    }
+
+}
+
+
+/* =========================================================
+   FINAL TEST
+========================================================= */
+
+let testState={
+    tasks:[],
+    index:0,
+    correct:0,
+    locked:false
+};
+
+
+function startTestStage(){
+
+    if(!practiceComplete(activeUnit)){
+        setView("practice");
+        startPracticeQuestion();
+        return;
+    }
+
+    if(!buildComplete(activeUnit)){
+        setView("practice");
+        startBuildStage();
+        return;
+    }
+
+    if(!writingComplete(activeUnit)){
+        startWritingStage();
+        return;
+    }
+
+    /*
+      Each letter gets:
+      1 guess task
+      1 build task
+
+      Exactly once each.
+    */
+
+    const tasks=[];
+
+    units[activeUnit].items.forEach(item=>{
+
+        tasks.push({
+            type:"guess",
+            item:item
+        });
+
+    });
+
+    units[activeUnit].items.forEach(item=>{
+
+        tasks.push({
+            type:"build",
+            item:item
+        });
+
+    });
+
+    testState={
+        tasks:tasks,
+        index:0,
+        correct:0,
+        locked:false
+    };
+
+    setView("practice");
+
+    renderTestTask();
+
+}
+
+
+function renderTestTask(){
+
+    document.getElementById("testResult").style.display="none";
+
+    const task=testState.tasks[testState.index];
+
+    if(!task){
+
+        finishTest();
+
+        return;
+    }
+
+    if(task.type==="guess"){
+
+        renderTestGuess(task);
+
+    }
+    else{
+
+        renderTestBuild(task);
+
+    }
+
+}
+
+
+function renderTestGuess(task){
+
+    document.getElementById("questionCard").style.display="block";
+    document.getElementById("builderCard").style.display="none";
+
+    const letter=task.item[0];
+    const sound=task.item[1];
+
+    document.getElementById("questionMode").textContent =
+        `${T("guess")} — ${sound}`;
+
+    document.getElementById("bigLetter").textContent="?";
+
+    const answers=document.getElementById("answers");
+
+    answers.innerHTML="";
+
+    makeLetterChoices(letter).forEach(choice=>{
+
+        const button=document.createElement("button");
+
+        button.className="answer";
+        button.textContent=choice;
+
+        button.onclick=()=>{
+            answerTestGuess(button,choice,letter);
+        };
+
+        answers.appendChild(button);
+
+    });
+
+    document.getElementById("feedback").textContent="";
+
+    document.getElementById("practiceProgress").textContent =
+        `${testState.index+1}/${testState.tasks.length}`;
+
+    updateStageHeader();
+
+}
+
+
+function answerTestGuess(button,choice,correct){
+
+    if(testState.locked) return;
+
+    testState.locked=true;
+
+    const isCorrect=choice===correct;
+
+    if(isCorrect){
+
+        testState.correct++;
+
+        button.classList.add("correct");
+
+        document.getElementById("feedback").textContent =
+            T("correct");
+
+        document.getElementById("feedback").className =
+            "feedback good";
+
+    }
+    else{
+
+        button.classList.add("wrong");
+
+        document.getElementById("feedback").textContent =
+            T("wrong");
+
+        document.getElementById("feedback").className =
+            "feedback bad";
+
+        document.querySelectorAll(".answer").forEach(b=>{
+
+            if(b.textContent===correct){
+                b.classList.add("correct");
+            }
+
+        });
+
+    }
+
+    setTimeout(()=>{
+
+        testState.index++;
+        testState.locked=false;
+
+        renderTestTask();
+
+    },1250);
+
+}
+
+
+function renderTestBuild(task){
+
+    document.getElementById("questionCard").style.display="none";
+    document.getElementById("builderCard").style.display="block";
+
+    const data=getBuildData(task.item[0]);
+
+    builderState={
+        mode:"test",
+        item:task.item,
+        data:data,
+        partIndex:0,
+        locked:false,
+        failed:false
+    };
+
+    renderBuilder();
+
+    updateStageHeader();
+
+}
+
+
+function finishTestTask(success){
+
+    if(success){
+        testState.correct++;
+    }
+
+    setTimeout(()=>{
+
+        testState.index++;
+
+        if(testState.index>=testState.tasks.length){
+
+            finishTest();
+
+        }
+        else{
+
+            renderTestTask();
+
+        }
+
+    },0);
+
+}
+
+
+function finishTest(){
+
+    const total=testState.tasks.length;
+
+    const score=Math.round(
+        (testState.correct/total)*100
+    );
+
+    const p=lessonProgress(activeUnit);
+
+    p.test.lastScore=score;
+    p.test.attempts++;
+
+    const result=document.getElementById("testResult");
+
+    document.getElementById("questionCard").style.display="none";
+    document.getElementById("builderCard").style.display="none";
+
+    result.style.display="block";
+
+    document.getElementById("testScore").textContent =
+        `${score}%`;
+
+    if(score>=70){
+
+        p.test.passed=true;
+
+        /*
+          Unlock ONLY the next lesson.
+        */
+
+        if(
+            activeUnit===s.unlocked-1 &&
+            s.unlocked<units.length
+        ){
+
+            s.unlocked++;
+
+        }
+
+        document.getElementById("testResultBadge").textContent =
+            T("passedTest")+" 🎉";
+
+        document.getElementById("testResultText").textContent =
+            s.language==="en"
+                ? "Lesson complete! The next lesson is unlocked."
+                : "수업 완료! 다음 수업이 열렸어요.";
+
+        save();
+
+        renderLessons();
+
+        setTimeout(()=>{
+
+            setView("home");
+
+        },1800);
+
+    }
+    else{
+
+        document.getElementById("testResultBadge").textContent =
+            T("retest");
+
+        document.getElementById("testResultText").textContent =
+            s.language==="en"
+                ? "You need 70% to pass. Retaking the same lesson..."
+                : "통과하려면 70%가 필요해요. 같은 수업을 다시 시험해요.";
+
+        save();
+
+        /*
+          Retest the same lesson.
+          Practice/build/writing progress is NOT erased.
+        */
+
+        setTimeout(()=>{
+
+            startTestStage();
+
+        },1800);
+
+    }
+
+}
+
+
+/* =========================================================
+   STAGE HEADER
+========================================================= */
+
+function updateStageHeader(){
+
+    const stage=getStage(activeUnit);
+
+    let title="";
+    let description="";
+    let badge="";
+
+    if(stage==="practice"){
+
+        title=T("practiceTitle");
+        description=T("practiceDescription");
+        badge=`${T("stage")} 1/4 — ${T("practiceStage")}`;
+
+    }
+    else if(stage==="build"){
+
+        title=T("buildTitle");
+        description=T("buildDescription");
+        badge=`${T("stage")} 2/4 — ${T("buildStage")}`;
+
+    }
+    else if(stage==="write"){
+
+        title=T("writeTitle");
+        description=T("writeDescription");
+        badge=`${T("stage")} 3/4 — ${T("writeStage")}`;
+
+    }
+    else{
+
+        title=T("testTitle");
+        description=T("testDescription");
+        badge=`${T("stage")} 4/4 — ${T("testStage")}`;
+
+    }
+
+    document.getElementById("stageBadge").textContent=badge;
+    document.getElementById("stageTitle").textContent=title;
+    document.getElementById("stageDescription").textContent=description;
+
+}
+
+
+/* =========================================================
+   RENDER CURRENT LESSON STAGE
+========================================================= */
+
+function renderLessonStage(){
+
+    updateStats();
+
+    const stage=getStage(activeUnit);
+
+    if(stage==="passed"){
+
+        document.getElementById("questionCard").style.display="none";
+        document.getElementById("builderCard").style.display="none";
+
+        document.getElementById("stageBadge").textContent =
+            T("passed")+" ✓";
+
+        document.getElementById("stageTitle").textContent =
+            T("passedTest");
+
+        document.getElementById("stageDescription").textContent =
+            s.language==="en"
+                ? "You completed this lesson."
+                : "이 수업을 완료했어요.";
+
+        return;
+    }
+
+    updateStageHeader();
+
+    if(stage==="practice"){
+
+        startPracticeQuestion();
+
+    }
+    else if(stage==="build"){
+
+        startBuildStage();
+
+    }
+    else if(stage==="write"){
+
+        startWritingStage();
+
+    }
+    else if(stage==="test"){
+
+        startTestStage();
+
+    }
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats(){
+
+    let correct=0;
+    let wrong=0;
+
+    Object.values(s.mastery).forEach(m=>{
+
+        correct+=m.correct||0;
+        wrong+=m.wrong||0;
+
+    });
+
+    const total=correct+wrong;
+
+    const accuracy=total
+        ? Math.round((correct/total)*100)
+        : 0;
+
+    document.getElementById("statCorrect").textContent=correct;
+    document.getElementById("statWrong").textContent=wrong;
+    document.getElementById("statAccuracy").textContent=
+        accuracy+"%";
+
+}
+
+
+/* =========================================================
+   WRITING STANDALONE TAB
+========================================================= */
+
+function beginStandaloneWriting(){
+
+    const item=units[activeUnit].items[0];
+
+    writingState={
+        item:item,
+        streak:0
+    };
+
+    renderWriting();
+
+}
+
 
 /* =========================================================
    WORD OF THE DAY
 ========================================================= */
 
-/*
-  [Korean, English meaning, Korean meaning]
-*/
+function dateKey(date=new Date()){
 
-const wordData=[
-  ["안녕하세요","hello","안녕하세요 / 인사말"],
-  ["감사합니다","thank you","고맙습니다"],
-  ["사랑","love","사랑"],
-  ["친구","friend","친구"],
-  ["가족","family","가족"],
-  ["하늘","sky","하늘"],
-  ["바다","sea","바다"],
-  ["학교","school","학교"],
-  ["책","book","책"],
-  ["집","house / home","집"],
-  ["사과","apple","사과"],
-  ["물","water","물"],
-  ["밥","rice / meal","밥 / 식사"],
-  ["고양이","cat","고양이"],
-  ["강아지","puppy / dog","강아지"],
-  ["오늘","today","오늘"],
-  ["내일","tomorrow","내일"],
-  ["행복","happiness","행복"],
-  ["좋아요","I like it / good","좋다 / 좋아요"],
-  ["공부","study","공부"],
-  ["한국","Korea","한국"],
-  ["친절","kindness","친절함"],
-  ["꿈","dream","꿈"],
-  ["빛","light","빛"],
-  ["마음","heart / mind","마음"],
-  ["웃음","laughter","웃음"],
-  ["봄","spring","봄"],
-  ["여름","summer","여름"],
-  ["가을","autumn / fall","가을"],
-  ["겨울","winter","겨울"]
-];
+    return date.toISOString().slice(0,10);
 
-function dateKey(date){
-
-  const y=date.getFullYear();
-  const m=String(date.getMonth()+1).padStart(2,"0");
-  const d=String(date.getDate()).padStart(2,"0");
-
-  return `${y}-${m}-${d}`;
 }
 
-function wordIndexForDate(key){
 
-  const start=new Date("2026-01-01T00:00:00");
-  const date=new Date(key+"T00:00:00");
+function getWordIndex(){
 
-  const diff=Math.floor(
-    (date-start)/(1000*60*60*24)
-  );
+    const start=new Date("2026-01-01T00:00:00");
 
-  return ((diff%wordData.length)+wordData.length)%wordData.length;
+    const now=new Date();
+
+    const days=Math.floor(
+        (now-start)/(1000*60*60*24)
+    );
+
+    return (
+        ((days % wordData.length)+wordData.length)
+        %wordData.length
+    );
+
 }
 
-function dayState(key){
-  return s.wordDays[key] || null;
-}
 
 function renderWord(){
 
-  if(!selectedDateKey){
-    selectedDateKey=dateKey(new Date());
-  }
+    const index=getWordIndex();
 
-  const todayKey=dateKey(new Date());
+    const data=wordData[index];
 
-  const selected=new Date(selectedDateKey+"T00:00:00");
-  const today=new Date(todayKey+"T00:00:00");
+    document.getElementById("wordBig").textContent=
+        data.word;
 
-  if(selected>today){
-    selectedDateKey=todayKey;
-  }
+    document.getElementById("wordMeaning").textContent=
+        s.language==="en"
+            ? data.en
+            : data.ko;
 
-  const index=wordIndexForDate(selectedDateKey);
-  const w=wordData[index];
+    const key=dateKey();
 
-  $("wordDate").textContent=
-    selected.toLocaleDateString(
-      language==="ko" ? "ko-KR" : "en-US",
-      {
-        weekday:"long",
-        year:"numeric",
-        month:"long",
-        day:"numeric"
-      }
-    );
-
-  $("wordKorean").textContent=w[0];
-
-  $("wordMeaning").textContent=
-    language==="ko" ? w[2] : w[1];
-
-  $("wordInput").placeholder=T("wordInputPlaceholder");
-
-  const state=dayState(selectedDateKey);
-
-  const tries=state?.tries || 0;
-  const finished=!!(
-    state &&
-    (
-      state.correct ||
-      tries>=3
-    )
-  );
-
-  $("wordInput").disabled=finished;
-  $("wordCheck").disabled=finished;
-
-  if(state?.correct){
-
-    $("wordStatus").textContent=T("wordCorrect");
-
-  }else if(tries>=3){
-
-    $("wordStatus").textContent=T("wordFailed");
-
-  }else if(tries>0){
-
-    const remaining=3-tries;
-
-    $("wordStatus").textContent=
-      `${T("wordWrong")} ${T("wordTryAgain")}`;
-
-  }else{
-
-    $("wordStatus").textContent="";
-  }
-
-  if(tries>0){
-
-    const remaining=3-tries;
-
-    $("wordAttempts").textContent=
-      `${T("wordAttemptsLabel")}: ${tries}/3`+
-      (
-        remaining>0
-          ? ` • ${remaining} ${T("wordAttemptsLeft")}`
-          : ""
-      );
-
-  }else{
-
-    $("wordAttempts").textContent=
-      `${T("wordAttemptsLabel")}: 0/3`;
-  }
-
-  renderCalendar();
-}
-
-function checkWord(){
-
-  const typed=$("wordInput").value.trim();
-  const key=selectedDateKey;
-
-  const existing=dayState(key);
-
-  if(
-    existing &&
-    (
-      existing.correct ||
-      (existing.tries||0)>=3
-    )
-  ){
-    return;
-  }
-
-  if(!typed){
-
-    $("wordStatus").textContent=T("wordTypeFirst");
-    return;
-  }
-
-  const index=wordIndexForDate(key);
-  const answer=wordData[index][0];
-
-  const state=existing || {
-    tries:0,
-    correct:false
-  };
-
-  state.tries++;
-
-  if(typed===answer){
-
-    state.correct=true;
-    s.wordDays[key]=state;
-
-    save();
-
-    $("wordStatus").textContent=T("wordCorrect");
-    $("wordAttempts").textContent=
-      `${T("wordAttemptsLabel")}: ${state.tries}/3`;
-
-    $("wordInput").disabled=true;
-    $("wordCheck").disabled=true;
-
-  }else{
-
-    state.correct=false;
-    s.wordDays[key]=state;
-
-    save();
-
-    if(state.tries>=3){
-
-      $("wordStatus").textContent=T("wordFailed");
-
-      $("wordInput").disabled=true;
-      $("wordCheck").disabled=true;
-
-    }else{
-
-      const remaining=3-state.tries;
-
-      $("wordStatus").textContent=
-        `${T("wordWrong")} ${T("wordTryAgain")}`;
-
-      $("wordAttempts").textContent=
-        `${T("wordAttemptsLabel")}: ${state.tries}/3 • `+
-        `${remaining} ${T("wordAttemptsLeft")}`;
-
-      /*
-        Keep the input active after a wrong answer.
-        The user gets all 3 attempts.
-      */
-
-      $("wordInput").value="";
-      $("wordInput").focus();
+    if(!s.wordAttempts[key]){
+        s.wordAttempts[key]={
+            attempts:0,
+            correct:false
+        };
     }
-  }
 
-  renderCalendar();
+    const attempts=s.wordAttempts[key];
+
+    document.getElementById("wordAttempts").textContent =
+        `${T("attempts")}: ${attempts.attempts}/3`;
+
+    renderWordQuestion(data);
+
+    renderCalendar();
+
+    save();
+
 }
 
-$("wordCheck").addEventListener("click",checkWord);
 
-$("wordInput").addEventListener("keydown",e=>{
-  if(e.key==="Enter"){
-    checkWord();
-  }
-});
+function renderWordQuestion(data){
+
+    const container=document.getElementById("wordQuestion");
+
+    container.innerHTML="";
+
+    const input=document.createElement("input");
+
+    input.type="text";
+    input.autocomplete="off";
+    input.placeholder=
+        s.language==="en"
+            ? "Type the Korean word"
+            : "한국어 단어를 입력하세요";
+
+    input.style.width="100%";
+    input.style.padding="15px";
+    input.style.borderRadius="14px";
+    input.style.border="1px solid var(--border)";
+    input.style.fontSize="18px";
+    input.style.marginTop="15px";
+
+    const button=document.createElement("button");
+
+    button.className="primary";
+    button.style.marginTop="10px";
+    button.style.width="100%";
+    button.textContent=T("check");
+
+    const feedback=document.createElement("div");
+
+    feedback.className="feedback";
+
+    button.onclick=()=>{
+
+        checkWord(input,feedback,data);
+
+    };
+
+    container.appendChild(input);
+    container.appendChild(button);
+    container.appendChild(feedback);
+
+}
+
+
+function checkWord(input,feedback,data){
+
+    const key=dateKey();
+
+    const attempts=s.wordAttempts[key];
+
+    if(attempts.attempts>=3) return;
+
+    attempts.attempts++;
+
+    const correct=
+        input.value.trim()===data.word;
+
+    if(correct){
+
+        attempts.correct=true;
+
+        feedback.textContent=T("correct");
+        feedback.className="feedback good";
+
+    }
+    else{
+
+        feedback.textContent=T("wrong");
+        feedback.className="feedback bad";
+
+    }
+
+    save();
+
+    document.getElementById("wordAttempts").textContent =
+        `${T("attempts")}: ${attempts.attempts}/3`;
+
+    renderCalendar();
+
+    if(attempts.attempts>=3){
+
+        setTimeout(()=>{
+
+            document.getElementById("wordQuestion").innerHTML =
+                attempts.correct
+                    ? "✓"
+                    : data.word;
+
+        },700);
+
+    }
+
+}
+
 
 /* =========================================================
    CALENDAR
@@ -2268,147 +3350,45 @@ $("wordInput").addEventListener("keydown",e=>{
 
 function renderCalendar(){
 
-  const year=calendarDate.getFullYear();
-  const month=calendarDate.getMonth();
+    const calendar=document.getElementById("calendar");
 
-  $("calendarTitle").textContent=
-    calendarDate.toLocaleDateString(
-      language==="ko" ? "ko-KR" : "en-US",
-      {
-        month:"long",
-        year:"numeric"
-      }
-    );
+    calendar.innerHTML="";
 
-  const box=$("calendar");
-  box.innerHTML="";
+    const now=new Date();
 
-  const weekdays=language==="ko"
-    ? ["일","월","화","수","목","금","토"]
-    : ["S","M","T","W","T","F","S"];
+    for(let i=0;i<30;i++){
 
-  weekdays.forEach(day=>{
+        const d=new Date(now);
 
-    const el=document.createElement("div");
-    el.className="weekday";
-    el.textContent=day;
+        d.setDate(now.getDate()-i);
 
-    box.appendChild(el);
-  });
+        const key=dateKey(d);
 
-  const first=new Date(year,month,1);
-  const last=new Date(year,month+1,0);
+        const cell=document.createElement("div");
 
-  for(let i=0;i<first.getDay();i++){
+        cell.className="day";
 
-    const empty=document.createElement("div");
-    empty.className="day empty";
+        const attempts=s.wordAttempts[key];
 
-    box.appendChild(empty);
-  }
+        if(attempts?.correct){
 
-  const todayKey=dateKey(new Date());
+            cell.classList.add("done");
 
-  for(let day=1;day<=last.getDate();day++){
+        }
+        else if(attempts?.attempts){
 
-    const d=new Date(year,month,day);
-    const key=dateKey(d);
+            cell.classList.add("partial");
 
-    const el=document.createElement("button");
-    el.className="day";
-    el.textContent=day;
-
-    if(key>todayKey){
-      el.classList.add("future");
-      el.disabled=true;
-    }
-
-    if(key===selectedDateKey){
-      el.classList.add("selected");
-    }
-
-    const state=dayState(key);
-
-    if(state){
-
-      const mark=document.createElement("span");
-      mark.className="mark";
-
-      const tries=state.tries||0;
-
-      if(state.correct){
-
-        mark.textContent="✓";
-
-        if(tries===1){
-          mark.classList.add("green");
-        }else if(tries===2){
-          mark.classList.add("mix-yellow");
-        }else{
-          mark.classList.add("mix-red-yellow");
         }
 
-      }else{
+        cell.textContent=d.getDate();
 
-        mark.textContent="✕";
+        calendar.appendChild(cell);
 
-        if(tries===1){
-          mark.classList.add("yellow");
-        }else if(tries===2){
-          mark.classList.add("mix-red-yellow");
-        }else{
-          mark.classList.add("red");
-        }
-      }
-
-      el.appendChild(mark);
     }
 
-    el.addEventListener("click",()=>{
-
-      selectedDateKey=key;
-
-      renderWord();
-
-      $("wordInput").value="";
-
-    });
-
-    box.appendChild(el);
-  }
 }
 
-$("prevMonth").addEventListener("click",()=>{
-
-  calendarDate.setMonth(calendarDate.getMonth()-1);
-  renderCalendar();
-
-});
-
-$("nextMonth").addEventListener("click",()=>{
-
-  const next=new Date(
-    calendarDate.getFullYear(),
-    calendarDate.getMonth()+1,
-    1
-  );
-
-  const today=new Date();
-
-  if(
-    next.getFullYear()>today.getFullYear() ||
-    (
-      next.getFullYear()===today.getFullYear() &&
-      next.getMonth()>today.getMonth()
-    )
-  ){
-    return;
-  }
-
-  calendarDate=next;
-  renderCalendar();
-
-});
 
 /* =========================================================
    REVIEW
@@ -2416,153 +3396,105 @@ $("nextMonth").addEventListener("click",()=>{
 
 function renderReview(){
 
-  const box=$("reviewList");
-  box.innerHTML="";
+    const container=document.getElementById("reviewList");
 
-  const now=Date.now();
+    container.innerHTML="";
 
-  const due=all
-    .filter(item=>{
-      const m=getMastery(item[0]);
+    const items=[];
 
-      return (
-        m.wrong>0 ||
-        m.correct<2 ||
-        (m.next && m.next<=now)
-      );
-    })
-    .sort((a,b)=>{
+    Object.entries(s.mastery).forEach(([letter,m])=>{
 
-      const ma=getMastery(a[0]);
-      const mb=getMastery(b[0]);
+        if(
+            (m.correct||0)<3 ||
+            (m.wrong||0)>0
+        ){
 
-      if(ma.correct!==mb.correct){
-        return ma.correct-mb.correct;
-      }
+            items.push({
+                letter,
+                correct:m.correct||0,
+                wrong:m.wrong||0
+            });
 
-      return mb.wrong-ma.wrong;
-    })
-    .slice(0,10);
+        }
 
-  if(!due.length){
+    });
 
-    box.innerHTML=`
-      <div class="emptyReview">
-        ${T("nothingUrgent")}
-      </div>
-    `;
+    if(items.length===0){
 
-    return;
-  }
+        const p=document.createElement("p");
 
-  due.forEach(item=>{
+        p.className="muted";
+        p.textContent=T("noReview");
 
-    const m=getMastery(item[0]);
+        container.appendChild(p);
 
-    const el=document.createElement("div");
-    el.className="reviewItem";
+        return;
 
-    el.innerHTML=`
-      <div class="reviewGlyph">${item[0]}</div>
+    }
 
-      <div class="reviewInfo">
-        <b>${soundLabel(item)}</b>
-        <small>
-          ${m.correct} ${T("reviewCorrect")}
-          •
-          ${m.wrong} ${T("reviewMissed")}
-        </small>
-      </div>
-    `;
+    items.sort((a,b)=>{
 
-    box.appendChild(el);
-  });
+        const aScore=a.correct-a.wrong;
+        const bScore=b.correct-b.wrong;
+
+        return aScore-bScore;
+
+    });
+
+    items.forEach(item=>{
+
+        const row=document.createElement("div");
+
+        row.className="reviewItem";
+
+        const letter=document.createElement("div");
+
+        letter.className="reviewLetter";
+        letter.textContent=item.letter;
+
+        const bar=document.createElement("div");
+
+        bar.className="reviewBar";
+
+        const fill=document.createElement("div");
+
+        fill.className="reviewFill";
+
+        fill.style.width=
+            Math.min(
+                100,
+                Math.round((item.correct/3)*100)
+            )+"%";
+
+        bar.appendChild(fill);
+
+        const stats=document.createElement("small");
+
+        stats.textContent=
+            `${item.correct}/3`;
+
+        row.appendChild(letter);
+        row.appendChild(bar);
+        row.appendChild(stats);
+
+        container.appendChild(row);
+
+    });
+
 }
 
-$("startReview").addEventListener("click",()=>{
-
-  const now=Date.now();
-
-  const due=all.filter(item=>{
-
-    const m=getMastery(item[0]);
-
-    return (
-      m.wrong>0 ||
-      m.correct<2 ||
-      (m.next && m.next<=now)
-    );
-  });
-
-  if(!due.length){
-    setView("review");
-    return;
-  }
-
-  activeUnit=due[0].unit;
-
-  q=0;
-  current=null;
-
-  setView("practice");
-  newQuestion();
-
-});
-
-/* =========================================================
-   SOUND
-========================================================= */
-
-$("sound").addEventListener("click",()=>{
-
-  if(!current)return;
-
-  const text=
-    current.mode==="sound"
-      ? soundLabel(current.item)
-      : current.item[0];
-
-  if("speechSynthesis" in window){
-
-    speechSynthesis.cancel();
-
-    const utter=new SpeechSynthesisUtterance(text);
-
-    utter.lang="ko-KR";
-    utter.rate=.75;
-
-    speechSynthesis.speak(utter);
-  }
-
-});
-
-/* =========================================================
-   LANGUAGE TOGGLE
-========================================================= */
-
-$("language").addEventListener("click",()=>{
-
-  language=language==="en" ? "ko" : "en";
-
-  save();
-  updateLanguageUI();
-
-});
 
 /* =========================================================
    INITIALIZE
 ========================================================= */
 
-selectedDateKey=dateKey(new Date());
-
-build();
-writeNew();
 updateLanguageUI();
-stats();
+updateStats();
 renderLessons();
-renderReview();
-renderWord();
+
+setView("home");
 
 </script>
+
 </body>
 </html>
