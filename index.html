@@ -2,101 +2,98 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover">
+
 <meta name="theme-color" content="#f7f7f9">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
 <title>Hangul Quest</title>
 
 <style>
+
 :root{
   --bg:#f7f7f9;
-  --card:#fff;
+  --card:#ffffff;
   --ink:#17171a;
   --muted:#73747d;
   --line:#e5e5ea;
   --accent:#111827;
   --good:#16803c;
   --bad:#d92d20;
-  --soft:#f0f0f4
+  --soft:#f0f0f4;
 }
 
 *{
   box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent
+  -webkit-tap-highlight-color:transparent;
 }
 
 body{
   margin:0;
   background:var(--bg);
   color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",sans-serif;
-  min-height:100svh
+  font-family:-apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    sans-serif;
+  min-height:100svh;
 }
 
 button{
   font:inherit;
   color:inherit;
-  cursor:pointer
 }
 
 button:active{
-  transform:scale(.98)
+  transform:scale(.98);
+}
+
+button:disabled{
+  opacity:.55;
 }
 
 .app{
   max-width:640px;
   margin:auto;
-  padding:env(safe-area-inset-top) 17px calc(25px + env(safe-area-inset-bottom))
+  padding:
+    env(safe-area-inset-top)
+    17px
+    calc(25px + env(safe-area-inset-bottom));
 }
 
 header{
   padding:18px 3px 10px;
   display:flex;
   align-items:center;
-  justify-content:space-between
+  justify-content:space-between;
 }
 
 h1{
   font-size:29px;
   letter-spacing:-.7px;
-  margin:0
+  margin:0;
 }
 
 .sub{
   color:var(--muted);
   font-size:13px;
-  margin-top:3px
-}
-
-.headerButtons{
-  display:flex;
-  gap:7px;
-  align-items:center
+  margin-top:3px;
 }
 
 .iconbtn{
   border:0;
   background:var(--soft);
   border-radius:13px;
-  padding:10px 12px
-}
-
-.langbtn{
-  border:0;
-  background:var(--accent);
-  color:#fff;
-  border-radius:13px;
   padding:10px 12px;
-  font-size:12px;
-  font-weight:800
 }
 
 nav{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:6px;
-  margin:8px 0 14px
+  margin:8px 0 14px;
 }
 
 nav button{
@@ -106,20 +103,20 @@ nav button{
   padding:10px 3px;
   font-size:12px;
   font-weight:700;
-  color:var(--muted)
+  color:var(--muted);
 }
 
 nav button.active{
   background:var(--accent);
-  color:#fff
+  color:#fff;
 }
 
 .view{
-  display:none
+  display:none;
 }
 
 .view.active{
-  display:block
+  display:block;
 }
 
 .card{
@@ -127,11 +124,11 @@ nav button.active{
   border:1px solid var(--line);
   border-radius:24px;
   padding:20px;
-  box-shadow:0 6px 25px #00000008
+  box-shadow:0 6px 25px #00000008;
 }
 
 .hero{
-  padding:24px 20px
+  padding:24px 20px;
 }
 
 .eyebrow{
@@ -139,17 +136,17 @@ nav button.active{
   letter-spacing:1px;
   color:var(--muted);
   font-size:11px;
-  font-weight:800
+  font-weight:800;
 }
 
 h2{
   font-size:24px;
   margin:5px 0 7px;
-  letter-spacing:-.4px
+  letter-spacing:-.4px;
 }
 
 p{
-  line-height:1.45
+  line-height:1.45;
 }
 
 .primary{
@@ -160,7 +157,7 @@ p{
   border-radius:16px;
   padding:15px;
   font-weight:750;
-  margin-top:10px
+  margin-top:10px;
 }
 
 .secondary{
@@ -168,7 +165,7 @@ p{
   background:white;
   border-radius:14px;
   padding:12px 14px;
-  font-weight:700
+  font-weight:700;
 }
 
 .progress{
@@ -176,36 +173,40 @@ p{
   background:#e8e8ed;
   border-radius:99px;
   overflow:hidden;
-  margin:9px 0 16px
+  margin:9px 0 16px;
 }
 
 .progress div{
   height:100%;
   background:var(--accent);
   width:0;
-  transition:.25s
+  transition:.25s;
 }
 
 .lesson-list{
   display:grid;
   gap:10px;
-  margin-top:14px
+  margin-top:14px;
 }
 
 .lesson{
   display:flex;
   align-items:center;
   gap:13px;
-  width:100%;
-  text-align:left;
   background:#fff;
   border:1px solid var(--line);
   border-radius:19px;
-  padding:14px
+  padding:14px;
+  text-align:left;
+  width:100%;
 }
 
 .lesson.locked{
-  opacity:.5
+  opacity:.5;
+}
+
+.lesson.test{
+  background:#fafafd;
 }
 
 .num{
@@ -216,42 +217,66 @@ p{
   display:grid;
   place-items:center;
   font-weight:800;
-  flex:none
+  flex:none;
 }
 
 .lesson b{
-  display:block
+  display:block;
 }
 
 .lesson small{
-  color:var(--muted)
+  color:var(--muted);
 }
 
 .xp{
   margin-left:auto;
   font-size:12px;
-  color:var(--muted)
+  color:var(--muted);
+  white-space:nowrap;
+}
+
+.stage{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:7px;
+}
+
+.stageTitle{
+  font-size:16px;
+  font-weight:800;
+}
+
+.stageCount{
+  font-size:12px;
+  color:var(--muted);
+  text-align:right;
 }
 
 .glyph{
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-family:
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    sans-serif;
+
   font-size:100px;
   text-align:center;
   line-height:1.05;
-  padding:13px 0
+  padding:13px 0;
 }
 
 .prompt{
   text-align:center;
   color:var(--muted);
   font-size:13px;
-  font-weight:700
+  font-weight:700;
 }
 
 .answers{
   display:grid;
   gap:9px;
-  margin-top:13px
+  margin-top:13px;
 }
 
 .answer{
@@ -262,37 +287,33 @@ p{
   text-align:left;
   font-size:17px;
   font-weight:700;
-  min-height:56px
+  min-height:56px;
 }
 
 .answer.correct{
   border-color:var(--good);
   background:#effaf2;
-  color:var(--good)
+  color:var(--good);
 }
 
 .answer.wrong{
   border-color:var(--bad);
   background:#fff1ef;
-  color:var(--bad)
+  color:var(--bad);
 }
 
 .feedback{
   text-align:center;
   font-weight:750;
   min-height:24px;
-  margin:12px 0 0
-}
-
-.next{
-  display:none
+  margin:12px 0 0;
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:8px;
-  margin:12px 0
+  margin:12px 0;
 }
 
 .stat{
@@ -300,24 +321,24 @@ p{
   border:1px solid var(--line);
   border-radius:15px;
   padding:12px 5px;
-  text-align:center
+  text-align:center;
 }
 
 .stat b{
   font-size:19px;
-  display:block
+  display:block;
 }
 
 .stat span{
   font-size:10px;
-  color:var(--muted)
+  color:var(--muted);
 }
 
 .choices{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:10px;
-  margin-top:14px
+  margin-top:14px;
 }
 
 .choices button{
@@ -326,31 +347,7 @@ p{
   background:#fff;
   border-radius:17px;
   font-weight:750;
-  font-size:20px
-}
-
-.board{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin:14px 0
-}
-
-.tile{
-  background:var(--soft);
-  border-radius:17px;
-  padding:14px;
-  text-align:center
-}
-
-.tile b{
-  font-size:31px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif
-}
-
-.tile small{
-  display:block;
-  color:var(--muted)
+  font-size:20px;
 }
 
 .builder{
@@ -362,7 +359,10 @@ p{
   border:1px dashed #cfcfd5;
   border-radius:18px;
   font-size:52px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif
+  font-family:
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    sans-serif;
 }
 
 .slot{
@@ -371,12 +371,12 @@ p{
   border:2px dashed #ccc;
   border-radius:15px;
   display:grid;
-  place-items:center
+  place-items:center;
 }
 
 .padwrap{
   position:relative;
-  margin-top:12px
+  margin-top:12px;
 }
 
 .pad{
@@ -386,7 +386,6 @@ p{
   border:2px solid var(--line);
   border-radius:20px;
   touch-action:none;
-  display:block
 }
 
 .guide{
@@ -397,50 +396,41 @@ p{
   place-items:center;
   color:#e5e5e9;
   font-size:130px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  z-index:1
+  font-family:
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    sans-serif;
 }
 
 .padwrap canvas{
   position:relative;
-  z-index:2
+  z-index:2;
 }
 
 .row{
   display:flex;
   gap:8px;
-  align-items:center
+  align-items:center;
 }
 
 .row>*{
-  flex:1
+  flex:1;
 }
 
 .tiny{
   font-size:12px;
-  color:var(--muted)
+  color:var(--muted);
 }
 
-.flash{
-  font-size:64px;
+.writeHint{
   text-align:center;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  padding:24px
-}
-
-.stars{
-  letter-spacing:3px;
-  font-size:25px
-}
-
-.hidden{
-  display:none!important
+  margin-top:8px;
 }
 
 .reviewgrid{
   display:grid;
   gap:9px;
-  margin-top:12px
+  margin-top:12px;
 }
 
 .reviewitem{
@@ -450,239 +440,418 @@ p{
   border:1px solid var(--line);
   background:#fff;
   border-radius:15px;
-  padding:13px
+  padding:13px;
 }
 
 .reviewitem b{
   font-size:25px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif
+  font-family:
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    sans-serif;
 }
 
 .due{
   color:var(--muted);
-  font-size:12px
+  font-size:12px;
 }
 
-.score{
-  font-size:31px;
-  font-weight:850;
-  text-align:center;
-  margin-top:8px
+.hidden{
+  display:none!important;
 }
 
-.score.good{
-  color:var(--good)
+.testBadge{
+  font-size:11px;
+  font-weight:800;
+  color:var(--muted);
 }
 
-.score.bad{
-  color:var(--bad)
-}
-
-.masteryBox{
-  background:var(--soft);
-  border-radius:16px;
-  padding:12px;
-  margin-top:12px;
-  text-align:center;
-  font-size:13px
-}
 </style>
 </head>
+
 
 <body>
 
 <div class="app">
 
 <header>
+
   <div>
-    <h1 id="title">Hangul Quest 🇰🇷</h1>
-    <div class="sub" id="subtitle">
+
+    <h1>
+      Hangul Quest 🇰🇷
+    </h1>
+
+    <div class="sub">
       Read it • build it • write it • remember it
     </div>
+
   </div>
 
-  <div class="headerButtons">
-    <button class="langbtn" id="language" type="button">한국어</button>
-    <button class="iconbtn" id="sound" type="button">🔊</button>
-  </div>
+  <button
+    class="iconbtn"
+    id="sound"
+    type="button">
+    🔊
+  </button>
+
 </header>
 
+
 <nav id="nav">
-  <button class="active" data-view="home" type="button">Learn</button>
-  <button data-view="practice" type="button">Practice</button>
-  <button data-view="write" type="button">Write</button>
-  <button data-view="review" type="button">Review</button>
+
+  <button
+    class="active"
+    data-view="home"
+    type="button">
+    Learn
+  </button>
+
+  <button
+    data-view="practice"
+    type="button">
+    Practice
+  </button>
+
+  <button
+    data-view="write"
+    type="button">
+    Write
+  </button>
+
+  <button
+    data-view="review"
+    type="button">
+    Review
+  </button>
+
 </nav>
 
-<section id="home" class="view active">
+
+<!-- =========================
+     HOME
+========================= -->
+
+<section
+  id="home"
+  class="view active">
 
   <div class="card hero">
 
-    <div class="eyebrow" id="courseEyebrow">Your course</div>
+    <div class="eyebrow">
+      Your course
+    </div>
 
-    <h2 id="homeTitle">Start learning Hangul</h2>
+    <h2>
+      Start learning Hangul
+    </h2>
 
-    <p id="homeDescription">
-      Short lessons take you from individual letters
-      to real Korean syllable blocks.
+    <p>
+      Master each lesson, pass its test,
+      then unlock the next lesson.
     </p>
 
     <div class="progress">
       <div id="coursebar"></div>
     </div>
 
-    <div class="tiny" id="courseText"></div>
+    <div
+      class="tiny"
+      id="courseText">
+    </div>
 
   </div>
 
-  <div class="lesson-list" id="lessons"></div>
+
+  <div
+    class="lesson-list"
+    id="lessons">
+  </div>
 
 </section>
 
-<section id="practice" class="view">
+
+<!-- =========================
+     PRACTICE
+========================= -->
+
+<section
+  id="practice"
+  class="view">
 
   <div class="card">
 
-    <div class="row">
-      <div class="eyebrow" id="lessonPracticeLabel">
-        Lesson practice
+    <div class="stage">
+
+      <div>
+
+        <div
+          class="eyebrow"
+          id="stageEyebrow">
+          Lesson practice
+        </div>
+
+        <div
+          class="stageTitle"
+          id="stageTitle">
+          Master each letter
+        </div>
+
       </div>
 
-      <div class="tiny" id="qnum"></div>
+      <div
+        class="stageCount"
+        id="stageCount">
+      </div>
+
     </div>
+
 
     <div class="progress">
       <div id="qbar"></div>
     </div>
 
-    <div class="prompt" id="prompt"></div>
 
-    <div class="glyph" id="big"></div>
+    <!-- QUESTION -->
 
-    <div class="answers" id="answers"></div>
+    <div id="questionArea">
 
-    <div class="feedback" id="feedback"></div>
+      <div
+        class="prompt"
+        id="prompt">
+      </div>
 
-    <button class="primary next" id="next" type="button">
-      Continue →
-    </button>
+      <div
+        class="glyph"
+        id="big">
+      </div>
 
-    <div class="masteryBox" id="masteryBox">
-      Correct: 0 • Wrong: 0
+      <div
+        class="answers"
+        id="answers">
+      </div>
+
+      <div
+        class="feedback"
+        id="feedback">
+      </div>
+
+    </div>
+
+
+    <!-- BUILDER -->
+
+    <div
+      id="builderArea"
+      class="hidden">
+
+      <div
+        class="prompt"
+        id="buildPrompt">
+      </div>
+
+      <div class="builder">
+
+        <div
+          class="slot"
+          id="bs1">
+          ?
+        </div>
+
+        <div>
+          +
+        </div>
+
+        <div
+          class="slot"
+          id="bs2">
+          ?
+        </div>
+
+      </div>
+
+      <div
+        class="choices"
+        id="buildChoices">
+      </div>
+
+      <div
+        class="feedback"
+        id="buildFeedback">
+      </div>
+
     </div>
 
   </div>
+
 
   <div class="stats">
 
     <div class="stat">
-      <b id="correct">0</b>
-      <span id="correctLabel">Correct</span>
+
+      <b id="correct">
+        0
+      </b>
+
+      <span>
+        Correct
+      </span>
+
     </div>
+
 
     <div class="stat">
-      <b id="streak">0</b>
-      <span id="streakLabel">Streak</span>
+
+      <b id="streak">
+        0
+      </b>
+
+      <span>
+        Streak
+      </span>
+
     </div>
+
 
     <div class="stat">
-      <b id="accuracy">—</b>
-      <span id="accuracyLabel">Accuracy</span>
-    </div>
 
-  </div>
+      <b id="accuracy">
+        —
+      </b>
 
-  <div class="card" id="builderCard">
-
-    <div class="eyebrow" id="builderEyebrow">
-      Syllable builder
-    </div>
-
-    <h2 id="builderTitle">
-      Build a block
-    </h2>
-
-    <div class="builder">
-
-      <div class="slot" id="bs1">?</div>
-      <div class="slot" id="bs2">?</div>
-      <div class="slot" id="bs3">→</div>
+      <span>
+        Accuracy
+      </span>
 
     </div>
-
-    <div class="choices" id="buildChoices"></div>
-
-    <div class="feedback" id="buildFeedback"></div>
 
   </div>
 
 </section>
 
-<section id="write" class="view">
+
+<!-- =========================
+     WRITE
+========================= -->
+
+<section
+  id="write"
+  class="view">
 
   <div class="card">
 
-    <div class="eyebrow" id="writingLabel">
+    <div class="eyebrow">
       Writing practice
     </div>
 
-    <h2 id="writeGlyph">ㄱ</h2>
+    <div class="stage">
 
-    <p class="tiny" id="writeInstructions">
+      <h2 id="writeGlyph">
+        ㄱ
+      </h2>
+
+      <div
+        class="stageCount"
+        id="writeCount">
+        1 / 3
+      </div>
+
+    </div>
+
+
+    <p class="tiny">
+
       Trace the guide with your finger.
-      Your strokes stay on this device.
+      Draw the same letter 3 times in a row.
+
     </p>
+
 
     <div class="padwrap">
 
-      <div class="guide" id="guide">ㄱ</div>
+      <div
+        class="guide"
+        id="guide">
+        ㄱ
+      </div>
 
-      <canvas class="pad" id="canvas"></canvas>
+      <canvas
+        class="pad"
+        id="canvas">
+      </canvas>
 
     </div>
 
-    <div class="score" id="writeScore"></div>
-
-    <div class="tiny" style="text-align:center" id="scoreHint"></div>
 
     <div class="row">
 
-      <button class="secondary" id="erase" type="button">
+      <button
+        class="secondary"
+        id="erase"
+        type="button">
         Clear
       </button>
 
-      <button class="primary" id="newWrite" type="button">
-        Next letter →
+      <button
+        class="primary"
+        id="checkWrite"
+        type="button">
+        Check ✓
       </button>
 
     </div>
 
-    <div class="feedback" id="writeFeedback"></div>
+
+    <div
+      class="feedback"
+      id="writeFeedback">
+    </div>
+
+
+    <div class="tiny writeHint">
+
+      70% or higher = readable.
+      Practice more below 70%.
+
+    </div>
 
   </div>
 
 </section>
 
-<section id="review" class="view">
+
+<!-- =========================
+     REVIEW
+========================= -->
+
+<section
+  id="review"
+  class="view">
 
   <div class="card">
 
-    <div class="eyebrow" id="reviewEyebrow">
+    <div class="eyebrow">
       Spaced repetition
     </div>
 
-    <h2 id="reviewTitle">
+    <h2>
       Review what needs work
     </h2>
 
-    <p class="tiny" id="reviewDescription">
+    <p class="tiny">
       Letters you miss come back sooner.
       Strong letters wait longer.
     </p>
 
-    <div class="reviewgrid" id="reviewList"></div>
+    <div
+      class="reviewgrid"
+      id="reviewList">
+    </div>
 
-    <button class="primary" id="startReview" type="button">
+    <button
+      class="primary"
+      id="startReview"
+      type="button">
       Start review
     </button>
 
@@ -690,21 +859,28 @@ p{
 
 </section>
 
+
 </div>
+
 
 <script>
 
-/* =========================================================
-   HANGUL DATA
-========================================================= */
+
+/* =====================================================
+   LESSONS + TESTS
+===================================================== */
 
 const units = [
 
+  /* -------------------------
+     CONSONANTS 1
+  ------------------------- */
+
   {
+    type:"lesson",
     name:"Consonants 1",
-    ko:"자음 1",
     desc:"The first 7 consonants",
-    koDesc:"처음 배우는 7개의 자음",
+
     items:[
       ["ㄱ","g / k"],
       ["ㄴ","n"],
@@ -717,10 +893,33 @@ const units = [
   },
 
   {
+    type:"test",
+    name:"Test 1",
+    desc:"Test: Consonants 1",
+
+    items:[
+      ["ㄱ","g / k"],
+      ["ㄴ","n"],
+      ["ㄷ","d / t"],
+      ["ㄹ","r / l"],
+      ["ㅁ","m"],
+      ["ㅂ","b / p"],
+      ["ㅅ","s"]
+    ],
+
+    lesson:0
+  },
+
+
+  /* -------------------------
+     CONSONANTS 2
+  ------------------------- */
+
+  {
+    type:"lesson",
     name:"Consonants 2",
-    ko:"자음 2",
     desc:"More consonants",
-    koDesc:"더 많은 자음",
+
     items:[
       ["ㅇ","ng / silent"],
       ["ㅈ","j"],
@@ -733,10 +932,33 @@ const units = [
   },
 
   {
+    type:"test",
+    name:"Test 2",
+    desc:"Test: Consonants 2",
+
+    items:[
+      ["ㅇ","ng / silent"],
+      ["ㅈ","j"],
+      ["ㅊ","ch"],
+      ["ㅋ","k"],
+      ["ㅌ","t"],
+      ["ㅍ","p"],
+      ["ㅎ","h"]
+    ],
+
+    lesson:2
+  },
+
+
+  /* -------------------------
+     VOWELS 1
+  ------------------------- */
+
+  {
+    type:"lesson",
     name:"Vowels 1",
-    ko:"모음 1",
     desc:"Basic vowels",
-    koDesc:"기본 모음",
+
     items:[
       ["ㅏ","a"],
       ["ㅑ","ya"],
@@ -749,10 +971,33 @@ const units = [
   },
 
   {
+    type:"test",
+    name:"Test 3",
+    desc:"Test: Vowels 1",
+
+    items:[
+      ["ㅏ","a"],
+      ["ㅑ","ya"],
+      ["ㅓ","eo"],
+      ["ㅕ","yeo"],
+      ["ㅗ","o"],
+      ["ㅛ","yo"],
+      ["ㅜ","u"]
+    ],
+
+    lesson:4
+  },
+
+
+  /* -------------------------
+     VOWELS 2
+  ------------------------- */
+
+  {
+    type:"lesson",
     name:"Vowels 2",
-    ko:"모음 2",
     desc:"The remaining basic vowels",
-    koDesc:"나머지 기본 모음",
+
     items:[
       ["ㅠ","yu"],
       ["ㅡ","eu"],
@@ -763,10 +1008,31 @@ const units = [
   },
 
   {
-    name:"Syllable Blocks",
-    ko:"음절 블록",
-    desc:"Combine consonants + vowels",
-    koDesc:"자음과 모음을 결합해요",
+    type:"test",
+    name:"Test 4",
+    desc:"Test: Vowels 2",
+
+    items:[
+      ["ㅠ","yu"],
+      ["ㅡ","eu"],
+      ["ㅣ","i"],
+      ["ㅐ","ae"],
+      ["ㅔ","e"]
+    ],
+
+    lesson:6
+  },
+
+
+  /* -------------------------
+     SYLLABLE BLOCKS 1
+  ------------------------- */
+
+  {
+    type:"lesson",
+    name:"Syllable Blocks 1",
+    desc:"Combine consonants and vowels",
+
     items:[
       ["가","ga"],
       ["나","na"],
@@ -778,10 +1044,32 @@ const units = [
   },
 
   {
-    name:"Reading",
-    ko:"읽기",
-    desc:"Simple Korean blocks",
-    koDesc:"간단한 한국어 음절",
+    type:"test",
+    name:"Test 5",
+    desc:"Test: Syllable Blocks 1",
+
+    items:[
+      ["가","ga"],
+      ["나","na"],
+      ["다","da"],
+      ["마","ma"],
+      ["바","ba"],
+      ["사","sa"]
+    ],
+
+    lesson:8
+  },
+
+
+  /* -------------------------
+     READING 1
+  ------------------------- */
+
+  {
+    type:"lesson",
+    name:"Reading 1",
+    desc:"Read simple Korean syllables",
+
     items:[
       ["너","neo"],
       ["미","mi"],
@@ -790,70 +1078,195 @@ const units = [
       ["우","u"],
       ["하","ha"]
     ]
+  },
+
+  {
+    type:"test",
+    name:"Test 6",
+    desc:"Test: Reading 1",
+
+    items:[
+      ["너","neo"],
+      ["미","mi"],
+      ["고","go"],
+      ["아","a"],
+      ["우","u"],
+      ["하","ha"]
+    ],
+
+    lesson:10
   }
 
 ];
 
-const all = units.flatMap((u,ui)=>
-  u.items.map(x=>({
-    ...x,
-    unit:ui
-  }))
-);
+
+/* =====================================================
+   BUILDING DATA
+===================================================== */
+
+const jamoBuild = {
+
+  "가":["ㄱ","ㅏ"],
+  "나":["ㄴ","ㅏ"],
+  "다":["ㄷ","ㅏ"],
+  "라":["ㄹ","ㅏ"],
+  "마":["ㅁ","ㅏ"],
+  "바":["ㅂ","ㅏ"],
+  "사":["ㅅ","ㅏ"],
+
+  "아":["ㅇ","ㅏ"],
+  "자":["ㅈ","ㅏ"],
+  "차":["ㅊ","ㅏ"],
+  "카":["ㅋ","ㅏ"],
+  "타":["ㅌ","ㅏ"],
+  "파":["ㅍ","ㅏ"],
+  "하":["ㅎ","ㅏ"],
+
+  "야":["ㅇ","ㅑ"],
+  "어":["ㅇ","ㅓ"],
+  "여":["ㅇ","ㅕ"],
+  "오":["ㅇ","ㅗ"],
+  "요":["ㅇ","ㅛ"],
+  "우":["ㅇ","ㅜ"],
+  "유":["ㅇ","ㅠ"],
+  "으":["ㅇ","ㅡ"],
+  "이":["ㅇ","ㅣ"],
+  "애":["ㅇ","ㅐ"],
+  "에":["ㅇ","ㅔ"],
+
+  "너":["ㄴ","ㅓ"],
+  "미":["ㅁ","ㅣ"],
+  "고":["ㄱ","ㅗ"]
+
+};
 
 
-/* =========================================================
+const consonantToSyllable = {
+
+  "ㄱ":"가",
+  "ㄴ":"나",
+  "ㄷ":"다",
+  "ㄹ":"라",
+  "ㅁ":"마",
+  "ㅂ":"바",
+  "ㅅ":"사",
+  "ㅇ":"아",
+  "ㅈ":"자",
+  "ㅊ":"차",
+  "ㅋ":"카",
+  "ㅌ":"타",
+  "ㅍ":"파",
+  "ㅎ":"하"
+
+};
+
+
+const vowelToSyllable = {
+
+  "ㅏ":"아",
+  "ㅑ":"야",
+  "ㅓ":"어",
+  "ㅕ":"여",
+  "ㅗ":"오",
+  "ㅛ":"요",
+  "ㅜ":"우",
+  "ㅠ":"유",
+  "ㅡ":"으",
+  "ㅣ":"이",
+  "ㅐ":"애",
+  "ㅔ":"에"
+
+};
+
+
+/* =====================================================
    STATE
-========================================================= */
+===================================================== */
 
-let s;
-
-try{
-  s=JSON.parse(
-    localStorage.getItem("hangulQuest") || "{}"
+let s =
+  JSON.parse(
+    localStorage.hangulQuest || "{}"
   );
-}catch(e){
-  s={};
+
+
+s.correct ??=0;
+s.total ??=0;
+s.streak ??=0;
+
+s.mastery ??={};
+
+s.lessonProgress ??={};
+
+
+/*
+  unlockedLesson is the number
+  of the actual lesson currently
+  unlocked.
+
+  There are 6 lessons and 6 tests.
+*/
+
+s.unlockedLesson ??=1;
+
+
+for(
+  let i=0;
+  i<6;
+  i++
+){
+
+  s.lessonProgress[i] ??={
+
+    practice:{},
+
+    build:{},
+
+    test:{
+      passed:false,
+      attempts:0,
+      lastScore:null
+    }
+
+  };
+
+
+  const lesson =
+    units[i*2];
+
+
+  lesson.items.forEach(
+    x=>{
+
+      s.lessonProgress[i]
+        .practice[x[0]] ??=0;
+
+      s.lessonProgress[i]
+        .build[x[0]] ??=0;
+
+    }
+  );
+
 }
 
-s.correct ??= 0;
-s.total ??= 0;
-s.streak ??= 0;
-s.unlocked ??= 1;
-s.mastery ??= {};
 
-let language=
-  s.language==="ko"
-    ?"ko"
-    :"en";
-
-let q=0;
-let qTotal=10;
-let current=null;
-let locked=false;
-let activeUnit=0;
-
-
-/* =========================================================
+/* =====================================================
    HELPERS
-========================================================= */
+===================================================== */
 
 function $(id){
+
   return document.getElementById(id);
+
 }
+
 
 function save(){
 
-  s.language=language;
-
-  try{
-    localStorage.setItem(
-      "hangulQuest",
-      JSON.stringify(s)
-    );
-  }catch(e){}
+  localStorage.hangulQuest =
+    JSON.stringify(s);
 
 }
+
 
 function shuffle(a){
 
@@ -863,837 +1276,1981 @@ function shuffle(a){
 
 }
 
-function getMastery(key){
 
-  s.mastery[key] ??={
-    correct:0,
-    wrong:0
-  };
+function lessonData(i){
 
-  const m=s.mastery[key];
-
-  if(!Number.isFinite(m.correct))
-    m.correct=0;
-
-  if(!Number.isFinite(m.wrong))
-    m.wrong=0;
-
-  return m;
-
-}
-
-function updateMastery(key,isCorrect){
-
-  const m=getMastery(key);
-
-  if(isCorrect)
-    m.correct++;
-  else
-    m.wrong++;
-
-  save();
-
-}
-
-function masteredCount(){
-
-  return all.filter(x=>{
-    const m=getMastery(x[0]);
-    return m.correct>=2;
-  }).length;
+  return units[i*2];
 
 }
 
 
-/* =========================================================
-   LANGUAGE
-========================================================= */
+function testData(i){
 
-function updateLanguageUI(){
-
-  const ko=language==="ko";
-
-  document.documentElement.lang=
-    ko ? "ko" : "en";
-
-  $("language").textContent=
-    ko ? "English" : "한국어";
-
-  $("subtitle").textContent=
-    ko
-      ?"읽고 • 만들고 • 쓰고 • 기억해요"
-      :"Read it • build it • write it • remember it";
-
-  $("courseEyebrow").textContent=
-    ko ? "나의 코스" : "Your course";
-
-  $("homeTitle").textContent=
-    ko
-      ?"한글 배우기 시작"
-      :"Start learning Hangul";
-
-  $("homeDescription").textContent=
-    ko
-      ?"짧은 레슨으로 글자부터 실제 한국어 음절 블록까지 배워요."
-      :"Short lessons take you from individual letters to real Korean syllable blocks.";
-
-  $("lessonPracticeLabel").textContent=
-    ko ? "레슨 연습" : "Lesson practice";
-
-  $("correctLabel").textContent=
-    ko ? "정답" : "Correct";
-
-  $("streakLabel").textContent=
-    ko ? "연속" : "Streak";
-
-  $("accuracyLabel").textContent=
-    ko ? "정확도" : "Accuracy";
-
-  $("builderEyebrow").textContent=
-    ko ? "음절 블록 만들기" : "Syllable builder";
-
-  $("writingLabel").textContent=
-    ko ? "쓰기 연습" : "Writing practice";
-
-  $("writeInstructions").textContent=
-    ko
-      ?"가이드를 손가락으로 따라 써 보세요. 획은 이 기기에만 남아요."
-      :"Trace the guide with your finger. Your strokes stay on this device.";
-
-  $("erase").textContent=
-    ko ? "지우기" : "Clear";
-
-  $("newWrite").textContent=
-    ko ? "다음 글자 →" : "Next letter →";
-
-  $("reviewEyebrow").textContent=
-    ko ? "간격 반복" : "Spaced repetition";
-
-  $("reviewTitle").textContent=
-    ko ? "복습이 필요한 것을 확인하세요" : "Review what needs work";
-
-  $("reviewDescription").textContent=
-    ko
-      ?"틀린 글자는 더 빨리 다시 나오고, 익숙한 글자는 더 오래 기다려요."
-      :"Letters you miss come back sooner. Strong letters wait longer.";
-
-  $("startReview").textContent=
-    ko ? "복습 시작" : "Start review";
-
-  document
-    .querySelectorAll("#nav button")
-    .forEach(button=>{
-
-      const view=button.dataset.view;
-
-      const names=ko
-        ?{
-          home:"학습",
-          practice:"연습",
-          write:"쓰기",
-          review:"복습"
-        }
-        :{
-          home:"Learn",
-          practice:"Practice",
-          write:"Write",
-          review:"Review"
-        };
-
-      button.textContent=names[view];
-
-    });
-
-  renderLessons();
-
-  if(current)
-    renderCurrentQuestion();
-
-  writeNew();
-
-  renderReview();
-
-  updateMasteryDisplay();
+  return units[i*2+1];
 
 }
 
-$("language").addEventListener(
-  "click",
-  ()=>{
 
-    language=
-      language==="en"
-        ?"ko"
-        :"en";
+function lp(i){
 
-    save();
-    updateLanguageUI();
+  return s.lessonProgress[i];
 
-  }
-);
+}
 
 
-/* =========================================================
+function practiceDone(i){
+
+  return lessonData(i).items.every(
+    x =>
+      lp(i).practice[x[0]]>=3
+  );
+
+}
+
+
+function buildDone(i){
+
+  return lessonData(i).items.every(
+    x =>
+      lp(i).build[x[0]]>=2
+  );
+
+}
+
+
+function lessonStage(i){
+
+  if(
+    lp(i).test.passed
+  )
+    return "passed";
+
+
+  if(
+    !practiceDone(i)
+  )
+    return "practice";
+
+
+  if(
+    !buildDone(i)
+  )
+    return "build";
+
+
+  return "test";
+
+}
+
+
+/* =====================================================
    NAVIGATION
-========================================================= */
+===================================================== */
 
-function setView(viewName){
+document
+  .querySelectorAll("nav button")
+  .forEach(
+    b=>{
 
-  const validViews=[
-    "home",
-    "practice",
-    "write",
-    "review"
-  ];
+      b.onclick=()=>{
 
-  if(!validViews.includes(viewName))
-    viewName="home";
+        setView(
+          b.dataset.view
+        );
+
+      };
+
+    }
+  );
+
+
+function setView(v){
 
   document
     .querySelectorAll(".view")
-    .forEach(view=>{
-      view.classList.toggle(
-        "active",
-        view.id===viewName
-      );
-    });
+    .forEach(
+      x=>
+        x.classList.toggle(
+          "active",
+          x.id===v
+        )
+    );
+
 
   document
-    .querySelectorAll("#nav button")
-    .forEach(button=>{
-      button.classList.toggle(
-        "active",
-        button.dataset.view===viewName
-      );
-    });
+    .querySelectorAll("nav button")
+    .forEach(
+      x=>
+        x.classList.toggle(
+          "active",
+          x.dataset.view===v
+        )
+    );
 
-  if(viewName==="practice"){
 
-    if(!current){
-
-      q=0;
-      newQuestion();
-
-    }
-
-  }
-
-  if(viewName==="write"){
-
-    setTimeout(()=>{
-      resizeCanvas();
-    },50);
-
-  }
-
-  if(viewName==="review")
+  if(v==="review")
     renderReview();
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
 
 }
 
-document
-  .querySelectorAll("#nav button")
-  .forEach(button=>{
 
-    button.addEventListener(
-      "click",
-      ()=>{
-        setView(button.dataset.view);
-      }
-    );
-
-  });
-
-
-/* =========================================================
-   LESSONS
-========================================================= */
+/* =====================================================
+   LESSON LIST
+===================================================== */
 
 function renderLessons(){
 
-  $("lessons").innerHTML=
-    units.map((u,i)=>{
-
-      const unlocked=i<=s.unlocked;
-
-      return `
-
-        <button
-          class="lesson ${!unlocked?"locked":""}"
-          ${!unlocked?"disabled":""}
-          data-i="${i}"
-          type="button"
-        >
-
-          <div class="num">
-            ${i+1}
-          </div>
-
-          <div>
-
-            <b>
-              ${language==="ko"?u.ko:u.name}
-            </b>
-
-            <small>
-              ${language==="ko"?u.koDesc:u.desc}
-            </small>
-
-          </div>
-
-          <span class="xp">
-            ${unlocked?"▶":"🔒"}
-          </span>
-
-        </button>
-
-      `;
-
-    }).join("");
-
-  document
-    .querySelectorAll(".lesson")
-    .forEach(button=>{
-
-      button.addEventListener(
-        "click",
-        ()=>{
-          activeUnit=
-            Number(button.dataset.i);
-
-          startLesson(activeUnit);
-        }
-      );
-
-    });
-
-  const done=Math.min(
-    units.length,
-    s.unlocked
-  );
-
-  $("coursebar").style.width=
-    done/units.length*100+"%";
-
-  $("courseText").textContent=
-    language==="ko"
-      ?`${done} / ${units.length} 레슨 잠금 해제 • ${masteredCount()}개 마스터`
-      :`${done} of ${units.length} lessons unlocked • ${masteredCount()} mastered`;
-
-}
+  let html="";
 
 
-/* =========================================================
-   START LESSON
-========================================================= */
+  for(
+    let i=0;
+    i<6;
+    i++
+  ){
 
-function startLesson(i){
+    const lesson =
+      lessonData(i);
 
-  activeUnit=i;
-  q=0;
-  current=null;
-
-  setView("practice");
-
-  newQuestion();
-
-}
+    const st =
+      lessonStage(i);
 
 
-/* =========================================================
-   PRACTICE
-========================================================= */
+    const unlocked =
+      i < s.unlockedLesson;
 
-function renderCurrentQuestion(){
 
-  if(!current)
-    return;
+    const mastered =
+      lesson.items.filter(
+        x =>
+          lp(i).practice[x[0]]>=3
+      ).length;
 
-  const mode=
-    current.practiceMode;
 
-  const right=
-    mode==="sound"
-      ?current[1]
-      :current[0];
+    const built =
+      lesson.items.filter(
+        x =>
+          lp(i).build[x[0]]>=2
+      ).length;
 
-  $("prompt").textContent=
-    language==="ko"
-      ?(
-        mode==="sound"
-          ?"이 한글 글자의 소리는 무엇인가요?"
-          :"이 소리에 맞는 한글 글자는 무엇인가요?"
-      )
-      :(
-        mode==="sound"
-          ?"Which sound matches this Korean letter?"
-          :"Which Korean letter matches this sound?"
-      );
 
-  /*
-    English mode:
-      Korean → English
-      English → Korean
+    let status="";
 
-    Korean mode reverses the learning direction:
-      Romanization → Hangul
-      Hangul → Romanization
-  */
 
-  $("big").textContent=
-    language==="en"
-      ?(
-        mode==="sound"
-          ?current[0]
-          :current[1]
-      )
-      :(
-        mode==="sound"
-          ?current[1]
-          :current[0]
-      );
+    if(st==="passed"){
 
-  const pool=units[activeUnit].items;
+      status="✓ Passed";
 
-  const wrong=
-    shuffle(
-      pool.filter(x=>x!==current)
-    )
-    .slice(0,3)
-    .map(x=>{
+    }
+    else if(st==="practice"){
 
-      if(language==="en"){
+      status =
+        `Practice ${mastered}/${lesson.items.length}`;
 
-        return mode==="sound"
-          ?x[1]
-          :x[0];
+    }
+    else if(st==="build"){
 
-      }else{
+      status =
+        `Build ${built}/${lesson.items.length}`;
 
-        return mode==="sound"
-          ?x[1]
-          :x[0];
+    }
+    else{
 
-      }
+      status="Test ready";
 
-    });
+    }
 
-  $("answers").innerHTML=
-    shuffle([
-      right,
-      ...wrong
-    ])
-    .map(answer=>`
+
+    html+=`
 
       <button
-        class="answer"
-        type="button"
-      >
-        ${answer}
+        class="lesson ${!unlocked?"locked":""}"
+        ${!unlocked?"disabled":""}
+        data-lesson="${i}"
+        type="button">
+
+        <div class="num">
+          ${i+1}
+        </div>
+
+        <div>
+
+          <b>
+            ${lesson.name}
+          </b>
+
+          <small>
+            ${lesson.desc} • ${status}
+          </small>
+
+        </div>
+
+        <span class="xp">
+          ${
+            !unlocked
+              ?"🔒"
+              :
+              st==="passed"
+                ?"✓"
+                :"▶"
+          }
+        </span>
+
+      </button>
+    `;
+
+
+    /*
+      Show the test directly underneath
+      its lesson.
+    */
+
+    const test =
+      testData(i);
+
+
+    const testUnlocked =
+      unlocked &&
+      (
+        st==="test" ||
+        st==="passed"
+      );
+
+
+    html+=`
+
+      <button
+        class="lesson test ${!testUnlocked?"locked":""}"
+        ${!testUnlocked?"disabled":""}
+        data-test="${i}"
+        type="button">
+
+        <div class="num">
+          ✓
+        </div>
+
+        <div>
+
+          <b>
+            ${test.name}
+          </b>
+
+          <small>
+            ${test.desc}
+            ${
+              lp(i).test.lastScore!==null
+                ?
+                  " • Last: "+
+                  lp(i).test.lastScore+
+                  "%"
+                :
+                  ""
+            }
+          </small>
+
+        </div>
+
+        <span class="xp">
+          ${
+            lp(i).test.passed
+              ?"✓"
+              :
+              testUnlocked
+                ?"▶"
+                :"🔒"
+          }
+        </span>
+
       </button>
 
-    `).join("");
+    `;
 
-  [
-    ...$("answers").children
-  ].forEach(button=>{
+  }
 
-    button.addEventListener(
-      "click",
-      ()=>{
-        answer(button,right);
+
+  $("lessons")
+    .innerHTML=html;
+
+
+  document
+    .querySelectorAll(
+      "[data-lesson]"
+    )
+    .forEach(
+      b=>{
+
+        b.onclick=()=>{
+
+          const i =
+            +b.dataset.lesson;
+
+          startLesson(i);
+
+        };
+
       }
     );
 
-  });
 
-  updateMasteryDisplay();
+  document
+    .querySelectorAll(
+      "[data-test]"
+    )
+    .forEach(
+      b=>{
+
+        b.onclick=()=>{
+
+          const i =
+            +b.dataset.test;
+
+          startTest(i);
+
+          setView("practice");
+
+        };
+
+      }
+    );
+
+
+  const passed =
+    s.unlockedLesson-1;
+
+
+  $("coursebar")
+    .style.width =
+      (
+        passed/6*100
+      )+"%";
+
+
+  $("courseText")
+    .textContent =
+      passed+
+      " of 6 lessons passed";
 
 }
 
-function newQuestion(){
+
+renderLessons();
+
+
+/* =====================================================
+   START LESSON
+===================================================== */
+
+let activeLesson=0;
+
+let stage="practice";
+
+let current=null;
+
+let locked=false;
+
+let buildState=null;
+
+let testTasks=[];
+
+let testIndex=0;
+
+let testCorrect=0;
+
+
+function startLesson(i){
+
+  activeLesson=i;
+
+
+  stage =
+    lessonStage(i);
+
+
+  if(stage==="passed"){
+
+    showPassed();
+
+    setView("practice");
+
+    return;
+
+  }
+
+
+  if(stage==="practice"){
+
+    setView("practice");
+
+    newPracticeQuestion();
+
+    return;
+
+  }
+
+
+  if(stage==="build"){
+
+    setView("practice");
+
+    newBuildChallenge();
+
+    return;
+
+  }
+
+
+  if(stage==="test"){
+
+    startTest(i);
+
+    setView("practice");
+
+  }
+
+}
+
+
+/* =====================================================
+   STAGE UI
+===================================================== */
+
+function renderStage(){
+
+  if(stage==="practice"){
+
+    $("stageEyebrow")
+      .textContent =
+        "Lesson practice";
+
+    $("stageTitle")
+      .textContent =
+        "Master each letter";
+
+  }
+
+  else if(stage==="build"){
+
+    $("stageEyebrow")
+      .textContent =
+        "Word building";
+
+    $("stageTitle")
+      .textContent =
+        "Build each one";
+
+  }
+
+  else if(stage==="test"){
+
+    $("stageEyebrow")
+      .textContent =
+        "Final test";
+
+    $("stageTitle")
+      .textContent =
+        "Guess + build";
+
+  }
+
+  else{
+
+    $("stageEyebrow")
+      .textContent =
+        "Lesson complete";
+
+    $("stageTitle")
+      .textContent =
+        "Passed ✓";
+
+  }
+
+}
+
+
+/* =====================================================
+   PRACTICE
+   EVERY LETTER 3×
+===================================================== */
+
+function newPracticeQuestion(){
+
+  stage="practice";
+
+  renderStage();
 
   locked=false;
 
-  $("feedback").textContent="";
 
-  $("next").style.display="none";
+  if(
+    practiceDone(activeLesson)
+  ){
 
-  $("qnum").textContent=
-    `${q+1} / ${qTotal}`;
+    stage="build";
 
-  $("qbar").style.width=
-    q/qTotal*100+"%";
+    renderStage();
 
-  const pool=
-    units[activeUnit].items;
+    newBuildChallenge();
 
-  const item=
+    return;
+
+  }
+
+
+  const items =
+    lessonData(activeLesson)
+      .items;
+
+
+  const pool =
+    items.filter(
+      x =>
+        lp(activeLesson)
+          .practice[x[0]]<3
+    );
+
+
+  /*
+    RANDOMLY select only from
+    letters that still need work.
+  */
+
+  current =
     pool[
       Math.floor(
         Math.random()*pool.length
       )
     ];
 
-  current=[
-    item[0],
-    item[1]
-  ];
 
-  current.practiceMode=
-    Math.random()<.5
-      ?"sound"
-      :"letter";
+  const completed =
+    items.filter(
+      x =>
+        lp(activeLesson)
+          .practice[x[0]]>=3
+    ).length;
 
-  renderCurrentQuestion();
+
+  $("stageCount")
+    .textContent =
+      completed+
+      " / "+
+      items.length+
+      " letters";
+
+
+  $("qbar")
+    .style.width =
+      (
+        completed/items.length*100
+      )+"%";
+
+
+  const soundMode =
+    Math.random()<.5;
+
+
+  $("prompt")
+    .textContent =
+      soundMode
+        ?
+          "Which sound matches this letter?"
+        :
+          "Which letter matches this sound?";
+
+
+  $("big")
+    .textContent =
+      soundMode
+        ?
+          current[0]
+        :
+          current[1];
+
+
+  const right =
+    soundMode
+      ?
+        current[1]
+      :
+        current[0];
+
+
+  const wrong =
+    shuffle(
+      items.filter(
+        x =>
+          x[0]!==current[0]
+      )
+    )
+    .slice(0,3)
+    .map(
+      x =>
+        soundMode
+          ?
+            x[1]
+          :
+            x[0]
+    );
+
+
+  $("answers")
+    .innerHTML =
+      shuffle(
+        [right,...wrong]
+      )
+      .map(
+        x=>
+          `
+          <button
+            class="answer"
+            type="button">
+            ${x}
+          </button>
+          `
+      )
+      .join("");
+
+
+  $("feedback")
+    .textContent="";
+
+
+  [
+    ...$("answers").children
+  ]
+  .forEach(
+    b=>
+      b.onclick =
+        ()=>answerPractice(
+          b,
+          right
+        )
+  );
+
+
+  $("questionArea")
+    .classList.remove(
+      "hidden"
+    );
+
+  $("builderArea")
+    .classList.add(
+      "hidden"
+    );
 
 }
 
 
-/* =========================================================
-   ANSWER
-========================================================= */
+/* =====================================================
+   PRACTICE ANSWER
+===================================================== */
 
-function answer(button,right){
+function answerPractice(
+  button,
+  right
+){
 
   if(locked)
     return;
 
+
   locked=true;
+
 
   s.total++;
 
-  const ok=
-    button.textContent.trim()===right;
 
-  updateMastery(
-    current[0],
-    ok
-  );
+  const correct =
+    button.textContent===right;
 
-  if(ok){
+
+  if(correct){
 
     s.correct++;
+
     s.streak++;
 
-    button.classList.add("correct");
 
-    $("feedback").textContent=
-      language==="ko"
-        ?"✓ 정답!"
-        :"✓ Correct!";
+    button.classList.add(
+      "correct"
+    );
 
-  }else{
+
+    $("feedback")
+      .textContent =
+        "✓ Correct!";
+
+
+    const key =
+      current[0];
+
+
+    lp(activeLesson)
+      .practice[key] =
+        Math.min(
+          3,
+          (
+            lp(activeLesson)
+              .practice[key]||0
+          )+1
+        );
+
+
+    updateMastery(
+      key,
+      1
+    );
+
+  }
+  else{
 
     s.streak=0;
 
-    button.classList.add("wrong");
 
-    $("feedback").textContent=
-      language==="ko"
-        ?`정답: ${right}`
-        :`Answer: ${right}`;
+    button.classList.add(
+      "wrong"
+    );
+
+
+    $("feedback")
+      .textContent =
+        "Answer: "+right;
+
 
     [
       ...$("answers").children
-    ].forEach(button=>{
-
-      if(
-        button.textContent.trim()===right
-      ){
-        button.classList.add("correct");
-      }
-
-    });
-
-  }
-
-  save();
-  stats();
-  updateMasteryDisplay();
-
-  $("next").style.display="block";
-
-}
-
-
-/* =========================================================
-   NEXT QUESTION
-========================================================= */
-
-$("next").addEventListener(
-  "click",
-  ()=>{
-
-    q++;
-
-    if(q>=qTotal){
-
-      if(
-        activeUnit===s.unlocked &&
-        s.unlocked<units.length
-      ){
-        s.unlocked++;
-      }
-
-      save();
-
-      renderLessons();
-
-      current=null;
-
-      setView("home");
-
-    }else{
-
-      newQuestion();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   STATS
-========================================================= */
-
-function stats(){
-
-  $("correct").textContent=
-    s.correct;
-
-  $("streak").textContent=
-    s.streak;
-
-  $("accuracy").textContent=
-    s.total
-      ?Math.round(
-        s.correct/s.total*100
-      )+"%"
-      :"—";
-
-}
-
-
-/* =========================================================
-   MASTERY DISPLAY
-========================================================= */
-
-function updateMasteryDisplay(){
-
-  if(!current)
-    return;
-
-  const m=getMastery(current[0]);
-
-  $("masteryBox").textContent=
-    language==="ko"
-      ?`정답 ${m.correct} • 오답 ${m.wrong}`
-      :`Correct: ${m.correct} • Wrong: ${m.wrong}`;
-
-}
-
-
-/* =========================================================
-   SYLLABLE BUILDER
-========================================================= */
-
-const builderTargets=[
-  ["가","ㄱ","ㅏ"],
-  ["나","ㄴ","ㅏ"],
-  ["다","ㄷ","ㅏ"],
-  ["미","ㅁ","ㅣ"],
-  ["고","ㄱ","ㅗ"],
-  ["하","ㅎ","ㅏ"]
-];
-
-let builderTarget=null;
-let builderStep=0;
-
-function build(){
-
-  builderTarget=
-    builderTargets[
-      Math.floor(
-        Math.random()*
-        builderTargets.length
-      )
-    ];
-
-  builderStep=0;
-
-  $("builderTitle").textContent=
-    language==="ko"
-      ?`${builderTarget[0]} 만들기`
-      :`Build ${builderTarget[0]}`;
-
-  $("bs1").textContent="?";
-  $("bs2").textContent="?";
-  $("bs3").textContent="→";
-
-  $("buildFeedback").textContent="";
-
-  makeBuilderChoices();
-
-}
-
-function makeBuilderChoices(){
-
-  const right=
-    builderTarget[
-      builderStep+1
-    ];
-
-  const pool=
-    shuffle([
-      "ㄱ",
-      "ㄴ",
-      "ㄷ",
-      "ㅁ",
-      "ㅎ",
-      "ㅏ",
-      "ㅣ",
-      "ㅗ"
-    ])
-    .filter(x=>x!==right)
-    .slice(0,3);
-
-  $("buildChoices").innerHTML=
-    shuffle([
-      right,
-      ...pool
-    ])
-    .map(x=>`
-      <button type="button">
-        ${x}
-      </button>
-    `)
-    .join("");
-
-  [
-    ...$("buildChoices").children
-  ].forEach(button=>{
-
-    button.addEventListener(
-      "click",
-      ()=>{
+    ]
+    .forEach(
+      b=>{
 
         if(
-          button.textContent.trim()!==right
-        ){
-
-          $("buildFeedback").textContent=
-            language==="ko"
-              ?"다시 해보세요"
-              :"Try again";
-
-          return;
-
-        }
-
-        button.classList.add("correct");
-
-        [
-          ...$("buildChoices").children
-        ].forEach(x=>x.disabled=true);
-
-        $("buildFeedback").textContent="✓";
-
-        if(builderStep===0){
-
-          $("bs1").textContent=
-            builderTarget[1];
-
-        }else{
-
-          $("bs2").textContent=
-            builderTarget[2];
-
-        }
-
-        builderStep++;
-
-        if(builderStep<2){
-
-          setTimeout(
-            makeBuilderChoices,
-            300
+          b.textContent===right
+        )
+          b.classList.add(
+            "correct"
           );
-
-        }else{
-
-          $("bs3").textContent=
-            "→ "+builderTarget[0];
-
-          $("buildFeedback").textContent=
-            language==="ko"
-              ?`✓ ${builderTarget[0]} = ${builderTarget[1]} + ${builderTarget[2]}`
-              :`✓ ${builderTarget[0]} = ${builderTarget[1]} + ${builderTarget[2]}`;
-
-          setTimeout(
-            build,
-            1500
-          );
-
-        }
 
       }
     );
 
-  });
+
+    updateMastery(
+      current[0],
+      -1
+    );
+
+  }
+
+
+  save();
+
+  updateStats();
+
+
+  setTimeout(
+    ()=>{
+
+      if(
+        practiceDone(activeLesson)
+      ){
+
+        stage="build";
+
+        renderStage();
+
+        newBuildChallenge();
+
+      }
+      else{
+
+        newPracticeQuestion();
+
+      }
+
+    },
+    1250
+  );
 
 }
 
-build();
+
+/* =====================================================
+   STATS
+===================================================== */
+
+function updateStats(){
+
+  $("correct")
+    .textContent =
+      s.correct;
 
 
-/* =========================================================
+  $("streak")
+    .textContent =
+      s.streak;
+
+
+  $("accuracy")
+    .textContent =
+      s.total
+        ?
+          Math.round(
+            s.correct/
+            s.total*
+            100
+          )+"%"
+        :
+          "—";
+
+}
+
+
+updateStats();
+
+
+function updateMastery(
+  key,
+  delta
+){
+
+  s.mastery[key] ??={
+    level:0,
+    next:0
+  };
+
+
+  const m =
+    s.mastery[key];
+
+
+  m.level =
+    Math.max(
+      0,
+      Math.min(
+        5,
+        m.level+delta
+      )
+    );
+
+
+  const delays=[
+    0,
+    10,
+    60,
+    600,
+    3600,
+    86400
+  ];
+
+
+  m.next =
+    Date.now()+
+    delays[m.level]*1000;
+
+}
+
+
+/* =====================================================
+   BUILD TARGET
+===================================================== */
+
+function buildTarget(item){
+
+  const char =
+    item[0];
+
+
+  if(
+    jamoBuild[char]
+  ){
+
+    return {
+
+      target:char,
+
+      parts:
+        jamoBuild[char]
+
+    };
+
+  }
+
+
+  if(
+    consonantToSyllable[char]
+  ){
+
+    return {
+
+      target:
+        consonantToSyllable[char],
+
+      parts:[
+        char,
+        "ㅏ"
+      ]
+
+    };
+
+  }
+
+
+  if(
+    vowelToSyllable[char]
+  ){
+
+    return {
+
+      target:
+        vowelToSyllable[char],
+
+      parts:[
+        "ㅇ",
+        char
+      ]
+
+    };
+
+  }
+
+
+  return {
+
+    target:char,
+
+    parts:[char]
+
+  };
+
+}
+
+
+/* =====================================================
+   BUILD CHOICES
+===================================================== */
+
+const buildPool=[
+
+  "ㄱ","ㄴ","ㄷ","ㄹ",
+  "ㅁ","ㅂ","ㅅ","ㅇ",
+  "ㅈ","ㅊ","ㅋ","ㅌ",
+  "ㅍ","ㅎ",
+
+  "ㅏ","ㅑ","ㅓ","ㅕ",
+  "ㅗ","ㅛ","ㅜ","ㅠ",
+  "ㅡ","ㅣ","ㅐ","ㅔ"
+
+];
+
+
+function buildChoices(right){
+
+  return shuffle([
+
+    right,
+
+    ...shuffle(
+      buildPool.filter(
+        x=>x!==right
+      )
+    ).slice(0,3)
+
+  ]);
+
+}
+
+
+/* =====================================================
+   BUILD STAGE
+   EVERY LETTER 2×
+===================================================== */
+
+function newBuildChallenge(){
+
+  stage="build";
+
+  renderStage();
+
+  locked=false;
+
+
+  if(
+    buildDone(activeLesson)
+  ){
+
+    startTest(
+      activeLesson
+    );
+
+    return;
+
+  }
+
+
+  const items =
+    lessonData(activeLesson)
+      .items;
+
+
+  const pool =
+    items.filter(
+      x =>
+        lp(activeLesson)
+          .build[x[0]]<2
+    );
+
+
+  const item =
+    pool[
+      Math.floor(
+        Math.random()*pool.length
+      )
+    ];
+
+
+  buildState={
+
+    item:item,
+
+    target:
+      buildTarget(item),
+
+    step:0,
+
+    ok:true,
+
+    isTest:false
+
+  };
+
+
+  renderBuilder();
+
+}
+
+
+/* =====================================================
+   RENDER BUILDER
+===================================================== */
+
+function renderBuilder(){
+
+  $("questionArea")
+    .classList.add(
+      "hidden"
+    );
+
+
+  $("builderArea")
+    .classList.remove(
+      "hidden"
+    );
+
+
+  const target =
+    buildState.target;
+
+
+  const key =
+    buildState.item[0];
+
+
+  if(buildState.isTest){
+
+    $("buildPrompt")
+      .textContent =
+        "Build "+target.target;
+
+  }
+  else{
+
+    const count =
+      lp(activeLesson)
+        .build[key]||0;
+
+
+    $("buildPrompt")
+      .textContent =
+        "Build "+
+        target.target+
+        " • "+
+        (
+          2-count
+        )+
+        " more needed";
+
+  }
+
+
+  /*
+    ALWAYS START BLANK.
+  */
+
+  $("bs1")
+    .textContent="?";
+
+
+  $("bs2")
+    .textContent="?";
+
+
+  $("buildFeedback")
+    .textContent="";
+
+
+  buildState.step=0;
+
+  showBuildChoices();
+
+}
+
+
+/* =====================================================
+   BUILD CHOICES
+===================================================== */
+
+function showBuildChoices(){
+
+  const right =
+    buildState.target
+      .parts[
+        buildState.step
+      ];
+
+
+  $("buildChoices")
+    .innerHTML =
+      buildChoices(right)
+        .map(
+          x=>
+            `
+            <button
+              type="button">
+              ${x}
+            </button>
+            `
+        )
+        .join("");
+
+
+  [
+    ...$("buildChoices").children
+  ]
+  .forEach(
+    b=>
+      b.onclick =
+        ()=>pickBuild(
+          b,
+          right
+        )
+  );
+
+}
+
+
+/* =====================================================
+   BUILD ANSWER
+===================================================== */
+
+function pickBuild(
+  button,
+  right
+){
+
+  if(locked)
+    return;
+
+
+  const correct =
+    button.textContent===right;
+
+
+  if(!correct){
+
+    locked=true;
+
+
+    button.classList.add(
+      "wrong"
+    );
+
+
+    $("buildFeedback")
+      .textContent =
+        "Correct part: "+right;
+
+
+    buildState.ok=false;
+
+
+    setTimeout(
+      nextBuild,
+      1250
+    );
+
+
+    return;
+
+  }
+
+
+  button.classList.add(
+    "correct"
+  );
+
+
+  [
+    ...$("buildChoices").children
+  ]
+  .forEach(
+    x =>
+      x.disabled=true
+  );
+
+
+  $("bs"+
+    (buildState.step+1)
+  )
+    .textContent=
+      right;
+
+
+  buildState.step++;
+
+
+  if(
+    buildState.step <
+    buildState.target.parts.length
+  ){
+
+    setTimeout(
+      showBuildChoices,
+      300
+    );
+
+    return;
+
+  }
+
+
+  locked=true;
+
+
+  $("buildFeedback")
+    .textContent =
+      "✓ Built!";
+
+
+  if(
+    !buildState.isTest
+  ){
+
+    const key =
+      buildState.item[0];
+
+
+    lp(activeLesson)
+      .build[key] =
+        Math.min(
+          2,
+          (
+            lp(activeLesson)
+              .build[key]||0
+          )+1
+        );
+
+
+    save();
+
+  }
+
+
+  setTimeout(
+    nextBuild,
+    1250
+  );
+
+}
+
+
+/* =====================================================
+   NEXT BUILD
+===================================================== */
+
+function nextBuild(){
+
+  locked=false;
+
+
+  if(
+    buildState.isTest
+  ){
+
+    testIndex++;
+
+
+    if(
+      testIndex>=
+      testTasks.length
+    ){
+
+      finishTest();
+
+    }
+    else{
+
+      renderTestTask();
+
+    }
+
+
+    return;
+
+  }
+
+
+  if(
+    buildDone(activeLesson)
+  ){
+
+    startTest(
+      activeLesson
+    );
+
+  }
+  else{
+
+    newBuildChallenge();
+
+  }
+
+}
+
+
+/* =====================================================
+   TEST
+===================================================== */
+
+function startTest(
+  lessonIndex=activeLesson
+){
+
+  activeLesson =
+    lessonIndex;
+
+
+  stage="test";
+
+
+  testTasks=[];
+
+
+  /*
+    FIRST:
+    Guess every letter once.
+  */
+
+  lessonData(activeLesson)
+    .items
+    .forEach(
+      item=>{
+
+        testTasks.push({
+
+          type:"letter",
+
+          item:item
+
+        });
+
+      }
+    );
+
+
+  /*
+    THEN:
+    Build every letter once.
+  */
+
+  lessonData(activeLesson)
+    .items
+    .forEach(
+      item=>{
+
+        testTasks.push({
+
+          type:"build",
+
+          item:item
+
+        });
+
+      }
+    );
+
+
+  testIndex=0;
+
+  testCorrect=0;
+
+
+  setView("practice");
+
+  renderTestTask();
+
+}
+
+
+/* =====================================================
+   RENDER TEST TASK
+===================================================== */
+
+function renderTestTask(){
+
+  locked=false;
+
+  renderStage();
+
+
+  const task =
+    testTasks[testIndex];
+
+
+  $("stageCount")
+    .textContent =
+      (
+        testIndex+1
+      )+
+      " / "+
+      testTasks.length;
+
+
+  $("qbar")
+    .style.width =
+      (
+        testIndex/
+        testTasks.length*
+        100
+      )+"%";
+
+
+  if(
+    task.type==="letter"
+  ){
+
+    current =
+      task.item;
+
+
+    $("questionArea")
+      .classList.remove(
+        "hidden"
+      );
+
+
+    $("builderArea")
+      .classList.add(
+        "hidden"
+      );
+
+
+    $("prompt")
+      .textContent =
+        "Which letter matches this sound?";
+
+
+    $("big")
+      .textContent =
+        current[1];
+
+
+    const right =
+      current[0];
+
+
+    const wrong =
+      shuffle(
+        lessonData(activeLesson)
+          .items
+          .filter(
+            x =>
+              x[0]!==right
+          )
+      )
+      .slice(0,3)
+      .map(
+        x=>x[0]
+      );
+
+
+    $("answers")
+      .innerHTML =
+        shuffle(
+          [right,...wrong]
+        )
+        .map(
+          x=>
+            `
+            <button
+              class="answer"
+              type="button">
+              ${x}
+            </button>
+            `
+        )
+        .join("");
+
+
+    $("feedback")
+      .textContent="";
+
+
+    [
+      ...$("answers").children
+    ]
+    .forEach(
+      b=>
+        b.onclick =
+          ()=>testLetterAnswer(
+            b,
+            right
+          )
+    );
+
+  }
+  else{
+
+    buildState={
+
+      item:task.item,
+
+      target:
+        buildTarget(task.item),
+
+      step:0,
+
+      ok:true,
+
+      isTest:true
+
+    };
+
+
+    renderBuilder();
+
+  }
+
+}
+
+
+/* =====================================================
+   TEST LETTER ANSWER
+===================================================== */
+
+function testLetterAnswer(
+  button,
+  right
+){
+
+  if(locked)
+    return;
+
+
+  locked=true;
+
+
+  if(
+    button.textContent===right
+  ){
+
+    testCorrect++;
+
+
+    button.classList.add(
+      "correct"
+    );
+
+
+    $("feedback")
+      .textContent =
+        "✓ Correct!";
+
+  }
+  else{
+
+    button.classList.add(
+      "wrong"
+    );
+
+
+    $("feedback")
+      .textContent =
+        "Answer: "+right;
+
+
+    [
+      ...$("answers").children
+    ]
+    .forEach(
+      b=>{
+
+        if(
+          b.textContent===right
+        )
+          b.classList.add(
+            "correct"
+          );
+
+      }
+    );
+
+  }
+
+
+  setTimeout(
+    ()=>{
+
+      testIndex++;
+
+
+      if(
+        testIndex>=
+        testTasks.length
+      ){
+
+        finishTest();
+
+      }
+      else{
+
+        renderTestTask();
+
+      }
+
+    },
+    1250
+  );
+
+}
+
+
+/* =====================================================
+   FINISH TEST
+===================================================== */
+
+function finishTest(){
+
+  const score =
+    Math.round(
+      testCorrect/
+      testTasks.length*
+      100
+    );
+
+
+  lp(activeLesson)
+    .test.attempts =
+      (
+        lp(activeLesson)
+          .test.attempts||0
+      )+1;
+
+
+  lp(activeLesson)
+    .test.lastScore =
+      score;
+
+
+  /*
+    70% OR HIGHER PASSES.
+  */
+
+  if(score>=70){
+
+    lp(activeLesson)
+      .test.passed=true;
+
+
+    /*
+      Unlock the next lesson.
+    */
+
+    if(
+      activeLesson+1 >
+      s.unlockedLesson-1
+    ){
+
+      s.unlockedLesson =
+        Math.min(
+          6,
+          activeLesson+2
+        );
+
+    }
+
+
+    save();
+
+    renderLessons();
+
+
+    $("stageEyebrow")
+      .textContent =
+        "Test complete";
+
+
+    $("stageTitle")
+      .textContent =
+        "Passed ✓";
+
+
+    $("stageCount")
+      .textContent =
+        score+"%";
+
+
+    $("qbar")
+      .style.width="100%";
+
+
+    $("questionArea")
+      .classList.remove(
+        "hidden"
+      );
+
+
+    $("builderArea")
+      .classList.add(
+        "hidden"
+      );
+
+
+    $("prompt")
+      .textContent =
+        "You passed!";
+
+
+    $("big")
+      .textContent =
+        score+"%";
+
+
+    $("answers")
+      .innerHTML="";
+
+
+    $("feedback")
+      .textContent =
+        activeLesson<5
+          ?
+            "Next lesson unlocked!"
+          :
+            "You completed the course! 🎉";
+
+
+    setTimeout(
+      ()=>{
+        setView("home");
+        renderLessons();
+      },
+      1500
+    );
+
+  }
+  else{
+
+    save();
+
+
+    $("stageEyebrow")
+      .textContent =
+        "Test complete";
+
+
+    $("stageTitle")
+      .textContent =
+        "Retest";
+
+
+    $("stageCount")
+      .textContent =
+        score+"%";
+
+
+    $("qbar")
+      .style.width="100%";
+
+
+    $("questionArea")
+      .classList.remove(
+        "hidden"
+      );
+
+
+    $("builderArea")
+      .classList.add(
+        "hidden"
+      );
+
+
+    $("prompt")
+      .textContent =
+        "You need 70% to pass.";
+
+
+    $("big")
+      .textContent =
+        score+"%";
+
+
+    $("answers")
+      .innerHTML="";
+
+
+    $("feedback")
+      .textContent =
+        "Retesting this lesson…";
+
+
+    /*
+      Automatically retest.
+    */
+
+    setTimeout(
+      ()=>{
+        startTest(
+          activeLesson
+        );
+      },
+      1500
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   PASSED
+===================================================== */
+
+function showPassed(){
+
+  stage="passed";
+
+  renderStage();
+
+
+  $("stageCount")
+    .textContent="✓";
+
+
+  $("qbar")
+    .style.width="100%";
+
+
+  $("questionArea")
+    .classList.remove(
+      "hidden"
+    );
+
+
+  $("builderArea")
+    .classList.add(
+      "hidden"
+    );
+
+
+  $("prompt")
+    .textContent =
+      "This lesson is complete.";
+
+
+  $("big")
+    .textContent="✓";
+
+
+  $("answers")
+    .innerHTML="";
+
+
+  $("feedback")
+    .textContent =
+      "You can review it anytime.";
+
+}
+
+
+/* =====================================================
    WRITING
-   THIS IS THE WORKING DRAWING SYSTEM
-   FROM THE VERSION YOU PROVIDED
-========================================================= */
+===================================================== */
 
-const consonants=
+const writeItems =
   units
-    .slice(0,2)
-    .flatMap(u=>u.items);
+    .filter(
+      u =>
+        u.type==="lesson"
+    )
+    .flatMap(
+      u =>
+        u.items
+    );
 
-let wi=0;
+
 let ctx=null;
+
 let down=false;
+
 let lastX=0;
+
 let lastY=0;
 
+let writeTarget=null;
 
-/* Canvas resize */
+let writeRepeat=0;
+
+let writeLocked=false;
+
+
+/* =====================================================
+   CANVAS
+===================================================== */
 
 function resizeCanvas(){
 
-  const canvas=$("canvas");
+  const c =
+    $("canvas");
 
-  if(!canvas)
-    return;
 
-  const rect=
-    canvas.getBoundingClientRect();
+  const r =
+    c.getBoundingClientRect();
 
-  const d=
-    window.devicePixelRatio||1;
 
-  canvas.width=
-    Math.max(1,rect.width*d);
+  const d =
+    devicePixelRatio||1;
 
-  canvas.height=
-    Math.max(1,rect.height*d);
 
-  ctx=
-    canvas.getContext("2d");
+  c.width =
+    Math.max(
+      1,
+      Math.round(
+        r.width*d
+      )
+    );
+
+
+  c.height =
+    Math.max(
+      1,
+      Math.round(
+        r.height*d
+      )
+    );
+
+
+  ctx =
+    c.getContext("2d");
+
 
   ctx.setTransform(
     d,
@@ -1704,872 +3261,748 @@ function resizeCanvas(){
     0
   );
 
+
   ctx.lineWidth=5;
+
   ctx.lineCap="round";
+
   ctx.lineJoin="round";
 
 }
 
 
-/* New writing letter */
+function clearCanvas(){
 
-function writeNew(){
+  if(!ctx)
+    return;
 
-  const x=
-    consonants[
-      wi%consonants.length
-    ][0];
 
-  $("writeGlyph").textContent=x;
+  ctx.clearRect(
+    0,
+    0,
+    $("canvas").clientWidth,
+    $("canvas").clientHeight
+  );
 
-  $("guide").textContent=x;
+}
 
-  $("writeFeedback").textContent="";
 
-  $("writeScore").textContent="";
+$("erase")
+  .onclick =
+    clearCanvas;
 
-  $("scoreHint").textContent=
-    language==="ko"
-      ?"70% 이상이면 읽을 수 있는 것으로 표시돼요."
-      :"70% or higher is considered readable.";
+
+/* =====================================================
+   RANDOM WRITE LETTER
+===================================================== */
+
+function pickWriteTarget(){
+
+  writeTarget =
+    writeItems[
+      Math.floor(
+        Math.random()*
+        writeItems.length
+      )
+    ];
+
+
+  writeRepeat=0;
+
+
+  setWriteTarget();
+
+}
+
+
+function setWriteTarget(){
+
+  $("writeGlyph")
+    .textContent =
+      writeTarget[0];
+
+
+  $("guide")
+    .textContent =
+      writeTarget[0];
+
+
+  $("writeCount")
+    .textContent =
+      (
+        writeRepeat+1
+      )+
+      " / 3";
+
+
+  $("writeFeedback")
+    .textContent="";
+
 
   clearCanvas();
 
 }
 
 
-/* Clear drawing */
-
-function clearCanvas(){
-
-  if(!ctx)
-    resizeCanvas();
-
-  if(!ctx)
-    return;
-
-  const canvas=$("canvas");
-
-  ctx.clearRect(
-    0,
-    0,
-    canvas.clientWidth,
-    canvas.clientHeight
-  );
-
-}
+pickWriteTarget();
 
 
-/* Writing buttons */
-
-$("newWrite").addEventListener(
-  "click",
-  ()=>{
-    calculateWritingScore();
-    wi++;
-    writeNew();
-  }
-);
-
-$("erase").addEventListener(
-  "click",
-  ()=>{
-    clearCanvas();
-    $("writeScore").textContent="";
-    $("writeFeedback").textContent="";
-  }
+new ResizeObserver(
+  resizeCanvas
+)
+.observe(
+  $("canvas")
 );
 
 
-/* Pointer position */
+resizeCanvas();
 
-function pos(e){
 
-  const rect=
+/* =====================================================
+   POINTER DRAWING
+===================================================== */
+
+function pointerPosition(e){
+
+  const r =
     $("canvas")
       .getBoundingClientRect();
 
+
   return [
-    e.clientX-rect.left,
-    e.clientY-rect.top
+
+    e.clientX-r.left,
+
+    e.clientY-r.top
+
   ];
 
 }
 
 
-/* Start drawing */
-
-$("canvas").addEventListener(
-  "pointerdown",
-  e=>{
-
-    e.preventDefault();
-
-    down=true;
-
-    $("canvas").setPointerCapture(
-      e.pointerId
-    );
-
-    const p=pos(e);
-
-    lastX=p[0];
-    lastY=p[1];
-
-  }
-);
-
-
-/* Draw */
-
-$("canvas").addEventListener(
-  "pointermove",
-  e=>{
-
-    if(!down || !ctx)
-      return;
-
-    e.preventDefault();
-
-    const p=pos(e);
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-      lastX,
-      lastY
-    );
-
-    ctx.lineTo(
-      p[0],
-      p[1]
-    );
-
-    ctx.stroke();
-
-    lastX=p[0];
-    lastY=p[1];
-
-  }
-);
-
-
-/* Stop drawing */
-
-[
-  "pointerup",
-  "pointercancel"
-].forEach(eventName=>{
-
-  $("canvas").addEventListener(
-    eventName,
+$("canvas")
+  .addEventListener(
+    "pointerdown",
     e=>{
 
-      down=false;
-
-      try{
-        $("canvas").releasePointerCapture(
-          e.pointerId
-        );
-      }catch(err){}
-
-    }
-  );
-
-});
+      if(writeLocked)
+        return;
 
 
-/* Canvas resize */
-
-if(window.ResizeObserver){
-
-  new ResizeObserver(
-    resizeCanvas
-  ).observe(
-    $("canvas")
-  );
-
-}
-
-window.addEventListener(
-  "resize",
-  resizeCanvas
-);
-
-resizeCanvas();
+      down=true;
 
 
-/* =========================================================
-   WRITING SCORE
-========================================================= */
+      if(
+        $("canvas")
+          .setPointerCapture
+      ){
 
-function getInkBounds(canvas){
-
-  const w=canvas.width;
-  const h=canvas.height;
-
-  const data=
-    ctx.getImageData(
-      0,
-      0,
-      w,
-      h
-    ).data;
-
-  let minX=w;
-  let minY=h;
-  let maxX=-1;
-  let maxY=-1;
-
-  for(let y=0;y<h;y++){
-
-    for(let x=0;x<w;x++){
-
-      const i=(y*w+x)*4;
-
-      const alpha=data[i+3];
-
-      if(alpha>20){
-
-        if(x<minX)minX=x;
-        if(y<minY)minY=y;
-        if(x>maxX)maxX=x;
-        if(y>maxY)maxY=y;
+        $("canvas")
+          .setPointerCapture(
+            e.pointerId
+          );
 
       }
 
+
+      const p =
+        pointerPosition(e);
+
+
+      lastX=p[0];
+
+      lastY=p[1];
+
     }
-
-  }
-
-  if(maxX<0)
-    return null;
-
-  return{
-    minX,
-    minY,
-    maxX,
-    maxY
-  };
-
-}
-
-
-function normalizeInk(canvas,bounds,size=64){
-
-  const source=
-    document.createElement("canvas");
-
-  source.width=size;
-  source.height=size;
-
-  const sctx=
-    source.getContext("2d");
-
-  const pad=5;
-
-  const bw=
-    bounds.maxX-bounds.minX+1;
-
-  const bh=
-    bounds.maxY-bounds.minY+1;
-
-  const scale=
-    Math.min(
-      (size-pad*2)/bw,
-      (size-pad*2)/bh
-    );
-
-  const dw=bw*scale;
-  const dh=bh*scale;
-
-  const dx=(size-dw)/2;
-  const dy=(size-dh)/2;
-
-  sctx.drawImage(
-    canvas,
-    bounds.minX,
-    bounds.minY,
-    bw,
-    bh,
-    dx,
-    dy,
-    dw,
-    dh
   );
 
-  return source;
 
-}
+$("canvas")
+  .addEventListener(
+    "pointermove",
+    e=>{
+
+      if(
+        !down ||
+        writeLocked
+      )
+        return;
 
 
-function getMask(canvas,size=64){
+      const p =
+        pointerPosition(e);
 
-  const c=
-    document.createElement("canvas");
 
-  c.width=size;
-  c.height=size;
+      ctx.beginPath();
 
-  const x=
-    c.getContext("2d");
+      ctx.moveTo(
+        lastX,
+        lastY
+      );
 
-  x.drawImage(
-    canvas,
+      ctx.lineTo(
+        p[0],
+        p[1]
+      );
+
+      ctx.stroke();
+
+
+      lastX=p[0];
+
+      lastY=p[1];
+
+    }
+  );
+
+
+[
+  "pointerup",
+  "pointercancel",
+  "pointerleave"
+]
+.forEach(
+  event=>{
+
+    $("canvas")
+      .addEventListener(
+        event,
+        ()=>{
+          down=false;
+        }
+      );
+
+  }
+);
+
+
+/* =====================================================
+   FORGIVING WRITING SCORE
+===================================================== */
+
+function writingScore(){
+
+  const size=80;
+
+
+  const userCanvas =
+    document.createElement(
+      "canvas"
+    );
+
+
+  const guideCanvas =
+    document.createElement(
+      "canvas"
+    );
+
+
+  userCanvas.width=size;
+  userCanvas.height=size;
+
+  guideCanvas.width=size;
+  guideCanvas.height=size;
+
+
+  const uc =
+    userCanvas.getContext("2d");
+
+
+  const gc =
+    guideCanvas.getContext("2d");
+
+
+  uc.drawImage(
+    $("canvas"),
     0,
     0,
     size,
     size
   );
 
-  const data=
-    x.getImageData(
+
+  gc.fillStyle="#000";
+
+  gc.font =
+    '130px "Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+
+  gc.textAlign="center";
+
+  gc.textBaseline="middle";
+
+
+  gc.fillText(
+    writeTarget[0],
+    size/2,
+    size/2+4
+  );
+
+
+  const ud =
+    uc.getImageData(
       0,
       0,
       size,
       size
     ).data;
 
-  const mask=
+
+  const gd =
+    gc.getImageData(
+      0,
+      0,
+      size,
+      size
+    ).data;
+
+
+  const userMask =
     new Uint8Array(
       size*size
     );
 
-  for(let i=0;i<mask.length;i++){
 
-    const p=i*4;
+  const guideMask =
+    new Uint8Array(
+      size*size
+    );
 
-    const alpha=data[p+3];
 
-    mask[i]=
-      alpha>20 ? 1 : 0;
+  let user=0;
+
+  let guide=0;
+
+
+  for(
+    let i=0;
+    i<size*size;
+    i++
+  ){
+
+    if(
+      ud[i*4+3]>25
+    ){
+
+      userMask[i]=1;
+
+      user++;
+
+    }
+
+
+    if(
+      gd[i*4+3]>25
+    ){
+
+      guideMask[i]=1;
+
+      guide++;
+
+    }
 
   }
 
-  return mask;
 
-}
+  if(
+    !user ||
+    !guide
+  )
+    return 0;
 
 
-function dilateMask(mask,size=64,radius=1){
+  let nearGuide=0;
 
-  const out=
-    new Uint8Array(
-      mask.length
-    );
+  let nearUser=0;
 
-  for(let y=0;y<size;y++){
 
-    for(let x=0;x<size;x++){
+  /*
+    One-cell tolerance.
 
-      let found=false;
+    This is the small amount of
+    extra forgiveness requested.
+  */
 
-      for(
-        let dy=-radius;
-        dy<=radius && !found;
-        dy++
-      ){
+  for(
+    let y=0;
+    y<size;
+    y++
+  ){
+
+    for(
+      let x=0;
+      x<size;
+      x++
+    ){
+
+      const i =
+        y*size+x;
+
+
+      if(userMask[i]){
+
+        let hit=false;
+
 
         for(
-          let dx=-radius;
-          dx<=radius;
-          dx++
+          let dy=-1;
+          dy<=1 && !hit;
+          dy++
         ){
 
-          const nx=x+dx;
-          const ny=y+dy;
-
-          if(
-            nx>=0 &&
-            nx<size &&
-            ny>=0 &&
-            ny<size &&
-            mask[ny*size+nx]
+          for(
+            let dx=-1;
+            dx<=1;
+            dx++
           ){
 
-            found=true;
-            break;
+            const xx=x+dx;
+
+            const yy=y+dy;
+
+
+            if(
+              xx>=0 &&
+              xx<size &&
+              yy>=0 &&
+              yy<size &&
+              guideMask[
+                yy*size+xx
+              ]
+            ){
+
+              hit=true;
+
+              break;
+
+            }
 
           }
 
         }
 
+
+        if(hit)
+          nearGuide++;
+
       }
 
-      if(found)
-        out[y*size+x]=1;
 
-    }
+      if(guideMask[i]){
 
-  }
-
-  return out;
-
-}
+        let hit=false;
 
 
-function compareMasks(a,b,size=64){
-
-  const ad=dilateMask(a,size,1);
-  const bd=dilateMask(b,size,1);
-
-  let aCount=0;
-  let bCount=0;
-  let overlap=0;
-
-  for(let i=0;i<a.length;i++){
-
-    if(a[i])aCount++;
-    if(b[i])bCount++;
-
-    if(a[i] && bd[i])
-      overlap++;
-
-    if(b[i] && ad[i])
-      overlap++;
-
-  }
-
-  if(!aCount || !bCount)
-    return 0;
-
-  const precision=
-    overlap/(aCount+bCount);
-
-  const coverage=
-    Math.min(
-      1,
-      overlap/
-      Math.max(aCount,bCount)
-    );
-
-  return Math.max(
-    precision,
-    coverage*.85
-  );
-
-}
-
-
-function shiftedCompare(user,reference,size=64){
-
-  let best=0;
-
-  const shifts=[
-    [0,0],
-    [-1,0],
-    [1,0],
-    [0,-1],
-    [0,1]
-  ];
-
-  for(const [sx,sy] of shifts){
-
-    const shifted=
-      new Uint8Array(
-        size*size
-      );
-
-    for(let y=0;y<size;y++){
-
-      for(let x=0;x<size;x++){
-
-        const nx=x+sx;
-        const ny=y+sy;
-
-        if(
-          nx>=0 &&
-          nx<size &&
-          ny>=0 &&
-          ny<size
+        for(
+          let dy=-1;
+          dy<=1 && !hit;
+          dy++
         ){
 
-          shifted[
-            ny*size+nx
-          ]=
-            user[
-              y*size+x
-            ];
+          for(
+            let dx=-1;
+            dx<=1;
+            dx++
+          ){
 
-        }
+            const xx=x+dx;
 
-      }
+            const yy=y+dy;
 
-    }
 
-    best=Math.max(
-      best,
-      compareMasks(
-        shifted,
-        reference,
-        size
-      )
-    );
+            if(
+              xx>=0 &&
+              xx<size &&
+              yy>=0 &&
+              yy<size &&
+              userMask[
+                yy*size+xx
+              ]
+            ){
 
-  }
+              hit=true;
 
-  return best;
+              break;
 
-}
-
-
-function makeReference(letter,size=64){
-
-  const c=
-    document.createElement("canvas");
-
-  c.width=size;
-  c.height=size;
-
-  const x=
-    c.getContext("2d");
-
-  x.fillStyle="#fff";
-  x.fillRect(
-    0,
-    0,
-    size,
-    size
-  );
-
-  x.fillStyle="#111";
-
-  x.textAlign="center";
-  x.textBaseline="middle";
-
-  x.font=
-    "700 52px -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif";
-
-  x.fillText(
-    letter,
-    size/2,
-    size/2
-  );
-
-  return c;
-
-}
-
-
-function calculateWritingScore(){
-
-  const canvas=$("canvas");
-
-  if(!ctx || !canvas)
-    return;
-
-  const bounds=
-    getInkBounds(canvas);
-
-  if(!bounds){
-
-    $("writeScore").textContent="";
-
-    $("writeFeedback").textContent=
-      language==="ko"
-        ?"먼저 글자를 써 보세요."
-        :"Draw the letter first.";
-
-    return;
-
-  }
-
-  const normalized=
-    normalizeInk(
-      canvas,
-      bounds,
-      64
-    );
-
-  const userMask=
-    getMask(
-      normalized,
-      64
-    );
-
-  const reference=
-    makeReference(
-      $("writeGlyph").textContent,
-      64
-    );
-
-  const referenceMask=
-    getMask(
-      reference,
-      64
-    );
-
-  const similarity=
-    shiftedCompare(
-      userMask,
-      referenceMask,
-      64
-    );
-
-  const score=
-    Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          similarity*100
-        )
-      )
-    );
-
-  $("writeScore").textContent=
-    score+"%";
-
-  $("writeScore").className=
-    "score "+(
-      score>=70
-        ?"good"
-        :"bad"
-    );
-
-  if(score>=90){
-
-    $("writeFeedback").textContent=
-      language==="ko"
-        ?"훌륭해요! 정말 잘 썼어요."
-        :"Excellent! That looks great.";
-
-  }else if(score>=70){
-
-    $("writeFeedback").textContent=
-      language==="ko"
-        ?"읽을 수 있어요! ✓"
-        :"Readable! ✓";
-
-  }else if(score>=55){
-
-    $("writeFeedback").textContent=
-      language==="ko"
-        ?"거의 다 됐어요!"
-        :"Almost there!";
-
-  }else{
-
-    $("writeFeedback").textContent=
-      language==="ko"
-        ?"조금 더 연습해 보세요."
-        :"Keep practicing.";
-
-  }
-
-}
-
-
-/*
-  Score the current writing when the user
-  leaves the Write tab.
-*/
-
-document
-  .querySelectorAll("#nav button")
-  .forEach(button=>{
-
-    button.addEventListener(
-      "click",
-      ()=>{
-
-        if(
-          button.dataset.view==="write"
-        ){
-          setTimeout(
-            resizeCanvas,
-            50
-          );
-        }
-
-      }
-    );
-
-  });
-
-
-/* =========================================================
-   REVIEW
-========================================================= */
-
-function renderReview(){
-
-  const now=Date.now();
-
-  const due=
-    all
-      .map(x=>{
-
-        const m=
-          getMastery(x[0]);
-
-        return{
-          x,
-          m
-        };
-
-      })
-      .filter(z=>
-        z.m.wrong>0 ||
-        z.m.correct<2 ||
-        z.m.next<=now
-      )
-      .sort((a,b)=>{
-
-        const aScore=
-          a.m.wrong*100+
-          (a.m.correct<2?50:0)+
-          (a.m.next<=now?25:0);
-
-        const bScore=
-          b.m.wrong*100+
-          (b.m.correct<2?50:0)+
-          (b.m.next<=now?25:0);
-
-        return bScore-aScore;
-
-      })
-      .slice(0,12);
-
-  if(!due.length){
-
-    $("reviewList").innerHTML=
-      `<div class="tiny">${
-        language==="ko"
-          ?"지금은 급한 복습이 없어요. 🎉"
-          :"Nothing urgent. Keep practicing! 🎉"
-      }</div>`;
-
-    return;
-
-  }
-
-  $("reviewList").innerHTML=
-    due.map(z=>`
-
-      <div class="reviewitem">
-
-        <b>${z.x[0]}</b>
-
-        <span>
-
-          ${z.x[1]}
-
-          <br>
-
-          <span class="due">
-
-            ${
-              language==="ko"
-                ?`정답 ${z.m.correct} • 오답 ${z.m.wrong}`
-                :`Correct ${z.m.correct} • Wrong ${z.m.wrong}`
             }
 
-          </span>
+          }
 
-        </span>
+        }
 
-      </div>
 
-    `).join("");
+        if(hit)
+          nearUser++;
+
+      }
+
+    }
+
+  }
+
+
+  const precision =
+    nearGuide/user;
+
+
+  const coverage =
+    nearUser/guide;
+
+
+  return Math.round(
+    Math.min(
+      1,
+      precision*.45+
+      coverage*.55
+    )*100
+  );
 
 }
 
 
-/* =========================================================
-   START REVIEW
-========================================================= */
+/* =====================================================
+   CHECK DRAWING
+===================================================== */
 
-$("startReview").addEventListener(
-  "click",
-  ()=>{
+$("checkWrite")
+  .onclick =
+    checkWriting;
 
-    const now=Date.now();
 
-    const due=
-      all.filter(x=>{
+function checkWriting(){
 
-        const m=getMastery(x[0]);
+  if(writeLocked)
+    return;
 
-        return(
-          m.next<=now ||
-          m.correct<2 ||
-          m.wrong>0
-        );
 
-      });
+  writeLocked=true;
 
-    if(due.length){
 
-      const item=
-        due[
-          Math.floor(
-            Math.random()*due.length
-          )
-        ];
+  const score =
+    writingScore();
 
-      activeUnit=item.unit;
 
-    }else{
+  if(score>=70){
 
-      activeUnit=
-        Math.floor(
-          Math.random()*units.length
-        );
-
-    }
-
-    startLesson(activeUnit);
+    $("writeFeedback")
+      .textContent =
+        "Readable! ✓ "+
+        score+"%";
 
   }
-);
+  else{
+
+    $("writeFeedback")
+      .textContent =
+        "Practice more • "+
+        score+"%";
+
+  }
 
 
-/* =========================================================
-   KOREAN PRONUNCIATION
-========================================================= */
+  setTimeout(
+    ()=>{
 
-$("sound").addEventListener(
-  "click",
-  ()=>{
+      writeRepeat++;
 
-    if(!current)
-      return;
 
-    const korean=current[0];
+      if(
+        writeRepeat>=3
+      ){
 
-    if("speechSynthesis" in window){
+        /*
+          New random letter only
+          after 3 consecutive drawings.
+        */
+
+        pickWriteTarget();
+
+      }
+      else{
+
+        /*
+          Same letter again.
+        */
+
+        setWriteTarget();
+
+      }
+
+
+      writeLocked=false;
+
+    },
+    1250
+  );
+
+}
+
+
+/* =====================================================
+   SOUND
+===================================================== */
+
+$("sound")
+  .onclick =
+    ()=>{
+
+      let text=null;
+
+
+      if(current){
+
+        text=current[1];
+
+      }
+      else if(writeTarget){
+
+        text=writeTarget[1];
+
+      }
+
+
+      if(!text)
+        return;
+
 
       speechSynthesis.cancel();
 
-      const utterance=
-        new SpeechSynthesisUtterance(
-          korean
-        );
-
-      utterance.lang="ko-KR";
-      utterance.rate=.8;
-      utterance.pitch=1;
 
       speechSynthesis.speak(
-        utterance
+        new SpeechSynthesisUtterance(
+          text
+        )
       );
 
-    }
-
-  }
-);
+    };
 
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+/* =====================================================
+   REVIEW
+===================================================== */
 
-renderLessons();
-stats();
-writeNew();
-updateLanguageUI();
-setView("home");
+function renderReview(){
+
+  const allItems =
+    units
+      .filter(
+        u =>
+          u.type==="lesson"
+      )
+      .flatMap(
+        u =>
+          u.items
+      );
+
+
+  const due =
+    allItems
+      .map(
+        x=>({
+
+          x:x,
+
+          m:
+            s.mastery[x[0]] ||
+            {
+              level:0,
+              next:0
+            }
+
+        })
+      )
+      .filter(
+        z =>
+          z.m.next<=Date.now() ||
+          z.m.level<2
+      )
+      .slice(0,12);
+
+
+  $("reviewList")
+    .innerHTML =
+      due.length
+        ?
+          due.map(
+            z=>
+              `
+
+              <div class="reviewitem">
+
+                <b>
+                  ${z.x[0]}
+                </b>
+
+                <span>
+
+                  ${z.x[1]}
+
+                  <br>
+
+                  <span class="due">
+                    Level ${z.m.level}/5
+                  </span>
+
+                </span>
+
+              </div>
+
+              `
+          ).join("")
+        :
+          `
+          <div class="tiny">
+            Nothing urgent. Keep practicing! 🎉
+          </div>
+          `;
+
+}
+
+
+$("startReview")
+  .onclick =
+    ()=>{
+
+      /*
+        Review chooses a random
+        currently unlocked lesson.
+      */
+
+      const max =
+        Math.max(
+          1,
+          s.unlockedLesson
+        );
+
+
+      activeLesson =
+        Math.floor(
+          Math.random()*max
+        );
+
+
+      stage =
+        lessonStage(
+          activeLesson
+        );
+
+
+      if(stage==="test"){
+
+        startTest(
+          activeLesson
+        );
+
+      }
+      else{
+
+        startLesson(
+          activeLesson
+        );
+
+      }
+
+    };
+
 
 </script>
 
