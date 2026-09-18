@@ -442,6 +442,65 @@ header p{
   line-height:1.5;
 }
 
+.reviewLegend{
+  margin:0 0 12px;
+}
+
+.reviewSummary{
+  background:#f2f2f7;
+  padding:15px;
+  border-radius:16px;
+  margin-bottom:10px;
+}
+
+.reviewGroups{
+  display:grid;
+  gap:10px;
+  margin-top:10px;
+}
+
+.reviewGroupTitle{
+  font-size:13px;
+  font-weight:800;
+  color:#555;
+  margin-bottom:6px;
+}
+
+.reviewLetterGrid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.reviewChip{
+  min-width:58px;
+  padding:8px 10px;
+  border-radius:12px;
+  background:white;
+  border:1px solid #ddd;
+  text-align:center;
+}
+
+.reviewChip.done{
+  background:#e8f8ee;
+  border-color:#34c759;
+}
+
+.reviewChip.todo{
+  background:white;
+}
+
+.reviewChip .glyphSmall{
+  font-size:22px;
+  line-height:1.2;
+}
+
+.reviewChip .meta{
+  font-size:11px;
+  color:#666;
+  margin-top:3px;
+}
+
 .backButton{
   background:#e5e5ea;
   padding:10px 14px;
@@ -560,6 +619,7 @@ header p{
 
     <div class="prompt">
       Build the Korean character from its parts.
+      Each letter counts on its own.
     </div>
 
     <div id="buildTarget" class="buildTarget">?</div>
@@ -798,11 +858,34 @@ const vowelToSyllable = {
   "ㅜ":"우","ㅠ":"유","ㅡ":"으","ㅣ":"이","ㅐ":"애","ㅔ":"에"
 };
 
+const ALL_CONSONANTS = [
+  "ㄱ","ㄴ","ㄷ","ㄹ","ㅁ","ㅂ","ㅅ",
+  "ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"
+];
+
+const ALL_VOWELS = [
+  "ㅏ","ㅑ","ㅓ","ㅕ","ㅗ","ㅛ","ㅜ",
+  "ㅠ","ㅡ","ㅣ","ㅐ","ㅔ"
+];
+
+const CHO_JAMO = [
+  "ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ",
+  "ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"
+];
+
+const JUNG_JAMO = [
+  "ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ",
+  "ㅗ","ㅘ","ㅙ","ㅚ","ㅛ",
+  "ㅜ","ㅝ","ㅞ","ㅟ","ㅠ",
+  "ㅡ","ㅢ","ㅣ"
+];
+
 /* =========================================================
    STATE
 ========================================================= */
 
-const STORAGE_KEY = "hangulQuest_v8";
+const STORAGE_KEY = "hangulQuest_v9";
+const NEEDED_CORRECT = 3;
 
 let s = {
   correct:0,
@@ -864,6 +947,61 @@ function writeCount(char){
   return s.writing[char] || 0;
 }
 
+function isConsonant(char){
+  return ALL_CONSONANTS.includes(char);
+}
+
+function isVowel(char){
+  return ALL_VOWELS.includes(char);
+}
+
+function composeHangul(cho,jung){
+  const ci = CHO_JAMO.indexOf(cho);
+  const ji = JUNG_JAMO.indexOf(jung);
+
+  if(ci < 0 || ji < 0){
+    return cho + jung;
+  }
+
+  return String.fromCharCode(0xAC00 + (ci * 21 + ji) * 28);
+}
+
+function decomposeHangul(char){
+  if(jamoBuild[char]){
+    return jamoBuild[char];
+  }
+
+  if(isConsonant(char) || isVowel(char)){
+    return [char];
+  }
+
+  const code = char.charCodeAt(0);
+
+  if(code < 0xAC00 || code > 0xD7A3){
+    return [char];
+  }
+
+  const syllable = code - 0xAC00;
+  const jung = Math.floor(syllable / 28) % 21;
+  const cho = Math.floor(syllable / 28 / 21);
+
+  return [CHO_JAMO[cho], JUNG_JAMO[jung]];
+}
+
+function lessonJamo(index){
+  const found = [];
+
+  lessons[index].items.forEach(item=>{
+    decomposeHangul(item[0]).forEach(part=>{
+      if(!found.includes(part)){
+        found.push(part);
+      }
+    });
+  });
+
+  return found;
+}
+
 function testPassed(i){
   return !!s.tests[i];
 }
@@ -874,13 +1012,13 @@ function lessonUnlocked(i){
 
 function practiceComplete(i){
   return lessons[i].items.every(item =>
-    practiceCount(item[0]) >= 3
+    practiceCount(item[0]) >= NEEDED_CORRECT
   );
 }
 
 function buildingComplete(i){
-  return lessons[i].items.every(item =>
-    buildCount(item[0]) >= 2
+  return lessonJamo(i).every(letter =>
+    buildCount(letter) >= NEEDED_CORRECT
   );
 }
 
@@ -964,11 +1102,13 @@ function renderLessons(){
     const passed = testPassed(i);
 
     const practiceDone = lessons[i].items.filter(item =>
-      practiceCount(item[0]) >= 3
+      practiceCount(item[0]) >= NEEDED_CORRECT
     ).length;
 
-    const buildDone = lessons[i].items.filter(item =>
-      buildCount(item[0]) >= 2
+    const buildLetters = lessonJamo(i);
+
+    const buildDone = buildLetters.filter(letter =>
+      buildCount(letter) >= NEEDED_CORRECT
     ).length;
 
     const div = document.createElement("div");
@@ -993,7 +1133,7 @@ function renderLessons(){
 
       <div class="lessonProgress">
         <div>Practice ${practiceDone}/${lesson.items.length}</div>
-        <div>Build ${buildDone}/${lesson.items.length}</div>
+        <div>Build ${buildDone}/${buildLetters.length}</div>
       </div>
 
       <button class="lessonButton"
@@ -1067,7 +1207,7 @@ function renderPracticeLesson(){
 function getIncompletePracticeItems(){
 
   return lessons[activeLesson].items.filter(item =>
-    practiceCount(item[0]) < 3
+    practiceCount(item[0]) < NEEDED_CORRECT
   );
 }
 
@@ -1161,7 +1301,7 @@ function checkPractice(){
   if(correct){
 
     s.practice[currentPractice[0]] =
-      Math.min(3,practiceCount(currentPractice)+1);
+      practiceCount(currentPractice[0]) + 1;
 
     s.correct++;
     s.total++;
@@ -1195,7 +1335,7 @@ function updatePracticeUI(){
   const items = lessons[activeLesson].items;
 
   const completed = items.filter(item =>
-    practiceCount(item[0]) >= 3
+    practiceCount(item[0]) >= NEEDED_CORRECT
   ).length;
 
   $("practiceProgress").textContent =
@@ -1234,59 +1374,62 @@ function startBuilding(index){
   newBuildingQuestion();
 }
 
-function buildTargetFor(item){
+function getIncompleteBuildLetters(){
 
-  const char = item[0];
-
-  if(jamoBuild[char]){
-    return char;
-  }
-
-  if(consonantToSyllable[char]){
-    return consonantToSyllable[char];
-  }
-
-  if(vowelToSyllable[char]){
-    return vowelToSyllable[char];
-  }
-
-  return char;
-}
-
-function buildPartsFor(item){
-
-  const char = item[0];
-
-  if(jamoBuild[char]){
-    return jamoBuild[char];
-  }
-
-  if(consonantToSyllable[char]){
-    return [char,"ㅏ"];
-  }
-
-  if(vowelToSyllable[char]){
-    return ["ㅇ",char];
-  }
-
-  return [];
-}
-
-function getIncompleteBuildItems(){
-
-  return lessons[activeLesson].items.filter(item =>
-    buildCount(item[0]) < 2
+  return lessonJamo(activeLesson).filter(letter =>
+    buildCount(letter) < NEEDED_CORRECT
   );
+}
+
+function randomPartnerFor(letter){
+
+  const lessonParts = lessonJamo(activeLesson);
+
+  if(isConsonant(letter)){
+
+    const vowels = lessonParts.filter(isVowel);
+    const pool = vowels.length ? vowels : ALL_VOWELS;
+
+    return random(pool);
+  }
+
+  const consonants = lessonParts.filter(isConsonant);
+  const pool = consonants.length ? consonants : ALL_CONSONANTS;
+
+  return random(pool);
+}
+
+function randomBuildPair(){
+
+  const incomplete = getIncompleteBuildLetters();
+
+  const focus = random(incomplete);
+
+  let cho;
+  let jung;
+
+  if(isConsonant(focus)){
+    cho = focus;
+    jung = randomPartnerFor(focus);
+  }else if(isVowel(focus)){
+    jung = focus;
+    cho = randomPartnerFor(focus);
+  }else{
+    const parts = decomposeHangul(focus);
+    cho = parts[0];
+    jung = parts[1] || random(ALL_VOWELS);
+  }
+
+  return {
+    cho,
+    jung,
+    syllable: composeHangul(cho,jung)
+  };
 }
 
 function getBuildingChoices(correctPart){
 
-  const allParts = [
-    "ㄱ","ㄴ","ㄷ","ㄹ","ㅁ","ㅂ","ㅅ",
-    "ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ",
-    "ㅏ","ㅑ","ㅓ","ㅕ","ㅗ","ㅛ","ㅜ",
-    "ㅠ","ㅡ","ㅣ","ㅐ","ㅔ"
-  ];
+  const allParts = ALL_CONSONANTS.concat(ALL_VOWELS);
 
   let choices = [correctPart];
 
@@ -1304,7 +1447,7 @@ function getBuildingChoices(correctPart){
 
 function newBuildingQuestion(){
 
-  const pool = getIncompleteBuildItems();
+  const pool = getIncompleteBuildLetters();
 
   if(!pool.length){
 
@@ -1314,17 +1457,14 @@ function newBuildingQuestion(){
     return;
   }
 
-  currentBuilding = random(pool);
+  const pair = randomBuildPair();
 
-  currentBuildParts =
-    buildPartsFor(currentBuilding);
-
+  currentBuilding = pair.syllable;
+  currentBuildParts = [pair.cho, pair.jung];
   selectedBuildParts = [];
-
   buildingLocked = false;
 
-  $("buildTarget").textContent =
-    buildTargetFor(currentBuilding);
+  $("buildTarget").textContent = pair.syllable;
 
   $("buildEquation").textContent =
     "? + ?";
@@ -1365,6 +1505,15 @@ function renderBuildingChoices(){
   });
 }
 
+function creditBuildLetter(letter){
+
+  s.building[letter] = buildCount(letter) + 1;
+
+  s.correct++;
+  s.total++;
+  s.streak++;
+}
+
 function chooseBuildingPart(part,button){
 
   if(buildingLocked) return;
@@ -1378,8 +1527,19 @@ function chooseBuildingPart(part,button){
 
     buildingLocked = true;
 
+    s.total++;
+    s.streak = 0;
+
+    const credited =
+      selectedBuildParts.length
+        ? `${selectedBuildParts.join(" + ")} counted.`
+        : "This word resets, but your letter scores stay.";
+
     $("buildFeedback").textContent =
-      `Not quite. Try the next one on another build.`;
+      `Not ${expected}. ${credited}`;
+
+    save();
+    updateBuildingUI();
 
     setTimeout(()=>{
       newBuildingQuestion();
@@ -1391,6 +1551,7 @@ function chooseBuildingPart(part,button){
   button.classList.add("correct");
 
   selectedBuildParts.push(part);
+  creditBuildLetter(part);
 
   const equation =
     selectedBuildParts.length === 1
@@ -1399,9 +1560,22 @@ function chooseBuildingPart(part,button){
 
   $("buildEquation").textContent = equation;
 
+  $("buildFeedback").textContent =
+    `${part} ✓  (${buildCount(part)} correct)`;
+
+  save();
+  updateBuildingUI();
+
   if(selectedBuildParts.length >= currentBuildParts.length){
 
-    checkBuilding();
+    buildingLocked = true;
+
+    $("buildFeedback").textContent =
+      "Both letters counted! ✓";
+
+    setTimeout(()=>{
+      newBuildingQuestion();
+    },900);
 
   }else{
 
@@ -1411,44 +1585,18 @@ function chooseBuildingPart(part,button){
   }
 }
 
-function checkBuilding(){
-
-  if(buildingLocked) return;
-
-  buildingLocked = true;
-
-  const target = currentBuilding[0];
-
-  s.building[target] =
-    Math.min(2,buildCount(target)+1);
-
-  s.correct++;
-  s.total++;
-  s.streak++;
-
-  $("buildFeedback").textContent =
-    "Correct build! ✓";
-
-  save();
-  updateBuildingUI();
-
-  setTimeout(()=>{
-    newBuildingQuestion();
-  },900);
-}
-
 function updateBuildingUI(){
 
   if(activeLesson === null) return;
 
-  const items = lessons[activeLesson].items;
+  const letters = lessonJamo(activeLesson);
 
-  const completed = items.filter(item =>
-    buildCount(item[0]) >= 2
+  const completed = letters.filter(letter =>
+    buildCount(letter) >= NEEDED_CORRECT
   ).length;
 
   $("buildProgress").textContent =
-    `${completed}/${items.length}`;
+    `${completed}/${letters.length}`;
 
   renderTestAvailability();
 }
@@ -1489,7 +1637,7 @@ function renderTestAvailability(){
   }else{
 
     $("testLockedText").textContent =
-      "Complete 3/3 practice and 2/2 building for every item first.";
+      "Complete 3 correct sounds and 3 correct letters in building first.";
 
     $("startTestButton").textContent =
       "Locked";
@@ -1631,6 +1779,44 @@ function renderLetterTest(task){
 
     container.appendChild(button);
   });
+}
+
+function buildTargetFor(item){
+
+  const char = item[0];
+
+  if(jamoBuild[char]){
+    return char;
+  }
+
+  if(consonantToSyllable[char]){
+    return consonantToSyllable[char];
+  }
+
+  if(vowelToSyllable[char]){
+    return vowelToSyllable[char];
+  }
+
+  return char;
+}
+
+function buildPartsFor(item){
+
+  const char = item[0];
+
+  if(jamoBuild[char]){
+    return jamoBuild[char];
+  }
+
+  if(consonantToSyllable[char]){
+    return [char,"ㅏ"];
+  }
+
+  if(vowelToSyllable[char]){
+    return ["ㅇ",char];
+  }
+
+  return decomposeHangul(char);
 }
 
 function renderBuildTest(task){
@@ -1934,7 +2120,7 @@ function startWriting(){
 
   writingPool =
     writingTargets().filter(target =>
-      writeCount(target.char) < 3
+      writeCount(target.char) < NEEDED_CORRECT
     );
 
   chooseNewWritingTarget();
@@ -1944,7 +2130,7 @@ function chooseNewWritingTarget(){
 
   writingPool =
     writingTargets().filter(target =>
-      writeCount(target.char) < 3
+      writeCount(target.char) < NEEDED_CORRECT
     );
 
   if(!writingPool.length){
@@ -1985,7 +2171,7 @@ function updateWritingUI(){
     writeCount(currentWritingTarget.char);
 
   $("writeProgress").textContent =
-    `${count}/3`;
+    `${Math.min(count,NEEDED_CORRECT)}/${NEEDED_CORRECT}`;
 
   $("writeTotal").textContent =
     s.correct;
@@ -2352,15 +2538,14 @@ function checkWriting(){
     const char =
       currentWritingTarget.char;
 
-    s.writing[char] =
-      Math.min(3,writeCount(char)+1);
+    s.writing[char] = writeCount(char) + 1;
 
     s.correct++;
     s.total++;
     s.streak++;
 
     $("writeFeedback").textContent =
-      `Correct! ✓ ${percent}%`;
+      `Correct! ✓ ${percent}%  ${char} marked once.`;
 
     save();
 
@@ -2370,7 +2555,7 @@ function checkWriting(){
     s.streak = 0;
 
     $("writeFeedback").textContent =
-      `Keep practicing. ${percent}%`;
+      `Not quite. ${percent}%  Moving on.`;
 
   }
 
@@ -2385,51 +2570,130 @@ function checkWriting(){
    REVIEW
 ========================================================= */
 
+function letterChip(char, soundCount, buildCountValue, writeCountValue){
+
+  const soundDone = soundCount >= NEEDED_CORRECT;
+  const buildDone = buildCountValue >= NEEDED_CORRECT;
+  const writeDone = writeCountValue >= NEEDED_CORRECT;
+  const done = soundDone && buildDone && writeDone;
+
+  return `
+    <div class="reviewChip ${done ? "done" : "todo"}">
+      <div class="glyphSmall">${char}</div>
+      <div class="meta">
+        sound ${Math.min(soundCount,NEEDED_CORRECT)}/${NEEDED_CORRECT}<br>
+        build ${Math.min(buildCountValue,NEEDED_CORRECT)}/${NEEDED_CORRECT}<br>
+        write ${Math.min(writeCountValue,NEEDED_CORRECT)}/${NEEDED_CORRECT}
+      </div>
+    </div>
+  `;
+}
+
+function isLetterDone(itemChar, buildLetters){
+
+  const soundDone = practiceCount(itemChar) >= NEEDED_CORRECT;
+  const writeDone = writeCount(itemChar) >= NEEDED_CORRECT;
+  const buildDone = buildLetters.every(letter =>
+    buildCount(letter) >= NEEDED_CORRECT
+  );
+
+  return soundDone && writeDone && buildDone;
+}
+
 function renderReview(){
 
   const container =
     $("reviewInfo");
 
-  let html = "";
+  let html = `
+    <p class="reviewLegend">
+      Each letter needs 3 correct sounds, 3 correct building picks,
+      and 3 correct writes. A wrong answer does not erase progress.
+    </p>
+  `;
+
+  const allDone = [];
+  const allTodo = [];
 
   lessons.forEach((lesson,index)=>{
 
+    const buildLetters = lessonJamo(index);
+
     const practiceDone =
       lesson.items.filter(item =>
-        practiceCount(item[0]) >= 3
+        practiceCount(item[0]) >= NEEDED_CORRECT
       ).length;
 
     const buildDone =
+      buildLetters.filter(letter =>
+        buildCount(letter) >= NEEDED_CORRECT
+      ).length;
+
+    const writeDone =
       lesson.items.filter(item =>
-        buildCount(item[0]) >= 2
+        writeCount(item[0]) >= NEEDED_CORRECT
       ).length;
 
     const test =
       testPassed(index);
 
+    const doneLetters = [];
+    const todoLetters = [];
+
+    lesson.items.forEach(item=>{
+
+      const char = item[0];
+      const parts = decomposeHangul(char);
+      const buildForItem = Math.min(
+        ...parts.map(part => buildCount(part))
+      );
+
+      const chip = letterChip(
+        char,
+        practiceCount(char),
+        buildForItem,
+        writeCount(char)
+      );
+
+      if(isLetterDone(char, parts)){
+        doneLetters.push(chip);
+        allDone.push(char);
+      }else{
+        todoLetters.push(chip);
+        allTodo.push(char);
+      }
+    });
+
     html += `
-      <div style="
-        background:#f2f2f7;
-        padding:15px;
-        border-radius:16px;
-        margin-bottom:10px;
-      ">
+      <div class="reviewSummary">
 
         <strong>${lesson.name}</strong>
+        ${!lessonUnlocked(index) ? " · locked" : ""}
 
         <div style="margin-top:6px;">
-          Practice:
-          ${practiceDone}/${lesson.items.length}
+          Sound: ${practiceDone}/${lesson.items.length}
+          · Build: ${buildDone}/${buildLetters.length}
+          · Write: ${writeDone}/${lesson.items.length}
+          · Test: ${test ? "Passed ✓" : "Not passed"}
         </div>
 
-        <div>
-          Building:
-          ${buildDone}/${lesson.items.length}
-        </div>
-
-        <div>
-          Test:
-          ${test ? "Passed ✓" : "Not passed"}
+        <div class="reviewGroups">
+          <div>
+            <div class="reviewGroupTitle">
+              Done (${doneLetters.length})
+            </div>
+            <div class="reviewLetterGrid">
+              ${doneLetters.length ? doneLetters.join("") : "<span style='color:#999'>None yet</span>"}
+            </div>
+          </div>
+          <div>
+            <div class="reviewGroupTitle">
+              Not done (${todoLetters.length})
+            </div>
+            <div class="reviewLetterGrid">
+              ${todoLetters.length ? todoLetters.join("") : "<span style='color:#999'>All done</span>"}
+            </div>
+          </div>
         </div>
 
       </div>
@@ -2439,9 +2703,8 @@ function renderReview(){
 
   html += `
     <p>
-      Each practice character needs 3 correct answers.
-      Each building item needs 2 successful builds.
-      Tests require 70% or higher.
+      Overall: ${allDone.length} letters done,
+      ${allTodo.length} still in progress.
     </p>
   `;
 
