@@ -599,11 +599,6 @@ header p{
 
     <div class="stats">
       <div class="stat">
-        <strong id="practiceProgress">0/0</strong>
-        Practice
-      </div>
-
-      <div class="stat">
         <strong id="practiceStreak">0</strong>
         Streak
       </div>
@@ -629,13 +624,6 @@ header p{
     <div id="buildChoices" class="buildChoices"></div>
 
     <div id="buildFeedback" class="feedback"></div>
-
-    <div class="stats">
-      <div class="stat">
-        <strong id="buildProgress">0/0</strong>
-        Building
-      </div>
-    </div>
 
   </div>
 
@@ -736,12 +724,6 @@ header p{
     <div id="writeFeedback" class="feedback"></div>
 
     <div class="stats">
-
-      <div class="stat">
-        <strong id="writeProgress">0/0</strong>
-        Current
-      </div>
-
       <div class="stat">
         <strong id="writeTotal">0</strong>
         Total Correct
@@ -1101,16 +1083,6 @@ function renderLessons(){
     const unlocked = lessonUnlocked(i);
     const passed = testPassed(i);
 
-    const practiceDone = lessons[i].items.filter(item =>
-      practiceCount(item[0]) >= NEEDED_CORRECT
-    ).length;
-
-    const buildLetters = lessonJamo(i);
-
-    const buildDone = buildLetters.filter(letter =>
-      buildCount(letter) >= NEEDED_CORRECT
-    ).length;
-
     const div = document.createElement("div");
 
     div.className = "lesson" + (!unlocked ? " locked" : "");
@@ -1129,11 +1101,6 @@ function renderLessons(){
       <div class="lessonInfo">
         <h3>${lesson.name}</h3>
         <p>${lesson.desc}</p>
-      </div>
-
-      <div class="lessonProgress">
-        <div>Practice ${practiceDone}/${lesson.items.length}</div>
-        <div>Build ${buildDone}/${buildLetters.length}</div>
       </div>
 
       <button class="lessonButton"
@@ -1331,15 +1298,6 @@ function checkPractice(){
 function updatePracticeUI(){
 
   if(activeLesson === null) return;
-
-  const items = lessons[activeLesson].items;
-
-  const completed = items.filter(item =>
-    practiceCount(item[0]) >= NEEDED_CORRECT
-  ).length;
-
-  $("practiceProgress").textContent =
-    `${completed}/${items.length}`;
 
   $("practiceStreak").textContent =
     s.streak;
@@ -1589,15 +1547,6 @@ function updateBuildingUI(){
 
   if(activeLesson === null) return;
 
-  const letters = lessonJamo(activeLesson);
-
-  const completed = letters.filter(letter =>
-    buildCount(letter) >= NEEDED_CORRECT
-  ).length;
-
-  $("buildProgress").textContent =
-    `${completed}/${letters.length}`;
-
   renderTestAvailability();
 }
 
@@ -1637,7 +1586,7 @@ function renderTestAvailability(){
   }else{
 
     $("testLockedText").textContent =
-      "Complete 3 correct sounds and 3 correct letters in building first.";
+      "Complete all practice and building tasks for every item first.";
 
     $("startTestButton").textContent =
       "Locked";
@@ -2045,73 +1994,34 @@ function afterTest(){
    WRITING
 ========================================================= */
 
-const COMBINED_REVIEW_DAYS = 7;
-
 let writingMode = "trace";
 let currentWritingTarget = null;
 let writingPool = [];
 
-function sectionIsCurrentlyCombined(index){
-
-  if(!testPassed(index)) return false;
-
-  const last =
-    Number(localStorage.getItem(
-      `hangulQuest_lastReview_${index}`
-    ) || 0);
-
-  const sevenDays =
-    COMBINED_REVIEW_DAYS * 24 * 60 * 60 * 1000;
-
-  return Date.now() - last < sevenDays;
-}
-
 function writingTargets(){
 
-  let targets = [];
+  const available = lessons
+    .slice(0,s.unlocked + 1)
+    .flatMap(lesson => lesson.items.map(item => item[0]));
 
-  lessons.forEach((lesson,index)=>{
+  const targets = [];
+  const seen = new Set();
 
-    if(!lessonUnlocked(index)) return;
-
-    const combined =
-      sectionIsCurrentlyCombined(index);
-
-    if(combined){
-
-      lesson.items.forEach(item=>{
-
-        let target = item[0];
-
-        if(index === 0 || index === 1){
-          target = consonantToSyllable[item[0]] || item[0];
+  for(let length=1;length<=3;length++){
+    const addTargets = prefix => {
+      if(prefix.length === length){
+        if(!seen.has(prefix)){
+          seen.add(prefix);
+          targets.push({char:prefix});
         }
+        return;
+      }
 
-        if(index === 2 || index === 3){
-          target = vowelToSyllable[item[0]] || item[0];
-        }
+      available.forEach(char => addTargets(prefix + char));
+    };
 
-        targets.push({
-          char:target,
-          section:index
-        });
-
-      });
-
-    }else{
-
-      lesson.items.forEach(item=>{
-
-        targets.push({
-          char:item[0],
-          section:index
-        });
-
-      });
-
-    }
-
-  });
+    addTargets("");
+  }
 
   return targets;
 }
@@ -2140,6 +2050,7 @@ function chooseNewWritingTarget(){
     updateWritingUI();
 
     $("writeGuide").textContent = "✓";
+    $("writePrompt").textContent = "All available writing prompts are complete.";
 
     return;
   }
@@ -2149,6 +2060,9 @@ function chooseNewWritingTarget(){
 
   $("writeGuide").textContent =
     currentWritingTarget.char;
+
+  $("writePrompt").textContent =
+    `${writingMode === "trace" ? "Trace" : "Write"} this: ${currentWritingTarget.char}`;
 
   $("writeFeedback").textContent = "";
 
@@ -2161,17 +2075,10 @@ function updateWritingUI(){
 
   if(!currentWritingTarget){
 
-    $("writeProgress").textContent = "Complete";
     $("writeTotal").textContent = s.correct;
 
     return;
   }
-
-  const count =
-    writeCount(currentWritingTarget.char);
-
-  $("writeProgress").textContent =
-    `${Math.min(count,NEEDED_CORRECT)}/${NEEDED_CORRECT}`;
 
   $("writeTotal").textContent =
     s.correct;
@@ -2194,10 +2101,9 @@ function setWritingMode(mode){
   $("writeGuide").style.visibility =
     mode === "trace" ? "visible" : "hidden";
 
-  $("writePrompt").textContent =
-    mode === "trace"
-      ? "Trace the character."
-      : "Write the character yourself.";
+  $("writePrompt").textContent = currentWritingTarget
+    ? `${mode === "trace" ? "Trace" : "Write"} this: ${currentWritingTarget.char}`
+    : "Choose a writing prompt.";
 }
 
 /* =========================================================
@@ -2408,7 +2314,7 @@ function writingScore(){
   let userCount = 0;
   let matched = 0;
 
-  const tolerance = 8;
+  const tolerance = 14;
 
   for(let y=0;y<size;y++){
 
@@ -2505,14 +2411,14 @@ function writingScore(){
     userCount ? matched/userCount : 0;
 
   let score =
-    coverage*.78 +
-    precision*.22;
+    coverage*.88 +
+    precision*.12;
 
-  if(coverage >= .50){
+  if(coverage >= .40){
     score += .08;
   }
 
-  if(coverage >= .70){
+  if(coverage >= .60){
     score += .07;
   }
 
@@ -2533,7 +2439,7 @@ function checkWriting(){
   const percent =
     Math.round(score*100);
 
-  if(percent >= 70){
+  if(percent >= 55){
 
     const char =
       currentWritingTarget.char;
