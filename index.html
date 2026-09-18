@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#f7f7f9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
 <title>Hangul Quest</title>
 
 <style>
@@ -18,12 +19,12 @@
   --accent:#111827;
   --good:#16803c;
   --bad:#d92d20;
-  --soft:#f0f0f4
+  --soft:#f0f0f4;
 }
 
 *{
   box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent
+  -webkit-tap-highlight-color:transparent;
 }
 
 body{
@@ -31,55 +32,58 @@ body{
   background:var(--bg);
   color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",sans-serif;
-  min-height:100svh
+  min-height:100svh;
 }
 
 button{
   font:inherit;
   color:inherit;
-  cursor:pointer
+  cursor:pointer;
 }
 
 button:active{
-  transform:scale(.98)
+  transform:scale(.98);
 }
 
 .app{
   max-width:640px;
   margin:auto;
-  padding:env(safe-area-inset-top) 17px calc(25px + env(safe-area-inset-bottom))
+  padding:
+    env(safe-area-inset-top)
+    17px
+    calc(25px + env(safe-area-inset-bottom));
 }
 
 header{
   padding:18px 3px 10px;
   display:flex;
   align-items:center;
-  justify-content:space-between
+  justify-content:space-between;
 }
 
 h1{
   font-size:29px;
   letter-spacing:-.7px;
-  margin:0
+  margin:0;
 }
 
 .sub{
   color:var(--muted);
   font-size:13px;
-  margin-top:3px
+  margin-top:3px;
 }
 
 .headerButtons{
   display:flex;
   gap:7px;
-  align-items:center
+  align-items:center;
 }
 
 .iconbtn{
   border:0;
   background:var(--soft);
   border-radius:13px;
-  padding:10px 12px
+  padding:10px 12px;
 }
 
 .langbtn{
@@ -89,14 +93,14 @@ h1{
   border-radius:13px;
   padding:10px 12px;
   font-size:12px;
-  font-weight:800
+  font-weight:800;
 }
 
 nav{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:6px;
-  margin:8px 0 14px
+  margin:8px 0 14px;
 }
 
 nav button{
@@ -106,20 +110,20 @@ nav button{
   padding:10px 3px;
   font-size:12px;
   font-weight:700;
-  color:var(--muted)
+  color:var(--muted);
 }
 
 nav button.active{
   background:var(--accent);
-  color:#fff
+  color:#fff;
 }
 
 .view{
-  display:none
+  display:none;
 }
 
 .view.active{
-  display:block
+  display:block;
 }
 
 .card{
@@ -127,11 +131,11 @@ nav button.active{
   border:1px solid var(--line);
   border-radius:24px;
   padding:20px;
-  box-shadow:0 6px 25px #00000008
+  box-shadow:0 6px 25px #00000008;
 }
 
 .hero{
-  padding:24px 20px
+  padding:24px 20px;
 }
 
 .eyebrow{
@@ -139,17 +143,17 @@ nav button.active{
   letter-spacing:1px;
   color:var(--muted);
   font-size:11px;
-  font-weight:800
+  font-weight:800;
 }
 
 h2{
   font-size:24px;
   margin:5px 0 7px;
-  letter-spacing:-.4px
+  letter-spacing:-.4px;
 }
 
 p{
-  line-height:1.45
+  line-height:1.45;
 }
 
 .primary{
@@ -160,7 +164,7 @@ p{
   border-radius:16px;
   padding:15px;
   font-weight:750;
-  margin-top:10px
+  margin-top:10px;
 }
 
 .secondary{
@@ -168,7 +172,7 @@ p{
   background:white;
   border-radius:14px;
   padding:12px 14px;
-  font-weight:700
+  font-weight:700;
 }
 
 .progress{
@@ -176,20 +180,20 @@ p{
   background:#e8e8ed;
   border-radius:99px;
   overflow:hidden;
-  margin:9px 0 16px
+  margin:9px 0 16px;
 }
 
 .progress div{
   height:100%;
   background:var(--accent);
   width:0;
-  transition:.25s
+  transition:.25s;
 }
 
 .lesson-list{
   display:grid;
   gap:10px;
-  margin-top:14px
+  margin-top:14px;
 }
 
 .lesson{
@@ -201,11 +205,11 @@ p{
   background:#fff;
   border:1px solid var(--line);
   border-radius:19px;
-  padding:14px
+  padding:14px;
 }
 
 .lesson.locked{
-  opacity:.5
+  opacity:.5;
 }
 
 .num{
@@ -216,21 +220,21 @@ p{
   display:grid;
   place-items:center;
   font-weight:800;
-  flex:none
+  flex:none;
 }
 
 .lesson b{
-  display:block
+  display:block;
 }
 
 .lesson small{
-  color:var(--muted)
+  color:var(--muted);
 }
 
 .xp{
   margin-left:auto;
   font-size:12px;
-  color:var(--muted)
+  color:var(--muted);
 }
 
 .glyph{
@@ -238,20 +242,20 @@ p{
   font-size:100px;
   text-align:center;
   line-height:1.05;
-  padding:13px 0
+  padding:13px 0;
 }
 
 .prompt{
   text-align:center;
   color:var(--muted);
   font-size:13px;
-  font-weight:700
+  font-weight:700;
 }
 
 .answers{
   display:grid;
   gap:9px;
-  margin-top:13px
+  margin-top:13px;
 }
 
 .answer{
@@ -262,37 +266,37 @@ p{
   text-align:left;
   font-size:17px;
   font-weight:700;
-  min-height:56px
+  min-height:56px;
 }
 
 .answer.correct{
   border-color:var(--good);
   background:#effaf2;
-  color:var(--good)
+  color:var(--good);
 }
 
 .answer.wrong{
   border-color:var(--bad);
   background:#fff1ef;
-  color:var(--bad)
+  color:var(--bad);
 }
 
 .feedback{
   text-align:center;
   font-weight:750;
   min-height:24px;
-  margin:12px 0 0
+  margin:12px 0 0;
 }
 
 .next{
-  display:none
+  display:none;
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:8px;
-  margin:12px 0
+  margin:12px 0;
 }
 
 .stat{
@@ -300,24 +304,24 @@ p{
   border:1px solid var(--line);
   border-radius:15px;
   padding:12px 5px;
-  text-align:center
+  text-align:center;
 }
 
 .stat b{
   font-size:19px;
-  display:block
+  display:block;
 }
 
 .stat span{
   font-size:10px;
-  color:var(--muted)
+  color:var(--muted);
 }
 
 .choices{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:10px;
-  margin-top:14px
+  margin-top:14px;
 }
 
 .choices button{
@@ -326,31 +330,31 @@ p{
   background:#fff;
   border-radius:17px;
   font-weight:750;
-  font-size:20px
+  font-size:20px;
 }
 
 .board{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
-  margin:14px 0
+  margin:14px 0;
 }
 
 .tile{
   background:var(--soft);
   border-radius:17px;
   padding:14px;
-  text-align:center
+  text-align:center;
 }
 
 .tile b{
   font-size:31px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
 }
 
 .tile small{
   display:block;
-  color:var(--muted)
+  color:var(--muted);
 }
 
 .builder{
@@ -362,7 +366,7 @@ p{
   border:1px dashed #cfcfd5;
   border-radius:18px;
   font-size:52px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
 }
 
 .slot{
@@ -371,12 +375,12 @@ p{
   border:2px dashed #ccc;
   border-radius:15px;
   display:grid;
-  place-items:center
+  place-items:center;
 }
 
 .padwrap{
   position:relative;
-  margin-top:12px
+  margin-top:12px;
 }
 
 .pad{
@@ -386,7 +390,7 @@ p{
   border:2px solid var(--line);
   border-radius:20px;
   touch-action:none;
-  display:block
+  display:block;
 }
 
 .guide{
@@ -398,49 +402,49 @@ p{
   color:#e5e5e9;
   font-size:130px;
   font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  z-index:1
+  z-index:1;
 }
 
 .padwrap canvas{
   position:relative;
-  z-index:2
+  z-index:2;
 }
 
 .row{
   display:flex;
   gap:8px;
-  align-items:center
+  align-items:center;
 }
 
 .row>*{
-  flex:1
+  flex:1;
 }
 
 .tiny{
   font-size:12px;
-  color:var(--muted)
+  color:var(--muted);
 }
 
 .flash{
   font-size:64px;
   text-align:center;
   font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  padding:24px
+  padding:24px;
 }
 
 .stars{
   letter-spacing:3px;
-  font-size:25px
+  font-size:25px;
 }
 
 .hidden{
-  display:none!important
+  display:none!important;
 }
 
 .reviewgrid{
   display:grid;
   gap:9px;
-  margin-top:12px
+  margin-top:12px;
 }
 
 .reviewitem{
@@ -450,32 +454,32 @@ p{
   border:1px solid var(--line);
   background:#fff;
   border-radius:15px;
-  padding:13px
+  padding:13px;
 }
 
 .reviewitem b{
   font-size:25px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
 }
 
 .due{
   color:var(--muted);
-  font-size:12px
+  font-size:12px;
 }
 
 .score{
   font-size:31px;
   font-weight:850;
   text-align:center;
-  margin-top:8px
+  margin-top:8px;
 }
 
 .score.good{
-  color:var(--good)
+  color:var(--good);
 }
 
 .score.bad{
-  color:var(--bad)
+  color:var(--bad);
 }
 
 .masteryBox{
@@ -484,7 +488,154 @@ p{
   padding:12px;
   margin-top:12px;
   text-align:center;
-  font-size:13px
+  font-size:13px;
+}
+
+/* WORD OF THE DAY */
+
+.wordCard{
+  text-align:center;
+}
+
+.wordDate{
+  font-size:13px;
+  color:var(--muted);
+  margin:4px 0 10px;
+}
+
+.wordDay{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.wordKorean{
+  font-size:54px;
+  font-weight:800;
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  margin:8px 0;
+}
+
+.wordMeaning{
+  font-size:16px;
+  margin-bottom:14px;
+}
+
+.wordInput{
+  width:100%;
+  padding:14px;
+  border:1.5px solid var(--line);
+  border-radius:15px;
+  font:inherit;
+  font-size:20px;
+  text-align:center;
+  background:#fff;
+}
+
+.wordInput:focus{
+  outline:2px solid #cfd3dc;
+}
+
+.wordInput:disabled{
+  background:#f1f1f3;
+  color:#777;
+}
+
+.wordStatus{
+  min-height:26px;
+  margin-top:10px;
+  font-weight:750;
+}
+
+.calendar{
+  margin-top:18px;
+}
+
+.calendarHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.calendarHead button{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:11px;
+  padding:7px 11px;
+}
+
+.calendarTitle{
+  font-weight:800;
+}
+
+.calendarGrid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+
+.calDow{
+  text-align:center;
+  font-size:10px;
+  color:var(--muted);
+  padding:4px 0;
+}
+
+.calDay{
+  min-height:43px;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:11px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+}
+
+.calDay.muted{
+  opacity:.35;
+}
+
+.calDay.selected{
+  outline:2px solid var(--accent);
+}
+
+.calDay.future{
+  opacity:.3;
+}
+
+.mark{
+  font-size:15px;
+  line-height:15px;
+  font-weight:900;
+}
+
+.mark.red{
+  color:var(--bad);
+}
+
+.mark.yellow{
+  color:#d5a400;
+}
+
+.mark.green{
+  color:var(--good);
+}
+
+.mark.mix-yellow{
+  color:#d5a400;
+  text-shadow:
+    -1px -1px 0 #16803c,
+     1px 1px 0 #16803c;
+}
+
+.mark.mix-red-yellow{
+  color:#d5a400;
+  text-shadow:
+    -1px -1px 0 #d92d20,
+     1px 1px 0 #d92d20;
 }
 </style>
 </head>
@@ -494,316 +645,485 @@ p{
 <div class="app">
 
 <header>
-  <div>
-    <h1 id="title">Hangul Quest 🇰🇷</h1>
-    <div class="sub" id="subtitle">
-      Read it • build it • write it • remember it
-    </div>
-  </div>
 
-  <div class="headerButtons">
-    <button class="langbtn" id="language" type="button">한국어</button>
-    <button class="iconbtn" id="sound" type="button">🔊</button>
-  </div>
+<div>
+<h1 id="title">Hangul Quest 🇰🇷</h1>
+<div class="sub" id="subtitle">
+Read it • build it • write it • remember it
+</div>
+</div>
+
+<div class="headerButtons">
+<button class="langbtn" id="language" type="button">한국어</button>
+<button class="iconbtn" id="sound" type="button">🔊</button>
+</div>
+
 </header>
 
 <nav id="nav">
-  <button class="active" data-view="home" type="button">Learn</button>
-  <button data-view="practice" type="button">Practice</button>
-  <button data-view="write" type="button">Write</button>
-  <button data-view="review" type="button">Review</button>
+
+<button class="active" data-view="home" type="button">
+Learn
+</button>
+
+<button data-view="practice" type="button">
+Practice
+</button>
+
+<button data-view="write" type="button">
+Write
+</button>
+
+<button data-view="word" type="button">
+Word
+</button>
+
+<button data-view="review" type="button">
+Review
+</button>
+
 </nav>
+
+
+<!-- =========================
+     LEARN
+========================= -->
 
 <section id="home" class="view active">
 
-  <div class="card hero">
+<div class="card hero">
 
-    <div class="eyebrow" id="courseEyebrow">Your course</div>
+<div class="eyebrow" id="courseEyebrow">
+Your course
+</div>
 
-    <h2 id="homeTitle">Start learning Hangul</h2>
+<h2 id="homeTitle">
+Start learning Hangul
+</h2>
 
-    <p id="homeDescription">
-      Short lessons take you from individual letters
-      to real Korean syllable blocks.
-    </p>
+<p id="homeDescription">
+Short lessons take you from individual letters to real Korean syllable blocks.
+</p>
 
-    <div class="progress">
-      <div id="coursebar"></div>
-    </div>
+<div class="progress">
+<div id="coursebar"></div>
+</div>
 
-    <div class="tiny" id="courseText"></div>
+<div class="tiny" id="courseText"></div>
 
-  </div>
+</div>
 
-  <div class="lesson-list" id="lessons"></div>
+<div class="lesson-list" id="lessons"></div>
 
 </section>
+
+
+<!-- =========================
+     PRACTICE
+========================= -->
 
 <section id="practice" class="view">
 
-  <div class="card">
+<div class="card">
 
-    <div class="row">
-      <div class="eyebrow" id="lessonPracticeLabel">
-        Lesson practice
-      </div>
+<div class="row">
 
-      <div class="tiny" id="qnum"></div>
-    </div>
+<div class="eyebrow" id="lessonPracticeLabel">
+Lesson practice
+</div>
 
-    <div class="progress">
-      <div id="qbar"></div>
-    </div>
+<div class="tiny" id="qnum"></div>
 
-    <div class="prompt" id="prompt"></div>
+</div>
 
-    <div class="glyph" id="big"></div>
+<div class="progress">
+<div id="qbar"></div>
+</div>
 
-    <div class="answers" id="answers"></div>
+<div class="prompt" id="prompt"></div>
 
-    <div class="feedback" id="feedback"></div>
+<div class="glyph" id="big"></div>
 
-    <button class="primary next" id="next" type="button">
-      Continue →
-    </button>
+<div class="answers" id="answers"></div>
 
-    <div class="masteryBox" id="masteryBox">
-      Correct: 0 • Wrong: 0
-    </div>
+<div class="feedback" id="feedback"></div>
 
-  </div>
+<button class="primary next" id="next" type="button">
+Continue →
+</button>
 
-  <div class="stats">
+<div class="masteryBox" id="masteryBox">
+Correct: 0 • Wrong: 0
+</div>
 
-    <div class="stat">
-      <b id="correct">0</b>
-      <span id="correctLabel">Correct</span>
-    </div>
+</div>
 
-    <div class="stat">
-      <b id="streak">0</b>
-      <span id="streakLabel">Streak</span>
-    </div>
+<div class="stats">
 
-    <div class="stat">
-      <b id="accuracy">—</b>
-      <span id="accuracyLabel">Accuracy</span>
-    </div>
+<div class="stat">
+<b id="correct">0</b>
+<span id="correctLabel">Correct</span>
+</div>
 
-  </div>
+<div class="stat">
+<b id="streak">0</b>
+<span id="streakLabel">Streak</span>
+</div>
 
-  <div class="card" id="builderCard">
+<div class="stat">
+<b id="accuracy">—</b>
+<span id="accuracyLabel">Accuracy</span>
+</div>
 
-    <div class="eyebrow" id="builderEyebrow">
-      Syllable builder
-    </div>
+</div>
 
-    <h2 id="builderTitle">
-      Build a block
-    </h2>
 
-    <div class="builder">
+<div class="card" id="builderCard">
 
-      <div class="slot" id="bs1">?</div>
-      <div class="slot" id="bs2">?</div>
-      <div class="slot" id="bs3">→</div>
+<div class="eyebrow" id="builderEyebrow">
+Syllable builder
+</div>
 
-    </div>
+<h2 id="builderTitle">
+Build a block
+</h2>
 
-    <div class="choices" id="buildChoices"></div>
+<div class="builder">
 
-    <div class="feedback" id="buildFeedback"></div>
+<div class="slot" id="bs1">
+?
+</div>
 
-  </div>
+<div class="slot" id="bs2">
+?
+</div>
+
+<div class="slot" id="bs3">
+→
+</div>
+
+</div>
+
+<div class="choices" id="buildChoices"></div>
+
+<div class="feedback" id="buildFeedback"></div>
+
+</div>
 
 </section>
+
+
+<!-- =========================
+     WRITE
+========================= -->
 
 <section id="write" class="view">
 
-  <div class="card">
+<div class="card">
 
-    <div class="eyebrow" id="writingLabel">
-      Writing practice
-    </div>
+<div class="eyebrow" id="writingLabel">
+Writing practice
+</div>
 
-    <h2 id="writeGlyph">ㄱ</h2>
+<h2 id="writeGlyph">
+ㄱ
+</h2>
 
-    <p class="tiny" id="writeInstructions">
-      Trace the guide with your finger.
-      Your strokes stay on this device.
-    </p>
+<p class="tiny" id="writeInstructions">
+Trace the guide with your finger. Your strokes stay on this device.
+</p>
 
-    <div class="padwrap">
+<div class="padwrap">
 
-      <div class="guide" id="guide">ㄱ</div>
+<div class="guide" id="guide">
+ㄱ
+</div>
 
-      <canvas class="pad" id="canvas"></canvas>
+<canvas class="pad" id="canvas"></canvas>
 
-    </div>
+</div>
 
-    <div class="score" id="writeScore"></div>
+<div class="score" id="writeScore"></div>
 
-    <div class="tiny" style="text-align:center" id="scoreHint"></div>
+<div
+class="tiny"
+style="text-align:center"
+id="scoreHint">
+</div>
 
-    <div class="row">
+<div class="row">
 
-      <button class="secondary" id="erase" type="button">
-        Clear
-      </button>
+<button
+class="secondary"
+id="erase"
+type="button">
+Clear
+</button>
 
-      <button class="primary" id="checkWrite" type="button">
-        Check ✓
-      </button>
+<button
+class="primary"
+id="checkWrite"
+type="button">
+Check ✓
+</button>
 
-    </div>
+</div>
 
-    <button class="secondary" id="newWrite" type="button" style="width:100%;margin-top:8px">
-      Next letter →
-    </button>
+<button
+class="secondary"
+id="newWrite"
+type="button"
+style="width:100%;margin-top:8px">
+Next letter →
+</button>
 
-    <div class="feedback" id="writeFeedback"></div>
+<div class="feedback" id="writeFeedback"></div>
 
-  </div>
+</div>
 
 </section>
 
+
+<!-- =========================
+     WORD OF THE DAY
+========================= -->
+
+<section id="word" class="view">
+
+<div class="card wordCard">
+
+<div class="eyebrow" id="wordEyebrow">
+Word of the day
+</div>
+
+<h2 id="wordTitle">
+Type today's Korean word
+</h2>
+
+<div class="wordDate" id="wordDate"></div>
+
+<div class="wordDay" id="wordDay">
+Word of the day
+</div>
+
+<div class="wordKorean" id="wordKorean"></div>
+
+<div class="wordMeaning" id="wordMeaning"></div>
+
+<input
+class="wordInput"
+id="wordInput"
+type="text"
+inputmode="text"
+lang="ko"
+autocomplete="off"
+autocapitalize="none"
+spellcheck="false"
+placeholder="Type the Korean word">
+
+<div class="wordStatus" id="wordStatus"></div>
+
+<div class="tiny" id="wordAttempts"></div>
+
+</div>
+
+
+<div class="card calendar">
+
+<div class="calendarHead">
+
+<button
+id="prevMonth"
+type="button">
+‹
+</button>
+
+<div
+class="calendarTitle"
+id="calendarTitle">
+</div>
+
+<button
+id="nextMonth"
+type="button">
+›
+</button>
+
+</div>
+
+<div
+class="calendarGrid"
+id="calendar">
+</div>
+
+<div
+class="tiny"
+id="calendarHint"
+style="margin-top:10px;text-align:center">
+Select a date to practice that day's word.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     REVIEW
+========================= -->
+
 <section id="review" class="view">
 
-  <div class="card">
+<div class="card">
 
-    <div class="eyebrow" id="reviewEyebrow">
-      Spaced repetition
-    </div>
+<div class="eyebrow" id="reviewEyebrow">
+Spaced repetition
+</div>
 
-    <h2 id="reviewTitle">
-      Review what needs work
-    </h2>
+<h2 id="reviewTitle">
+Review what needs work
+</h2>
 
-    <p class="tiny" id="reviewDescription">
-      Letters you miss come back sooner.
-      Strong letters wait longer.
-    </p>
+<p
+class="tiny"
+id="reviewDescription">
+Letters you miss come back sooner. Strong letters wait longer.
+</p>
 
-    <div class="reviewgrid" id="reviewList"></div>
+<div
+class="reviewgrid"
+id="reviewList">
+</div>
 
-    <button class="primary" id="startReview" type="button">
-      Start review
-    </button>
+<button
+class="primary"
+id="startReview"
+type="button">
+Start review
+</button>
 
-  </div>
+</div>
 
 </section>
 
 </div>
 
+
 <script>
 
 /* =========================================================
-   HANGUL DATA
+   LESSON DATA
 ========================================================= */
 
-const units = [
+const units=[
 
-  {
-    name:"Consonants 1",
-    ko:"자음 1",
-    desc:"The first 7 consonants",
-    koDesc:"처음 배우는 7개의 자음",
-    items:[
-      ["ㄱ","g / k"],
-      ["ㄴ","n"],
-      ["ㄷ","d / t"],
-      ["ㄹ","r / l"],
-      ["ㅁ","m"],
-      ["ㅂ","b / p"],
-      ["ㅅ","s"]
-    ]
-  },
+{
+name:"Consonants 1",
+ko:"자음 1",
+desc:"The first 7 consonants",
+koDesc:"처음 배우는 7개의 자음",
 
-  {
-    name:"Consonants 2",
-    ko:"자음 2",
-    desc:"More consonants",
-    koDesc:"더 많은 자음",
-    items:[
-      ["ㅇ","ng / silent"],
-      ["ㅈ","j"],
-      ["ㅊ","ch"],
-      ["ㅋ","k"],
-      ["ㅌ","t"],
-      ["ㅍ","p"],
-      ["ㅎ","h"]
-    ]
-  },
+items:[
+["ㄱ","g / k"],
+["ㄴ","n"],
+["ㄷ","d / t"],
+["ㄹ","r / l"],
+["ㅁ","m"],
+["ㅂ","b / p"],
+["ㅅ","s"]
+]
+},
 
-  {
-    name:"Vowels 1",
-    ko:"모음 1",
-    desc:"Basic vowels",
-    koDesc:"기본 모음",
-    items:[
-      ["ㅏ","a"],
-      ["ㅑ","ya"],
-      ["ㅓ","eo"],
-      ["ㅕ","yeo"],
-      ["ㅗ","o"],
-      ["ㅛ","yo"],
-      ["ㅜ","u"]
-    ]
-  },
+{
+name:"Consonants 2",
+ko:"자음 2",
+desc:"More consonants",
+koDesc:"더 많은 자음",
 
-  {
-    name:"Vowels 2",
-    ko:"모음 2",
-    desc:"The remaining basic vowels",
-    koDesc:"나머지 기본 모음",
-    items:[
-      ["ㅠ","yu"],
-      ["ㅡ","eu"],
-      ["ㅣ","i"],
-      ["ㅐ","ae"],
-      ["ㅔ","e"]
-    ]
-  },
+items:[
+["ㅇ","ng / silent"],
+["ㅈ","j"],
+["ㅊ","ch"],
+["ㅋ","k"],
+["ㅌ","t"],
+["ㅍ","p"],
+["ㅎ","h"]
+]
+},
 
-  {
-    name:"Syllable Blocks",
-    ko:"음절 블록",
-    desc:"Combine consonants + vowels",
-    koDesc:"자음과 모음을 결합해요",
-    items:[
-      ["가","ga"],
-      ["나","na"],
-      ["다","da"],
-      ["마","ma"],
-      ["바","ba"],
-      ["사","sa"]
-    ]
-  },
+{
+name:"Vowels 1",
+ko:"모음 1",
+desc:"Basic vowels",
+koDesc:"기본 모음",
 
-  {
-    name:"Reading",
-    ko:"읽기",
-    desc:"Simple Korean blocks",
-    koDesc:"간단한 한국어 음절",
-    items:[
-      ["너","neo"],
-      ["미","mi"],
-      ["고","go"],
-      ["아","a"],
-      ["우","u"],
-      ["하","ha"]
-    ]
-  }
+items:[
+["ㅏ","a"],
+["ㅑ","ya"],
+["ㅓ","eo"],
+["ㅕ","yeo"],
+["ㅗ","o"],
+["ㅛ","yo"],
+["ㅜ","u"]
+]
+},
+
+{
+name:"Vowels 2",
+ko:"모음 2",
+desc:"The remaining basic vowels",
+koDesc:"나머지 기본 모음",
+
+items:[
+["ㅠ","yu"],
+["ㅡ","eu"],
+["ㅣ","i"],
+["ㅐ","ae"],
+["ㅔ","e"]
+]
+},
+
+{
+name:"Syllable Blocks",
+ko:"음절 블록",
+desc:"Combine consonants + vowels",
+koDesc:"자음과 모음을 결합해요",
+
+items:[
+["가","ga"],
+["나","na"],
+["다","da"],
+["마","ma"],
+["바","ba"],
+["사","sa"]
+]
+},
+
+{
+name:"Reading",
+ko:"읽기",
+desc:"Simple Korean blocks",
+koDesc:"간단한 한국어 음절",
+
+items:[
+["너","neo"],
+["미","mi"],
+["고","go"],
+["아","a"],
+["우","u"],
+["하","ha"]
+]
+}
 
 ];
 
-const all = units.flatMap((u,ui)=>
-  u.items.map(x=>({
-    ...x,
-    unit:ui
-  }))
+const all=units.flatMap(
+(u,ui)=>
+u.items.map(
+x=>({...x,unit:ui})
+)
 );
+
 
 /* =========================================================
    STATE
@@ -812,23 +1132,21 @@ const all = units.flatMap((u,ui)=>
 let s;
 
 try{
-  s=JSON.parse(
-    localStorage.getItem("hangulQuest") || "{}"
-  );
+s=JSON.parse(
+localStorage.getItem("hangulQuest")||"{}"
+);
 }catch(e){
-  s={};
+s={};
 }
 
-s.correct ??= 0;
-s.total ??= 0;
-s.streak ??= 0;
-s.unlocked ??= 1;
-s.mastery ??= {};
+s.correct??=0;
+s.total??=0;
+s.streak??=0;
+s.unlocked??=1;
+s.mastery??={};
+s.wordDays??={};
 
-let language=
-  s.language==="ko"
-    ?"ko"
-    :"en";
+let language=s.language==="ko"?"ko":"en";
 
 let q=0;
 let qTotal=10;
@@ -836,278 +1154,307 @@ let current=null;
 let locked=false;
 let activeUnit=0;
 
+
 /* =========================================================
    HELPERS
 ========================================================= */
 
 function $(id){
-  return document.getElementById(id);
+return document.getElementById(id);
 }
 
 function save(){
 
-  s.language=language;
+s.language=language;
 
-  try{
-    localStorage.setItem(
-      "hangulQuest",
-      JSON.stringify(s)
-    );
-  }catch(e){}
+try{
+localStorage.setItem(
+"hangulQuest",
+JSON.stringify(s)
+);
+}catch(e){}
 
 }
 
 function shuffle(a){
-
-  return [...a].sort(
-    ()=>Math.random()-.5
-  );
-
+return [...a].sort(
+()=>Math.random()-.5
+);
 }
 
 function getMastery(key){
 
-  s.mastery[key] ??={
-    correct:0,
-    wrong:0
-  };
+s.mastery[key]??={
+correct:0,
+wrong:0
+};
 
-  const m=s.mastery[key];
+s.mastery[key].correct??=0;
+s.mastery[key].wrong??=0;
 
-  if(!Number.isFinite(m.correct))
-    m.correct=0;
-
-  if(!Number.isFinite(m.wrong))
-    m.wrong=0;
-
-  return m;
+return s.mastery[key];
 
 }
 
-function updateMastery(key,isCorrect){
+function updateMastery(key,ok){
 
-  const m=getMastery(key);
+const m=getMastery(key);
 
-  if(isCorrect)
-    m.correct++;
-  else
-    m.wrong++;
+if(ok){
+m.correct++;
+}else{
+m.wrong++;
+}
 
-  save();
+save();
 
 }
 
 function masteredCount(){
 
-  return all.filter(x=>{
-    const m=getMastery(x[0]);
-    return m.correct>=2;
-  }).length;
+return all.filter(
+x=>getMastery(x[0]).correct>=2
+).length;
 
 }
 
+
 /* =========================================================
-   LANGUAGE
+   LANGUAGE UI
 ========================================================= */
 
 function updateLanguageUI(){
 
-  const ko=language==="ko";
+const ko=language==="ko";
 
-  document.documentElement.lang=
-    ko ? "ko" : "en";
+document.documentElement.lang=
+ko?"ko":"en";
 
-  $("language").textContent=
-    ko ? "English" : "한국어";
+$("language").textContent=
+ko?"English":"한국어";
 
-  $("subtitle").textContent=
-    ko
-      ?"읽고 • 만들고 • 쓰고 • 기억해요"
-      :"Read it • build it • write it • remember it";
+$("subtitle").textContent=
+ko
+?"읽고 • 만들고 • 쓰고 • 기억해요"
+:"Read it • build it • write it • remember it";
 
-  $("courseEyebrow").textContent=
-    ko ? "나의 코스" : "Your course";
+$("courseEyebrow").textContent=
+ko?"나의 코스":"Your course";
 
-  $("homeTitle").textContent=
-    ko
-      ?"한글 배우기 시작"
-      :"Start learning Hangul";
+$("homeTitle").textContent=
+ko?"한글 배우기 시작"
+:"Start learning Hangul";
 
-  $("homeDescription").textContent=
-    ko
-      ?"짧은 레슨으로 글자부터 실제 한국어 음절 블록까지 배워요."
-      :"Short lessons take you from individual letters to real Korean syllable blocks.";
+$("homeDescription").textContent=
+ko
+?"짧은 레슨으로 글자부터 실제 한국어 음절 블록까지 배워요."
+:"Short lessons take you from individual letters to real Korean syllable blocks.";
 
-  $("lessonPracticeLabel").textContent=
-    ko ? "레슨 연습" : "Lesson practice";
+$("lessonPracticeLabel").textContent=
+ko?"레슨 연습":"Lesson practice";
 
-  $("correctLabel").textContent=
-    ko ? "정답" : "Correct";
+$("correctLabel").textContent=
+ko?"정답":"Correct";
 
-  $("streakLabel").textContent=
-    ko ? "연속" : "Streak";
+$("streakLabel").textContent=
+ko?"연속":"Streak";
 
-  $("accuracyLabel").textContent=
-    ko ? "정확도" : "Accuracy";
+$("accuracyLabel").textContent=
+ko?"정확도":"Accuracy";
 
-  $("builderEyebrow").textContent=
-    ko ? "음절 블록 만들기" : "Syllable builder";
+$("builderEyebrow").textContent=
+ko?"음절 블록 만들기":"Syllable builder";
 
-  $("writingLabel").textContent=
-    ko ? "쓰기 연습" : "Writing practice";
+$("writingLabel").textContent=
+ko?"쓰기 연습":"Writing practice";
 
-  $("writeInstructions").textContent=
-    ko
-      ?"가이드를 손가락으로 따라 써 보세요. 획은 이 기기에만 남아요."
-      :"Trace the guide with your finger. Your strokes stay on this device.";
+$("writeInstructions").textContent=
+ko
+?"가이드를 손가락으로 따라 써 보세요. 획은 이 기기에만 남아요."
+:"Trace the guide with your finger. Your strokes stay on this device.";
 
-  $("erase").textContent=
-    ko ? "지우기" : "Clear";
+$("erase").textContent=
+ko?"지우기":"Clear";
 
-  $("newWrite").textContent=
-    ko ? "다음 글자 →" : "Next letter →";
+$("checkWrite").textContent=
+ko?"확인 ✓":"Check ✓";
 
-  $("reviewEyebrow").textContent=
-    ko ? "간격 반복" : "Spaced repetition";
+$("newWrite").textContent=
+ko?"다음 글자 →":"Next letter →";
 
-  $("reviewTitle").textContent=
-    ko ? "복습이 필요한 것을 확인하세요" : "Review what needs work";
+$("wordEyebrow").textContent=
+ko?"오늘의 단어":"Word of the day";
 
-  $("reviewDescription").textContent=
-    ko
-      ?"틀린 글자는 더 빨리 다시 나오고, 익숙한 글자는 더 오래 기다려요."
-      :"Letters you miss come back sooner. Strong letters wait longer.";
+$("wordTitle").textContent=
+ko
+?"오늘의 한국어 단어를 입력하세요"
+:"Type today's Korean word";
 
-  $("startReview").textContent=
-    ko ? "복습 시작" : "Start review";
+$("wordInput").placeholder=
+ko
+?"한국어 단어 입력"
+:"Type the Korean word";
 
-  document
-    .querySelectorAll("#nav button")
-    .forEach(button=>{
+$("calendarHint").textContent=
+ko
+?"날짜를 선택하면 그날의 단어를 다시 풀 수 있어요."
+:"Select a date to practice that day's word.";
 
-      const view=button.dataset.view;
+$("reviewEyebrow").textContent=
+ko?"간격 반복":"Spaced repetition";
 
-      const names=ko
-        ?{
-          home:"학습",
-          practice:"연습",
-          write:"쓰기",
-          review:"복습"
-        }
-        :{
-          home:"Learn",
-          practice:"Practice",
-          write:"Write",
-          review:"Review"
-        };
+$("reviewTitle").textContent=
+ko
+?"복습이 필요한 것을 확인하세요"
+:"Review what needs work";
 
-      button.textContent=names[view];
+$("reviewDescription").textContent=
+ko
+?"틀린 글자는 더 빨리 다시 나오고, 익숙한 글자는 더 오래 기다려요."
+:"Letters you miss come back sooner. Strong letters wait longer.";
 
-    });
+$("startReview").textContent=
+ko?"복습 시작":"Start review";
 
-  renderLessons();
 
-  if(current)
-    renderCurrentQuestion();
+document
+.querySelectorAll("#nav button")
+.forEach(b=>{
 
-  writeNew();
+const n=
+ko
+?{
+home:"학습",
+practice:"연습",
+write:"쓰기",
+word:"단어",
+review:"복습"
+}
+:{
+home:"Learn",
+practice:"Practice",
+write:"Write",
+word:"Word",
+review:"Review"
+};
 
-  renderReview();
+b.textContent=
+n[b.dataset.view];
 
-  updateMasteryDisplay();
+});
+
+
+renderLessons();
+
+if(current)
+renderCurrentQuestion();
+
+writeNew();
+
+renderReview();
+
+renderWord();
+
+stats();
+
+updateMasteryDisplay();
 
 }
 
-$("language").addEventListener(
-  "click",
-  ()=>{
-
-    language=
-      language==="en"
-        ?"ko"
-        :"en";
-
-    save();
-    updateLanguageUI();
-
-  }
-);
 
 /* =========================================================
    NAVIGATION
 ========================================================= */
 
-function setView(viewName){
+$("language").addEventListener(
+"click",
+()=>{
+language=
+language==="en"
+?"ko"
+:"en";
 
-  const validViews=[
-    "home",
-    "practice",
-    "write",
-    "review"
-  ];
+save();
+updateLanguageUI();
+}
+);
 
-  if(!validViews.includes(viewName))
-    viewName="home";
 
-  document
-    .querySelectorAll(".view")
-    .forEach(view=>{
-      view.classList.toggle(
-        "active",
-        view.id===viewName
-      );
-    });
+function setView(v){
 
-  document
-    .querySelectorAll("#nav button")
-    .forEach(button=>{
-      button.classList.toggle(
-        "active",
-        button.dataset.view===viewName
-      );
-    });
-
-  if(viewName==="practice"){
-
-    if(!current){
-
-      q=0;
-      newQuestion();
-
-    }
-
-  }
-
-  if(viewName==="write"){
-
-    setTimeout(()=>{
-      resizeCanvas();
-    },50);
-
-  }
-
-  if(viewName==="review")
-    renderReview();
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
+if(
+![
+"home",
+"practice",
+"write",
+"word",
+"review"
+].includes(v)
+){
+v="home";
 }
 
 document
-  .querySelectorAll("#nav button")
-  .forEach(button=>{
+.querySelectorAll(".view")
+.forEach(x=>
+x.classList.toggle(
+"active",
+x.id===v
+)
+);
 
-    button.addEventListener(
-      "click",
-      ()=>{
-        setView(button.dataset.view);
-      }
-    );
+document
+.querySelectorAll("#nav button")
+.forEach(x=>
+x.classList.toggle(
+"active",
+x.dataset.view===v
+)
+);
 
-  });
+if(
+v==="practice" &&
+!current
+){
+q=0;
+newQuestion();
+}
+
+if(v==="write"){
+setTimeout(
+resizeCanvas,
+50
+);
+}
+
+if(v==="review"){
+renderReview();
+}
+
+if(v==="word"){
+renderWord();
+}
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+document
+.querySelectorAll("#nav button")
+.forEach(
+b=>
+b.addEventListener(
+"click",
+()=>{
+setView(b.dataset.view);
+}
+)
+);
+
 
 /* =========================================================
    LESSONS
@@ -1115,92 +1462,94 @@ document
 
 function renderLessons(){
 
-  $("lessons").innerHTML=
-    units.map((u,i)=>{
+$("lessons").innerHTML=
+units
+.map(
+(u,i)=>{
 
-      const unlocked=i<=s.unlocked;
+const unlocked=
+i<=s.unlocked;
 
-      return `
+return `
+<button
+class="lesson ${!unlocked?"locked":""}"
+${!unlocked?"disabled":""}
+data-i="${i}"
+type="button">
 
-        <button
-          class="lesson ${!unlocked?"locked":""}"
-          ${!unlocked?"disabled":""}
-          data-i="${i}"
-          type="button"
-        >
+<div class="num">
+${i+1}
+</div>
 
-          <div class="num">
-            ${i+1}
-          </div>
+<div>
+<b>
+${language==="ko"?u.ko:u.name}
+</b>
 
-          <div>
+<small>
+${language==="ko"?u.koDesc:u.desc}
+</small>
+</div>
 
-            <b>
-              ${language==="ko"?u.ko:u.name}
-            </b>
+<span class="xp">
+${unlocked?"▶":"🔒"}
+</span>
 
-            <small>
-              ${language==="ko"?u.koDesc:u.desc}
-            </small>
+</button>
+`;
 
-          </div>
+}
+)
+.join("");
 
-          <span class="xp">
-            ${unlocked?"▶":"🔒"}
-          </span>
 
-        </button>
+document
+.querySelectorAll(".lesson")
+.forEach(
+b=>
+b.addEventListener(
+"click",
+()=>{
+activeUnit=
+Number(b.dataset.i);
 
-      `;
+startLesson(activeUnit);
+}
+)
+);
 
-    }).join("");
 
-  document
-    .querySelectorAll(".lesson")
-    .forEach(button=>{
+const done=
+Math.min(
+units.length,
+s.unlocked
+);
 
-      button.addEventListener(
-        "click",
-        ()=>{
-          activeUnit=
-            Number(button.dataset.i);
+$("coursebar").style.width=
+done/units.length*100+"%";
 
-          startLesson(activeUnit);
-        }
-      );
-
-    });
-
-  const done=Math.min(
-    units.length,
-    s.unlocked
-  );
-
-  $("coursebar").style.width=
-    done/units.length*100+"%";
-
-  $("courseText").textContent=
-    language==="ko"
-      ?`${done} / ${units.length} 레슨 잠금 해제 • ${masteredCount()}개 마스터`
-      :`${done} of ${units.length} lessons unlocked • ${masteredCount()} mastered`;
+$("courseText").textContent=
+language==="ko"
+?`${done} / ${units.length} 레슨 잠금 해제 • ${masteredCount()}개 마스터`
+:`${done} of ${units.length} lessons unlocked • ${masteredCount()} mastered`;
 
 }
 
-/* =========================================================
-   START LESSON
-========================================================= */
 
 function startLesson(i){
 
-  activeUnit=i;
-  q=0;
-  current=null;
+activeUnit=i;
 
-  setView("practice");
+q=0;
 
-  newQuestion();
+current=null;
+
+setView("practice");
+
+newQuestion();
 
 }
+
 
 /* =========================================================
    PRACTICE
@@ -1208,240 +1557,236 @@ function startLesson(i){
 
 function renderCurrentQuestion(){
 
-  if(!current)
-    return;
+if(!current)
+return;
 
-  const mode=
-    current.practiceMode;
+const mode=
+current.practiceMode;
 
-  const right=
-    mode==="sound"
-      ?current[1]
-      :current[0];
+const right=
+mode==="sound"
+?current[1]
+:current[0];
 
-  $("prompt").textContent=
-    language==="ko"
-      ?(
-        mode==="sound"
-          ?"이 한글 글자의 소리는 무엇인가요?"
-          :"이 소리에 맞는 한글 글자는 무엇인가요?"
-      )
-      :(
-        mode==="sound"
-          ?"Which sound matches this Korean letter?"
-          :"Which Korean letter matches this sound?"
-      );
 
-  $("big").textContent=
-    language==="en"
-      ?(
-        mode==="sound"
-          ?current[0]
-          :current[1]
-      )
-      :(
-        mode==="sound"
-          ?current[1]
-          :current[0]
-      );
+$("prompt").textContent=
+language==="ko"
+?
+(
+mode==="sound"
+?
+"이 한글 글자의 소리는 무엇인가요?"
+:
+"이 소리에 맞는 한글 글자는 무엇인가요?"
+)
+:
+(
+mode==="sound"
+?
+"Which sound matches this Korean letter?"
+:
+"Which Korean letter matches this sound?"
+);
 
-  const pool=units[activeUnit].items;
 
-  const wrong=
-    shuffle(
-      pool.filter(x=>x!==current)
-    )
-    .slice(0,3)
-    .map(x=>{
+$("big").textContent=
+mode==="sound"
+?current[0]
+:current[1];
 
-      if(language==="en"){
 
-        return mode==="sound"
-          ?x[1]
-          :x[0];
+const pool=
+units[activeUnit].items;
 
-      }else{
+const wrong=
+shuffle(
+pool.filter(
+x=>x!==current
+)
+)
+.slice(0,3)
+.map(
+x=>
+mode==="sound"
+?x[1]
+:x[0]
+);
 
-        return mode==="sound"
-          ?x[1]
-          :x[0];
 
-      }
+$("answers").innerHTML=
+shuffle([
+right,
+...wrong
+])
+.map(
+a=>
+`
+<button
+class="answer"
+type="button">
+${a}
+</button>
+`
+)
+.join("");
 
-    });
 
-  $("answers").innerHTML=
-    shuffle([
-      right,
-      ...wrong
-    ])
-    .map(answer=>`
+[
+...$("answers").children
+]
+.forEach(
+b=>
+b.addEventListener(
+"click",
+()=>{
+answer(b,right);
+}
+)
+);
 
-      <button
-        class="answer"
-        type="button"
-      >
-        ${answer}
-      </button>
-
-    `).join("");
-
-  [
-    ...$("answers").children
-  ].forEach(button=>{
-
-    button.addEventListener(
-      "click",
-      ()=>{
-        answer(button,right);
-      }
-    );
-
-  });
-
-  updateMasteryDisplay();
+updateMasteryDisplay();
 
 }
+
 
 function newQuestion(){
 
-  locked=false;
+locked=false;
 
-  $("feedback").textContent="";
+$("feedback").textContent="";
 
-  $("next").style.display="none";
+$("next").style.display="none";
 
-  $("qnum").textContent=
-    `${q+1} / ${qTotal}`;
+$("qnum").textContent=
+`${q+1} / ${qTotal}`;
 
-  $("qbar").style.width=
-    q/qTotal*100+"%";
+$("qbar").style.width=
+q/qTotal*100+"%";
 
-  const pool=
-    units[activeUnit].items;
 
-  const item=
-    pool[
-      Math.floor(
-        Math.random()*pool.length
-      )
-    ];
+const item=
+units[activeUnit]
+.items[
+Math.floor(
+Math.random()*
+units[activeUnit].items.length
+)
+];
 
-  current=[
-    item[0],
-    item[1]
-  ];
 
-  current.practiceMode=
-    Math.random()<.5
-      ?"sound"
-      :"letter";
+current=[
+item[0],
+item[1]
+];
 
-  renderCurrentQuestion();
+current.practiceMode=
+Math.random()<.5
+?"sound"
+:"letter";
+
+renderCurrentQuestion();
 
 }
 
-/* =========================================================
-   ANSWER
-========================================================= */
 
 function answer(button,right){
 
-  if(locked)
-    return;
+if(locked)
+return;
 
-  locked=true;
+locked=true;
 
-  s.total++;
+s.total++;
 
-  const ok=
-    button.textContent.trim()===right;
+const ok=
+button.textContent.trim()===right;
 
-  updateMastery(
-    current[0],
-    ok
-  );
+updateMastery(
+current[0],
+ok
+);
 
-  if(ok){
+if(ok){
 
-    s.correct++;
-    s.streak++;
+s.correct++;
+s.streak++;
 
-    button.classList.add("correct");
+button.classList.add("correct");
 
-    $("feedback").textContent=
-      language==="ko"
-        ?"✓ 정답!"
-        :"✓ Correct!";
+$("feedback").textContent=
+language==="ko"
+?"✓ 정답!"
+:"✓ Correct!";
 
-  }else{
+}else{
 
-    s.streak=0;
+s.streak=0;
 
-    button.classList.add("wrong");
+button.classList.add("wrong");
 
-    $("feedback").textContent=
-      language==="ko"
-        ?`정답: ${right}`
-        :`Answer: ${right}`;
+$("feedback").textContent=
+language==="ko"
+?`정답: ${right}`
+:`Answer: ${right}`;
 
-    [
-      ...$("answers").children
-    ].forEach(button=>{
-
-      if(
-        button.textContent.trim()===right
-      ){
-        button.classList.add("correct");
-      }
-
-    });
-
-  }
-
-  save();
-  stats();
-  updateMasteryDisplay();
-
-  $("next").style.display="block";
+[
+...$("answers").children
+]
+.forEach(
+b=>{
+if(
+b.textContent.trim()===right
+){
+b.classList.add("correct");
+}
+}
+);
 
 }
 
-/* =========================================================
-   NEXT QUESTION
-========================================================= */
+save();
+
+stats();
+
+updateMasteryDisplay();
+
+$("next").style.display="block";
+
+}
+
 
 $("next").addEventListener(
-  "click",
-  ()=>{
+"click",
+()=>{
 
-    q++;
+q++;
 
-    if(q>=qTotal){
+if(q>=qTotal){
 
-      if(
-        activeUnit===s.unlocked &&
-        s.unlocked<units.length
-      ){
-        s.unlocked++;
-      }
+if(
+activeUnit===s.unlocked &&
+s.unlocked<units.length
+){
+s.unlocked++;
+}
 
-      save();
+save();
 
-      renderLessons();
+renderLessons();
 
-      current=null;
+current=null;
 
-      setView("home");
+setView("home");
 
-    }else{
+}else{
 
-      newQuestion();
+newQuestion();
 
-    }
+}
 
-  }
+}
 );
+
 
 /* =========================================================
    STATS
@@ -1449,199 +1794,200 @@ $("next").addEventListener(
 
 function stats(){
 
-  $("correct").textContent=
-    s.correct;
+$("correct").textContent=
+s.correct;
 
-  $("streak").textContent=
-    s.streak;
+$("streak").textContent=
+s.streak;
 
-  $("accuracy").textContent=
-    s.total
-      ?Math.round(
-        s.correct/s.total*100
-      )+"%"
-      :"—";
-
-}
-
-/* =========================================================
-   MASTERY DISPLAY
-========================================================= */
-
-function updateMasteryDisplay(){
-
-  if(!current)
-    return;
-
-  const m=getMastery(current[0]);
-
-  $("masteryBox").textContent=
-    language==="ko"
-      ?`정답 ${m.correct} • 오답 ${m.wrong}`
-      :`Correct: ${m.correct} • Wrong: ${m.wrong}`;
+$("accuracy").textContent=
+s.total
+?Math.round(
+s.correct/s.total*100
+)+"%"
+:"—";
 
 }
+
 
 /* =========================================================
    SYLLABLE BUILDER
 ========================================================= */
 
 const builderTargets=[
-  ["가","ㄱ","ㅏ"],
-  ["나","ㄴ","ㅏ"],
-  ["다","ㄷ","ㅏ"],
-  ["미","ㅁ","ㅣ"],
-  ["고","ㄱ","ㅗ"],
-  ["하","ㅎ","ㅏ"]
+
+["가","ㄱ","ㅏ"],
+["나","ㄴ","ㅏ"],
+["다","ㄷ","ㅏ"],
+["미","ㅁ","ㅣ"],
+["고","ㄱ","ㅗ"],
+["하","ㅎ","ㅏ"]
+
 ];
 
 let builderTarget=null;
 let builderStep=0;
 
+
 function build(){
 
-  builderTarget=
-    builderTargets[
-      Math.floor(
-        Math.random()*
-        builderTargets.length
-      )
-    ];
+builderTarget=
+builderTargets[
+Math.floor(
+Math.random()*
+builderTargets.length
+)
+];
 
-  builderStep=0;
+builderStep=0;
 
-  $("builderTitle").textContent=
-    language==="ko"
-      ?`${builderTarget[0]} 만들기`
-      :`Build ${builderTarget[0]}`;
+$("builderTitle").textContent=
+language==="ko"
+?`${builderTarget[0]} 만들기`
+:`Build ${builderTarget[0]}`;
 
-  $("bs1").textContent="?";
-  $("bs2").textContent="?";
-  $("bs3").textContent="→";
+$("bs1").textContent="?";
+$("bs2").textContent="?";
+$("bs3").textContent="→";
 
-  $("buildFeedback").textContent="";
+$("buildFeedback").textContent="";
 
-  makeBuilderChoices();
+makeBuilderChoices();
 
 }
 
+
 function makeBuilderChoices(){
 
-  const right=
-    builderTarget[
-      builderStep+1
-    ];
+const right=
+builderTarget[
+builderStep+1
+];
 
-  const pool=
-    shuffle([
-      "ㄱ",
-      "ㄴ",
-      "ㄷ",
-      "ㅁ",
-      "ㅎ",
-      "ㅏ",
-      "ㅣ",
-      "ㅗ"
-    ])
-    .filter(x=>x!==right)
-    .slice(0,3);
+const pool=
+shuffle([
+"ㄱ",
+"ㄴ",
+"ㄷ",
+"ㅁ",
+"ㅎ",
+"ㅏ",
+"ㅣ",
+"ㅗ"
+])
+.filter(
+x=>x!==right
+)
+.slice(0,3);
 
-  $("buildChoices").innerHTML=
-    shuffle([
-      right,
-      ...pool
-    ])
-    .map(x=>`
-      <button type="button">
-        ${x}
-      </button>
-    `)
-    .join("");
 
-  [
-    ...$("buildChoices").children
-  ].forEach(button=>{
+$("buildChoices").innerHTML=
+shuffle([
+right,
+...pool
+])
+.map(
+x=>
+`
+<button type="button">
+${x}
+</button>
+`
+)
+.join("");
 
-    button.addEventListener(
-      "click",
-      ()=>{
 
-        if(
-          button.textContent.trim()!==right
-        ){
+[
+...$("buildChoices").children
+]
+.forEach(
+b=>
+b.addEventListener(
+"click",
+()=>{
 
-          $("buildFeedback").textContent=
-            language==="ko"
-              ?"다시 해보세요"
-              :"Try again";
+if(
+b.textContent.trim()!==right
+){
 
-          return;
+$("buildFeedback").textContent=
+language==="ko"
+?"다시 해보세요"
+:"Try again";
 
-        }
+return;
 
-        button.classList.add("correct");
+}
 
-        [
-          ...$("buildChoices").children
-        ].forEach(x=>x.disabled=true);
+b.classList.add("correct");
 
-        $("buildFeedback").textContent="✓";
+[
+...$("buildChoices").children
+]
+.forEach(
+x=>x.disabled=true
+);
 
-        if(builderStep===0){
+$("buildFeedback").textContent="✓";
 
-          $("bs1").textContent=
-            builderTarget[1];
+if(builderStep===0){
 
-        }else{
+$("bs1").textContent=
+builderTarget[1];
 
-          $("bs2").textContent=
-            builderTarget[2];
+}else{
 
-        }
+$("bs2").textContent=
+builderTarget[2];
 
-        builderStep++;
+}
 
-        if(builderStep<2){
+builderStep++;
 
-          setTimeout(
-            makeBuilderChoices,
-            300
-          );
+if(builderStep<2){
 
-        }else{
+setTimeout(
+makeBuilderChoices,
+300
+);
 
-          $("bs3").textContent=
-            "→ "+builderTarget[0];
+}else{
 
-          $("buildFeedback").textContent=
-            language==="ko"
-              ?`✓ ${builderTarget[0]} = ${builderTarget[1]} + ${builderTarget[2]}`
-              :`✓ ${builderTarget[0]} = ${builderTarget[1]} + ${builderTarget[2]}`;
+$("bs3").textContent=
+"→ "+builderTarget[0];
 
-          setTimeout(
-            build,
-            1500
-          );
+$("buildFeedback").textContent=
+language==="ko"
+?`✓ ${builderTarget[0]} = ${builderTarget[1]} + ${builderTarget[2]}`
+:`✓ ${builderTarget[0]} = ${builderTarget[1]} + ${builderTarget[2]}`;
 
-        }
+setTimeout(
+build,
+1500
+);
 
-      }
-    );
+}
 
-  });
+}
+)
+);
 
 }
 
 build();
 
+
 /* =========================================================
    WRITING
+   ORIGINAL DRAWING SYSTEM
 ========================================================= */
 
 const consonants=
-  units
-    .slice(0,2)
-    .flatMap(u=>u.items);
+units
+.slice(0,2)
+.flatMap(
+u=>u.items
+);
 
 let wi=0;
 let ctx=null;
@@ -1649,705 +1995,1805 @@ let down=false;
 let lastX=0;
 let lastY=0;
 
-/* Canvas resize */
 
 function resizeCanvas(){
 
-  const canvas=$("canvas");
+const canvas=$("canvas");
 
-  if(!canvas)
-    return;
+if(!canvas)
+return;
 
-  const rect=
-    canvas.getBoundingClientRect();
+const rect=
+canvas.getBoundingClientRect();
 
-  const d=
-    window.devicePixelRatio||1;
+const d=
+window.devicePixelRatio||1;
 
-  canvas.width=
-    Math.max(1,rect.width*d);
+canvas.width=
+Math.max(
+1,
+rect.width*d
+);
 
-  canvas.height=
-    Math.max(1,rect.height*d);
+canvas.height=
+Math.max(
+1,
+rect.height*d
+);
 
-  ctx=
-    canvas.getContext("2d");
+ctx=
+canvas.getContext("2d");
 
-  ctx.setTransform(
-    d,
-    0,
-    0,
-    d,
-    0,
-    0
-  );
+ctx.setTransform(
+d,
+0,
+0,
+d,
+0,
+0
+);
 
-  ctx.lineWidth=5;
-  ctx.lineCap="round";
-  ctx.lineJoin="round";
+ctx.lineWidth=5;
+ctx.lineCap="round";
+ctx.lineJoin="round";
 
 }
 
-/* New writing letter */
 
 function writeNew(){
 
-  const x=
-    consonants[
-      wi%consonants.length
-    ][0];
+const x=
+consonants[
+wi%consonants.length
+][0];
 
-  $("writeGlyph").textContent=x;
+$("writeGlyph").textContent=x;
 
-  $("guide").textContent=x;
+$("guide").textContent=x;
 
-  $("writeFeedback").textContent="";
+$("writeFeedback").textContent="";
 
-  $("writeScore").textContent="";
+$("writeScore").textContent="";
 
-  $("scoreHint").textContent=
-    language==="ko"
-      ?"70% 이상이면 읽을 수 있는 것으로 표시돼요."
-      :"70% or higher is considered readable.";
+$("scoreHint").textContent=
+language==="ko"
+?
+"70% 이상이면 읽을 수 있는 것으로 표시돼요."
+:
+"70% or higher is considered readable.";
 
-  clearCanvas();
+clearCanvas();
 
 }
 
-/* Clear drawing */
 
 function clearCanvas(){
 
-  if(!ctx)
-    resizeCanvas();
+if(!ctx)
+resizeCanvas();
 
-  if(!ctx)
-    return;
+if(!ctx)
+return;
 
-  const canvas=$("canvas");
+const canvas=$("canvas");
 
-  ctx.clearRect(
-    0,
-    0,
-    canvas.clientWidth,
-    canvas.clientHeight
-  );
+ctx.clearRect(
+0,
+0,
+canvas.clientWidth,
+canvas.clientHeight
+);
 
 }
 
-/* Writing buttons */
-
-$("checkWrite").addEventListener(
-  "click",
-  ()=>{
-    calculateWritingScore();
-  }
-);
-
-$("newWrite").addEventListener(
-  "click",
-  ()=>{
-    wi++;
-    writeNew();
-  }
-);
-
-$("erase").addEventListener(
-  "click",
-  ()=>{
-    clearCanvas();
-    $("writeScore").textContent="";
-    $("writeFeedback").textContent="";
-  }
-);
-
-/* Pointer position */
 
 function pos(e){
 
-  const rect=
-    $("canvas")
-      .getBoundingClientRect();
+const rect=
+$("canvas").getBoundingClientRect();
 
-  return [
-    e.clientX-rect.left,
-    e.clientY-rect.top
-  ];
+return[
+e.clientX-rect.left,
+e.clientY-rect.top
+];
 
 }
 
-/* Start drawing */
 
 $("canvas").addEventListener(
-  "pointerdown",
-  e=>{
+"pointerdown",
+e=>{
 
-    e.preventDefault();
+e.preventDefault();
 
-    down=true;
+down=true;
 
-    $("canvas").setPointerCapture(
-      e.pointerId
-    );
-
-    const p=pos(e);
-
-    lastX=p[0];
-    lastY=p[1];
-
-  }
+$("canvas")
+.setPointerCapture(
+e.pointerId
 );
 
-/* Draw */
+const p=pos(e);
+
+lastX=p[0];
+lastY=p[1];
+
+}
+);
+
 
 $("canvas").addEventListener(
-  "pointermove",
-  e=>{
+"pointermove",
+e=>{
 
-    if(!down || !ctx)
-      return;
+if(!down||!ctx)
+return;
 
-    e.preventDefault();
+e.preventDefault();
 
-    const p=pos(e);
+const p=pos(e);
 
-    ctx.beginPath();
+ctx.beginPath();
 
-    ctx.moveTo(
-      lastX,
-      lastY
-    );
-
-    ctx.lineTo(
-      p[0],
-      p[1]
-    );
-
-    ctx.stroke();
-
-    lastX=p[0];
-    lastY=p[1];
-
-  }
+ctx.moveTo(
+lastX,
+lastY
 );
 
-/* Stop drawing */
+ctx.lineTo(
+p[0],
+p[1]
+);
+
+ctx.stroke();
+
+lastX=p[0];
+lastY=p[1];
+
+}
+);
+
 
 [
-  "pointerup",
-  "pointercancel"
-].forEach(eventName=>{
+"pointerup",
+"pointercancel"
+]
+.forEach(
+eventName=>{
 
-  $("canvas").addEventListener(
-    eventName,
-    e=>{
+$("canvas").addEventListener(
+eventName,
+e=>{
 
-      down=false;
+down=false;
 
-      try{
-        $("canvas").releasePointerCapture(
-          e.pointerId
-        );
-      }catch(err){}
+try{
 
-    }
-  );
+$("canvas")
+.releasePointerCapture(
+e.pointerId
+);
 
-});
+}catch(err){}
 
-/* Canvas resize */
+}
+);
+
+}
+);
+
 
 if(window.ResizeObserver){
 
-  new ResizeObserver(
-    resizeCanvas
-  ).observe(
-    $("canvas")
-  );
+new ResizeObserver(
+resizeCanvas
+)
+.observe(
+$("canvas")
+);
 
 }
 
 window.addEventListener(
-  "resize",
-  resizeCanvas
+"resize",
+resizeCanvas
 );
 
 resizeCanvas();
 
+
 /* =========================================================
-   WRITING SCORE
+   FORGIVING WRITING SCORE
 ========================================================= */
 
 function getInkBounds(canvas){
 
-  const w=canvas.width;
-  const h=canvas.height;
+const c=
+canvas.getContext(
+"2d",
+{
+willReadFrequently:true
+}
+);
 
-  const data=
-    ctx.getImageData(
-      0,
-      0,
-      w,
-      h
-    ).data;
+const w=canvas.width;
+const h=canvas.height;
 
-  let minX=w;
-  let minY=h;
-  let maxX=-1;
-  let maxY=-1;
+const data=
+c.getImageData(
+0,
+0,
+w,
+h
+).data;
 
-  for(let y=0;y<h;y++){
+let minX=w;
+let minY=h;
+let maxX=-1;
+let maxY=-1;
 
-    for(let x=0;x<w;x++){
 
-      const i=(y*w+x)*4;
+for(
+let y=0;
+y<h;
+y++
+){
 
-      const alpha=data[i+3];
+for(
+let x=0;
+x<w;
+x++
+){
 
-      if(alpha>20){
+const i=
+(y*w+x)*4;
 
-        if(x<minX)minX=x;
-        if(y<minY)minY=y;
-        if(x>maxX)maxX=x;
-        if(y>maxY)maxY=y;
+if(
+data[i+3]>20
+){
 
-      }
+if(x<minX)
+minX=x;
 
-    }
+if(y<minY)
+minY=y;
 
-  }
+if(x>maxX)
+maxX=x;
 
-  if(maxX<0)
-    return null;
-
-  return{
-    minX,
-    minY,
-    maxX,
-    maxY
-  };
+if(y>maxY)
+maxY=y;
 
 }
 
-function normalizeInk(canvas,bounds,size=64){
-
-  const source=
-    document.createElement("canvas");
-
-  source.width=size;
-  source.height=size;
-
-  const sctx=
-    source.getContext("2d");
-
-  const pad=5;
-
-  const bw=
-    bounds.maxX-bounds.minX+1;
-
-  const bh=
-    bounds.maxY-bounds.minY+1;
-
-  const scale=
-    Math.min(
-      (size-pad*2)/bw,
-      (size-pad*2)/bh
-    );
-
-  const dw=bw*scale;
-  const dh=bh*scale;
-
-  const dx=(size-dw)/2;
-  const dy=(size-dh)/2;
-
-  sctx.drawImage(
-    canvas,
-    bounds.minX,
-    bounds.minY,
-    bw,
-    bh,
-    dx,
-    dy,
-    dw,
-    dh
-  );
-
-  return source;
+}
 
 }
 
-function getMask(canvas,size=64){
 
-  const c=
-    document.createElement("canvas");
+if(maxX<0)
+return null;
 
-  c.width=size;
-  c.height=size;
 
-  const x=
-    c.getContext("2d");
-
-  x.drawImage(
-    canvas,
-    0,
-    0,
-    size,
-    size
-  );
-
-  const data=
-    x.getImageData(
-      0,
-      0,
-      size,
-      size
-    ).data;
-
-  const mask=
-    new Uint8Array(
-      size*size
-    );
-
-  for(let i=0;i<mask.length;i++){
-
-    const p=i*4;
-
-    const alpha=data[p+3];
-
-    mask[i]=
-      alpha>20 ? 1 : 0;
-
-  }
-
-  return mask;
+return{
+minX,
+minY,
+maxX,
+maxY
+};
 
 }
 
-function dilateMask(mask,size=64,radius=1){
 
-  const out=
-    new Uint8Array(
-      mask.length
-    );
+function normalizeInk(
+canvas,
+bounds,
+size=64
+){
 
-  for(let y=0;y<size;y++){
+const out=
+document.createElement(
+"canvas"
+);
 
-    for(let x=0;x<size;x++){
+out.width=size;
+out.height=size;
 
-      let found=false;
+const c=
+out.getContext("2d");
 
-      for(
-        let dy=-radius;
-        dy<=radius && !found;
-        dy++
-      ){
+const pad=5;
 
-        for(
-          let dx=-radius;
-          dx<=radius;
-          dx++
-        ){
+const bw=
+bounds.maxX-
+bounds.minX+
+1;
 
-          const nx=x+dx;
-          const ny=y+dy;
+const bh=
+bounds.maxY-
+bounds.minY+
+1;
 
-          if(
-            nx>=0 &&
-            nx<size &&
-            ny>=0 &&
-            ny<size &&
-            mask[ny*size+nx]
-          ){
+const scale=
+Math.min(
+(size-pad*2)/bw,
+(size-pad*2)/bh
+);
 
-            found=true;
-            break;
+const dw=bw*scale;
+const dh=bh*scale;
 
-          }
+const dx=
+(size-dw)/2;
 
-        }
+const dy=
+(size-dh)/2;
 
-      }
 
-      if(found)
-        out[y*size+x]=1;
+c.drawImage(
+canvas,
+bounds.minX,
+bounds.minY,
+bw,
+bh,
+dx,
+dy,
+dw,
+dh
+);
 
-    }
-
-  }
-
-  return out;
-
-}
-
-function compareMasks(a,b,size=64){
-
-  const ad=dilateMask(a,size,1);
-  const bd=dilateMask(b,size,1);
-
-  let aCount=0;
-  let bCount=0;
-  let overlap=0;
-
-  for(let i=0;i<a.length;i++){
-
-    if(a[i])aCount++;
-    if(b[i])bCount++;
-
-    if(a[i] && bd[i])
-      overlap++;
-
-    if(b[i] && ad[i])
-      overlap++;
-
-  }
-
-  if(!aCount || !bCount)
-    return 0;
-
-  const precision=
-    overlap/(aCount+bCount);
-
-  const coverage=
-    Math.min(
-      1,
-      overlap/
-      Math.max(aCount,bCount)
-    );
-
-  return Math.max(
-    precision,
-    coverage*.85
-  );
+return out;
 
 }
 
-function shiftedCompare(user,reference,size=64){
 
-  let best=0;
+function getMask(
+canvas,
+size=64
+){
 
-  const shifts=[
-    [0,0],
-    [-1,0],
-    [1,0],
-    [0,-1],
-    [0,1]
-  ];
+const c=
+canvas.getContext(
+"2d",
+{
+willReadFrequently:true
+}
+);
 
-  for(const [sx,sy] of shifts){
+const data=
+c.getImageData(
+0,
+0,
+size,
+size
+).data;
 
-    const shifted=
-      new Uint8Array(
-        size*size
-      );
+const mask=
+new Uint8Array(
+size*size
+);
 
-    for(let y=0;y<size;y++){
 
-      for(let x=0;x<size;x++){
+for(
+let i=0;
+i<mask.length;
+i++
+){
 
-        const nx=x+sx;
-        const ny=y+sy;
+const p=i*4;
 
-        if(
-          nx>=0 &&
-          nx<size &&
-          ny>=0 &&
-          ny<size
-        ){
-
-          shifted[
-            ny*size+nx
-          ]=
-            user[
-              y*size+x
-            ];
-
-        }
-
-      }
-
-    }
-
-    best=Math.max(
-      best,
-      compareMasks(
-        shifted,
-        reference,
-        size
-      )
-    );
-
-  }
-
-  return best;
+mask[i]=
+data[p+3]>20
+?1
+:0;
 
 }
 
-function makeReference(letter,size=64){
-
-  const c=
-    document.createElement("canvas");
-
-  c.width=size;
-  c.height=size;
-
-  const x=
-    c.getContext("2d");
-
-  x.fillStyle="#fff";
-  x.fillRect(
-    0,
-    0,
-    size,
-    size
-  );
-
-  x.fillStyle="#111";
-
-  x.textAlign="center";
-  x.textBaseline="middle";
-
-  x.font=
-    "700 52px -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif";
-
-  x.fillText(
-    letter,
-    size/2,
-    size/2
-  );
-
-  return c;
+return mask;
 
 }
+
+
+function blurMask(
+mask,
+size,
+radius
+){
+
+const out=
+new Float32Array(
+mask.length
+);
+
+
+for(
+let y=0;
+y<size;
+y++
+){
+
+for(
+let x=0;
+x<size;
+x++
+){
+
+let sum=0;
+let n=0;
+
+
+for(
+let dy=-radius;
+dy<=radius;
+dy++
+){
+
+for(
+let dx=-radius;
+dx<=radius;
+dx++
+){
+
+const nx=x+dx;
+const ny=y+dy;
+
+
+if(
+nx>=0 &&
+nx<size &&
+ny>=0 &&
+ny<size
+){
+
+sum+=
+mask[
+ny*size+nx
+];
+
+n++;
+
+}
+
+}
+
+}
+
+
+out[
+y*size+x
+]=
+sum/n;
+
+}
+
+}
+
+
+return out;
+
+}
+
+
+function makeGrid(
+mask,
+size,
+grid,
+radius
+){
+
+const soft=
+blurMask(
+mask,
+size,
+radius
+);
+
+const out=
+new Float32Array(
+grid*grid
+);
+
+const sx=
+size/grid;
+
+
+for(
+let gy=0;
+gy<grid;
+gy++
+){
+
+for(
+let gx=0;
+gx<grid;
+gx++
+){
+
+const x0=
+Math.floor(
+gx*sx
+);
+
+const x1=
+Math.floor(
+(gx+1)*sx
+);
+
+const y0=
+Math.floor(
+gy*sx
+);
+
+const y1=
+Math.floor(
+(gy+1)*sx
+);
+
+let sum=0;
+let n=0;
+
+
+for(
+let y=y0;
+y<y1;
+y++
+){
+
+for(
+let x=x0;
+x<x1;
+x++
+){
+
+sum+=
+soft[
+y*size+x
+];
+
+n++;
+
+}
+
+}
+
+
+out[
+gy*grid+gx
+]=
+n
+?sum/n
+:0;
+
+}
+
+}
+
+
+return out;
+
+}
+
+
+function gridSimilarity(a,b){
+
+let diff=0;
+let dot=0;
+let aa=0;
+let bb=0;
+
+
+for(
+let i=0;
+i<a.length;
+i++
+){
+
+diff+=
+Math.abs(
+a[i]-b[i]
+);
+
+dot+=
+a[i]*b[i];
+
+aa+=
+a[i]*a[i];
+
+bb+=
+b[i]*b[i];
+
+}
+
+
+const absolute=
+1-diff/a.length;
+
+const cosine=
+aa&&bb
+?
+dot/
+(
+Math.sqrt(aa)*
+Math.sqrt(bb)
+)
+:0;
+
+
+return(
+absolute*.65+
+cosine*.35
+);
+
+}
+
+
+function dilateMask(
+mask,
+size,
+radius
+){
+
+const out=
+new Uint8Array(
+mask.length
+);
+
+
+for(
+let y=0;
+y<size;
+y++
+){
+
+for(
+let x=0;
+x<size;
+x++
+){
+
+let found=0;
+
+
+for(
+let dy=-radius;
+dy<=radius&&!found;
+dy++
+){
+
+for(
+let dx=-radius;
+dx<=radius;
+dx++
+){
+
+const nx=x+dx;
+const ny=y+dy;
+
+
+if(
+nx>=0 &&
+nx<size &&
+ny>=0 &&
+ny<size &&
+mask[
+ny*size+nx
+]
+){
+
+found=1;
+
+break;
+
+}
+
+}
+
+}
+
+
+out[
+y*size+x
+]=found;
+
+}
+
+}
+
+
+return out;
+
+}
+
+
+function proximityScore(
+a,
+b,
+size=64,
+radius=3
+){
+
+const ad=
+dilateMask(
+b,
+size,
+radius
+);
+
+const bd=
+dilateMask(
+a,
+size,
+radius
+);
+
+let ac=0;
+let bc=0;
+let an=0;
+let bn=0;
+
+
+for(
+let i=0;
+i<a.length;
+i++
+){
+
+if(a[i]){
+
+ac++;
+
+if(ad[i])
+an++;
+
+}
+
+if(b[i]){
+
+bc++;
+
+if(bd[i])
+bn++;
+
+}
+
+}
+
+
+return ac&&bc
+?
+.5*
+(
+an/ac+
+bn/bc
+)
+:0;
+
+}
+
+
+function makeReference(
+letter,
+size=64
+){
+
+const c=
+document.createElement(
+"canvas"
+);
+
+c.width=size;
+c.height=size;
+
+const x=
+c.getContext("2d");
+
+x.clearRect(
+0,
+0,
+size,
+size
+);
+
+x.fillStyle="#111";
+
+x.textAlign="center";
+
+x.textBaseline="middle";
+
+x.font=
+"700 52px -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif";
+
+x.fillText(
+letter,
+size/2,
+size/2
+);
+
+return c;
+
+}
+
 
 function calculateWritingScore(){
 
-  const canvas=$("canvas");
+const canvas=$("canvas");
 
-  if(!ctx || !canvas)
-    return;
+if(!ctx||!canvas)
+return;
 
-  const bounds=
-    getInkBounds(canvas);
 
-  if(!bounds){
+const userBounds=
+getInkBounds(canvas);
 
-    $("writeScore").textContent="";
 
-    $("writeFeedback").textContent=
-      language==="ko"
-        ?"먼저 글자를 써 보세요."
-        :"Draw the letter first.";
+if(!userBounds){
 
-    return;
+$("writeScore").textContent="";
 
-  }
+$("writeFeedback").textContent=
+language==="ko"
+?
+"먼저 글자를 써 보세요."
+:
+"Draw the letter first.";
 
-  const normalized=
-    normalizeInk(
-      canvas,
-      bounds,
-      64
-    );
-
-  const userMask=
-    getMask(
-      normalized,
-      64
-    );
-
-  const reference=
-    makeReference(
-      $("writeGlyph").textContent,
-      64
-    );
-
-  const referenceMask=
-    getMask(
-      reference,
-      64
-    );
-
-  const similarity=
-    shiftedCompare(
-      userMask,
-      referenceMask,
-      64
-    );
-
-  const score=
-    Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          similarity*100
-        )
-      )
-    );
-
-  $("writeScore").textContent=
-    score+"%";
-
-  $("writeScore").className=
-    "score "+(
-      score>=70
-        ?"good"
-        :"bad"
-    );
-
-  if(score>=90){
-
-    $("writeFeedback").textContent=
-      language==="ko"
-        ?"훌륭해요! 정말 잘 썼어요."
-        :"Excellent! That looks great.";
-
-  }else if(score>=70){
-
-    $("writeFeedback").textContent=
-      language==="ko"
-        ?"읽을 수 있어요! ✓"
-        :"Readable! ✓";
-
-  }else if(score>=55){
-
-    $("writeFeedback").textContent=
-      language==="ko"
-        ?"거의 다 됐어요!"
-        :"Almost there!";
-
-  }else{
-
-    $("writeFeedback").textContent=
-      language==="ko"
-        ?"조금 더 연습해 보세요."
-        :"Keep practicing.";
-
-  }
+return;
 
 }
 
+
+const userNormalized=
+normalizeInk(
+canvas,
+userBounds,
+64
+);
+
+const userMask=
+getMask(
+userNormalized,
+64
+);
+
+
+const reference=
+makeReference(
+$("writeGlyph").textContent,
+64
+);
+
+
+const refBounds=
+getInkBounds(
+reference
+);
+
+
+if(!refBounds)
+return;
+
+
+const refNormalized=
+normalizeInk(
+reference,
+refBounds,
+64
+);
+
+const refMask=
+getMask(
+refNormalized,
+64
+);
+
+
+const coarse=
+gridSimilarity(
+makeGrid(
+userMask,
+64,
+16,
+2
+),
+makeGrid(
+refMask,
+64,
+16,
+2
+)
+);
+
+
+const fine=
+gridSimilarity(
+makeGrid(
+userMask,
+64,
+24,
+1
+),
+makeGrid(
+refMask,
+64,
+24,
+1
+)
+);
+
+
+const proximity=
+proximityScore(
+userMask,
+refMask,
+64,
+3
+);
+
+
+let raw=
+coarse*.62+
+fine*.23+
+proximity*.15;
+
+
+const occupied=
+makeGrid(
+userMask,
+64,
+16,
+2
+)
+.filter(
+v=>v>.08
+)
+.length;
+
+
+if(occupied<3){
+
+raw*=.45;
+
+}else if(occupied<5){
+
+raw*=.75;
+
+}
+
+
+const score=
+Math.max(
+0,
+Math.min(
+100,
+Math.round(
+(
+(raw-.18)/
+.70
+)*100
+)
+)
+);
+
+
+$("writeScore").textContent=
+score+"%";
+
+$("writeScore").className=
+"score "+
+(
+score>=70
+?"good"
+:"bad"
+);
+
+
+if(score>=90){
+
+$("writeFeedback").textContent=
+language==="ko"
+?
+"훌륭해요! 정말 잘 썼어요."
+:
+"Excellent! That looks great.";
+
+}else if(score>=70){
+
+$("writeFeedback").textContent=
+language==="ko"
+?
+"읽을 수 있어요! ✓"
+:
+"Readable! ✓";
+
+}else if(score>=55){
+
+$("writeFeedback").textContent=
+language==="ko"
+?
+"거의 다 됐어요!"
+:
+"Almost there!";
+
+}else{
+
+$("writeFeedback").textContent=
+language==="ko"
+?
+"조금 더 연습해 보세요."
+:
+"Keep practicing.";
+
+}
+
+}
+
+
+$("checkWrite").addEventListener(
+"click",
+()=>{
+calculateWritingScore();
+}
+);
+
+
+$("newWrite").addEventListener(
+"click",
+()=>{
+wi++;
+writeNew();
+}
+);
+
+
+$("erase").addEventListener(
+"click",
+()=>{
+clearCanvas();
+$("writeScore").textContent="";
+$("writeFeedback").textContent="";
+}
+);
+
+
+/* =========================================================
+   WORD OF THE DAY
+========================================================= */
+
+/*
+   Built-in Korean words.
+
+   The word is selected deterministically from the date,
+   so the same date always has the same word.
+*/
+
+const wordData=[
+
+["안녕하세요","hello","Hello"],
+["감사합니다","thank you","Thank you"],
+["사랑","love","Love"],
+["친구","friend","Friend"],
+["가족","family","Family"],
+["하늘","sky","Sky"],
+["바다","sea","Sea"],
+["학교","school","School"],
+["책","book","Book"],
+["집","house","House"],
+["사과","apple","Apple"],
+["물","water","Water"],
+["밥","rice / meal","Rice / meal"],
+["고양이","cat","Cat"],
+["강아지","puppy / dog","Puppy / dog"],
+["오늘","today","Today"],
+["내일","tomorrow","Tomorrow"],
+["행복","happiness","Happiness"],
+["좋아요","good / I like it","Good / I like it"],
+["공부","study","Study"],
+["한국","Korea","Korea"],
+["친절","kindness","Kindness"],
+["꿈","dream","Dream"],
+["빛","light","Light"],
+["마음","heart / mind","Heart / mind"],
+["웃음","laughter","Laughter"],
+["봄","spring","Spring"],
+["여름","summer","Summer"],
+["가을","autumn","Autumn"],
+["겨울","winter","Winter"]
+
+];
+
+
+let calendarDate=
+new Date();
+
+calendarDate.setDate(1);
+
+
+let selectedDateKey=
+localDateKey(
+new Date()
+);
+
+
+/* =========================================================
+   LOCAL DATE
+========================================================= */
+
+function localDateKey(
+d
+){
+
+const y=
+d.getFullYear();
+
+const m=
+String(
+d.getMonth()+1
+)
+.padStart(2,"0");
+
+const day=
+String(
+d.getDate()
+)
+.padStart(2,"0");
+
+
+return `${y}-${m}-${day}`;
+
+}
+
+
+/* =========================================================
+   WORD FOR DATE
+========================================================= */
+
+function dateWord(key){
+
+const d=
+new Date(
+key+"T12:00:00"
+);
+
+const start=
+new Date(
+"2026-01-01T12:00:00"
+);
+
+const n=
+Math.floor(
+(
+d-start
+)/
+86400000
+);
+
+
+return wordData[
+(
+n%wordData.length+
+wordData.length
+)%
+wordData.length
+];
+
+}
+
+
+/* =========================================================
+   GET WORD-DAY STATE
+========================================================= */
+
+function dayState(key){
+
+return s.wordDays[key]||null;
+
+}
+
+
+/* =========================================================
+   RENDER WORD
+========================================================= */
+
+function renderWord(){
+
+const d=
+new Date(
+selectedDateKey+
+"T12:00:00"
+);
+
+const w=
+dateWord(
+selectedDateKey
+);
+
+const state=
+dayState(
+selectedDateKey
+);
+
+
+$("wordDate").textContent=
+d.toLocaleDateString(
+language==="ko"
+?"ko-KR"
+:"en-US",
+{
+weekday:"long",
+year:"numeric",
+month:"long",
+day:"numeric"
+}
+);
+
+
+$("wordDay").textContent=
+language==="ko"
+?
+"오늘의 단어"
+:
+"Word of the day";
+
+
+$("wordKorean").textContent=
+w[0];
+
+
+$("wordMeaning").textContent=
+language==="ko"
+?w[1]
+:w[2];
+
+
+$("wordInput").value="";
+
+
+$("wordInput").disabled=
+!!state;
+
+
+if(!state){
+
+$("wordStatus").textContent="";
+
+$("wordStatus").style.color=
+"var(--ink)";
+
+$("wordAttempts").textContent=
+language==="ko"
+?
+"최대 3번 시도할 수 있어요."
+:
+"You get up to 3 tries.";
+
+}else{
+
+const tries=
+state.tries||0;
+
+const ok=
+state.correct;
+
+
+$("wordStatus").style.color=
+ok
+?"var(--good)"
+:"var(--bad)";
+
+
+$("wordStatus").textContent=
+ok
+?
+(
+language==="ko"
+?
+"✓ 정답이에요!"
+:
+"✓ Correct!"
+)
+:
+(
+language==="ko"
+?
+"✕ 틀렸어요."
+:
+"✕ Wrong."
+);
+
+
+$("wordAttempts").textContent=
+language==="ko"
+?
+`${tries}번 시도했어요.`
+:
+`${tries} attempt${tries===1?"":"s"}.`;
+
+}
+
+
+renderCalendar();
+
+}
+
+
+/* =========================================================
+   CHECK WORD
+========================================================= */
+
+function checkWord(){
+
+if(
+dayState(
+selectedDateKey
+)
+)
+return;
+
+
+const input=
+$("wordInput")
+.value
+.trim()
+.normalize("NFC");
+
+
+const target=
+dateWord(
+selectedDateKey
+)[0];
+
+
+if(!input){
+
+$("wordStatus").style.color=
+"var(--bad)";
+
+$("wordStatus").textContent=
+language==="ko"
+?
+"단어를 입력하세요."
+:
+"Type the word first.";
+
+return;
+
+}
+
+
+const key=
+selectedDateKey;
+
+
+const state=
+s.wordDays[key]||
+{
+tries:0,
+correct:false
+};
+
+
+state.tries++;
+
+
+if(input===target){
+
+state.correct=true;
+
+s.wordDays[key]=state;
+
+save();
+
+renderWord();
+
+return;
+
+}
+
+
+/*
+   Wrong answer.
+
+   The user gets exactly 3 attempts.
+*/
+
+if(state.tries>=3){
+
+state.correct=false;
+
+s.wordDays[key]=state;
+
+save();
+
+renderWord();
+
+return;
+
+}
+
+
+s.wordDays[key]=state;
+
+save();
+
+
+const remaining=
+3-state.tries;
+
+
+$("wordStatus").style.color=
+"var(--bad)";
+
+
+$("wordStatus").textContent=
+language==="ko"
+?
+`틀렸어요. ${remaining}번 남았어요.`
+:
+`Wrong. ${remaining} ${remaining===1?"try":"tries"} left.`;
+
+$("wordAttempts").textContent=
+language==="ko"
+?
+`${state.tries}번 실패했어요.`
+:
+`${state.tries} failed attempt${state.tries===1?"":"s"}.`;
+
+}
+
+
+/* =========================================================
+   ENTER TO SUBMIT
+========================================================= */
+
+$("wordInput").addEventListener(
+"keydown",
+e=>{
+
+if(e.key==="Enter"){
+checkWord();
+}
+
+}
+);
+
+
+/* =========================================================
+   CALENDAR
+========================================================= */
+
+function renderCalendar(){
+
+const y=
+calendarDate.getFullYear();
+
+const m=
+calendarDate.getMonth();
+
+const first=
+new Date(
+y,
+m,
+1
+).getDay();
+
+const days=
+new Date(
+y,
+m+1,
+0
+).getDate();
+
+const todayKey=
+localDateKey(
+new Date()
+);
+
+
+$("calendarTitle").textContent=
+new Date(
+y,
+m,
+1
+).toLocaleDateString(
+language==="ko"
+?"ko-KR"
+:"en-US",
+{
+month:"long",
+year:"numeric"
+}
+);
+
+
+let out="";
+
+
+const englishDays=[
+"Sun",
+"Mon",
+"Tue",
+"Wed",
+"Thu",
+"Fri",
+"Sat"
+];
+
+const koreanDays=[
+"일",
+"월",
+"화",
+"수",
+"목",
+"금",
+"토"
+];
+
+
+for(
+let i=0;
+i<7;
+i++
+){
+
+out+=`
+<div class="calDow">
+${
+language==="ko"
+?koreanDays[i]
+:englishDays[i]
+}
+</div>
+`;
+
+}
+
+
+/* previous month empty cells */
+
+for(
+let i=0;
+i<first;
+i++
+){
+
+const prevDay=
+new Date(
+y,
+m,
+0
+).getDate()-
+first+
+i+
+1;
+
+out+=`
+<div class="calDay muted">
+${prevDay}
+</div>
+`;
+
+}
+
+
+/* actual days */
+
+for(
+let day=1;
+day<=days;
+day++
+){
+
+const date=
+new Date(
+y,
+m,
+day
+);
+
+const key=
+localDateKey(
+date
+);
+
+const future=
+key>todayKey;
+
+const state=
+dayState(key);
+
+let mark="";
+
+
+if(state){
+
+const tries=
+state.tries||0;
+
+
+if(state.correct){
+
+/*
+   Successful checkmarks:
+
+   1st try = green
+   2nd try = yellow/green
+   3rd try = red/yellow
+*/
+
+if(tries===1){
+
+mark=`
+<span class="mark green">
+✓
+</span>
+`;
+
+}else if(tries===2){
+
+mark=`
+<span class="mark mix-yellow">
+✓
+</span>
+`;
+
+}else{
+
+mark=`
+<span class="mark mix-red-yellow">
+✓
+</span>
+`;
+
+}
+
+}else{
+
+/*
+   Failed attempts:
+
+   1 miss = yellow X
+   2 misses = yellow/red X
+   3 misses = red X
+*/
+
+if(tries===1){
+
+mark=`
+<span class="mark yellow">
+✕
+</span>
+`;
+
+}else if(tries===2){
+
+mark=`
+<span class="mark mix-red-yellow">
+✕
+</span>
+`;
+
+}else{
+
+mark=`
+<span class="mark red">
+✕
+</span>
+`;
+
+}
+
+}
+
+}
+
+
+out+=`
+<button
+class="calDay
+${key===selectedDateKey?"selected":""}
+${future?"future":""}"
+data-date="${key}"
+type="button"
+${future?"disabled":""}>
+
+<span>
+${day}
+</span>
+
+${mark}
+
+</button>
+`;
+
+}
+
+
+$("calendar").innerHTML=
+out;
+
+
 document
-  .querySelectorAll("#nav button")
-  .forEach(button=>{
+.querySelectorAll(
+".calDay[data-date]"
+)
+.forEach(
+b=>
+b.addEventListener(
+"click",
+()=>{
 
-    button.addEventListener(
-      "click",
-      ()=>{
+selectedDateKey=
+b.dataset.date;
 
-        if(
-          button.dataset.view==="write"
-        ){
-          setTimeout(
-            resizeCanvas,
-            50
-          );
-        }
+renderWord();
 
-      }
-    );
+}
+)
+);
 
-  });
+}
+
+
+/* =========================================================
+   CALENDAR NAVIGATION
+========================================================= */
+
+$("prevMonth").addEventListener(
+"click",
+()=>{
+
+calendarDate.setMonth(
+calendarDate.getMonth()-1
+);
+
+renderCalendar();
+
+}
+);
+
+
+$("nextMonth").addEventListener(
+"click",
+()=>{
+
+const next=
+new Date(
+calendarDate
+);
+
+next.setMonth(
+next.getMonth()+1
+);
+
+
+/*
+   Don't let the calendar move
+   beyond the current month.
+*/
+
+const today=
+new Date();
+
+const currentMonth=
+new Date(
+today.getFullYear(),
+today.getMonth(),
+1
+);
+
+
+if(next<=currentMonth){
+
+calendarDate=
+next;
+
+renderCalendar();
+
+}
+
+}
+);
+
 
 /* =========================================================
    REVIEW
@@ -2355,178 +3801,199 @@ document
 
 function renderReview(){
 
-  const now=Date.now();
+const now=
+Date.now();
 
-  const due=
-    all
-      .map(x=>{
 
-        const m=
-          getMastery(x[0]);
+const due=
+all
+.map(
+x=>({
+x,
+m:getMastery(x[0])
+})
+)
+.filter(
+z=>
+z.m.wrong>0||
+z.m.correct<2||
+z.m.next<=now
+)
+.sort(
+(a,b)=>
+(
+b.m.wrong*100+
+(b.m.correct<2?50:0)+
+(b.m.next<=now?25:0)
+)
+-
+(
+a.m.wrong*100+
+(a.m.correct<2?50:0)+
+(a.m.next<=now?25:0)
+)
+)
+.slice(
+0,
+12
+);
 
-        return{
-          x,
-          m
-        };
 
-      })
-      .filter(z=>
-        z.m.wrong>0 ||
-        z.m.correct<2 ||
-        z.m.next<=now
-      )
-      .sort((a,b)=>{
+if(!due.length){
 
-        const aScore=
-          a.m.wrong*100+
-          (a.m.correct<2?50:0)+
-          (a.m.next<=now?25:0);
+$("reviewList").innerHTML=
+`
+<div class="tiny">
+${
+language==="ko"
+?
+"지금은 급한 복습이 없어요. 🎉"
+:
+"Nothing urgent. Keep practicing! 🎉"
+}
+</div>
+`;
 
-        const bScore=
-          b.m.wrong*100+
-          (b.m.correct<2?50:0)+
-          (b.m.next<=now?25:0);
-
-        return bScore-aScore;
-
-      })
-      .slice(0,12);
-
-  if(!due.length){
-
-    $("reviewList").innerHTML=
-      `<div class="tiny">${
-        language==="ko"
-          ?"지금은 급한 복습이 없어요. 🎉"
-          :"Nothing urgent. Keep practicing! 🎉"
-      }</div>`;
-
-    return;
-
-  }
-
-  $("reviewList").innerHTML=
-    due.map(z=>`
-
-      <div class="reviewitem">
-
-        <b>${z.x[0]}</b>
-
-        <span>
-
-          ${z.x[1]}
-
-          <br>
-
-          <span class="due">
-
-            ${
-              language==="ko"
-                ?`정답 ${z.m.correct} • 오답 ${z.m.wrong}`
-                :`Correct ${z.m.correct} • Wrong ${z.m.wrong}`
-            }
-
-          </span>
-
-        </span>
-
-      </div>
-
-    `).join("");
+return;
 
 }
 
-/* =========================================================
-   START REVIEW
-========================================================= */
+
+$("reviewList").innerHTML=
+due
+.map(
+z=>
+`
+<div class="reviewitem">
+
+<b>
+${z.x[0]}
+</b>
+
+<span>
+${z.x[1]}
+
+<br>
+
+<span class="due">
+${
+language==="ko"
+?
+`정답 ${z.m.correct} • 오답 ${z.m.wrong}`
+:
+`Correct ${z.m.correct} • Wrong ${z.m.wrong}`
+}
+</span>
+
+</span>
+
+</div>
+`
+)
+.join("");
+
+}
+
 
 $("startReview").addEventListener(
-  "click",
-  ()=>{
+"click",
+()=>{
 
-    const now=Date.now();
+const now=
+Date.now();
 
-    const due=
-      all.filter(x=>{
 
-        const m=getMastery(x[0]);
+const due=
+all.filter(
+x=>{
 
-        return(
-          m.next<=now ||
-          m.correct<2 ||
-          m.wrong>0
-        );
-
-      });
-
-    if(due.length){
-
-      const item=
-        due[
-          Math.floor(
-            Math.random()*due.length
-          )
-        ];
-
-      activeUnit=item.unit;
-
-    }else{
-
-      activeUnit=
-        Math.floor(
-          Math.random()*units.length
-        );
-
-    }
-
-    startLesson(activeUnit);
-
-  }
+const m=
+getMastery(
+x[0]
 );
 
+return(
+m.next<=now||
+m.correct<2||
+m.wrong>0
+);
+
+}
+);
+
+
+activeUnit=
+due.length
+?
+due[
+Math.floor(
+Math.random()*
+due.length
+)
+].unit
+:
+Math.floor(
+Math.random()*
+units.length
+);
+
+
+startLesson(
+activeUnit
+);
+
+}
+);
+
+
 /* =========================================================
-   KOREAN PRONUNCIATION
+   SPEECH
 ========================================================= */
 
 $("sound").addEventListener(
-  "click",
-  ()=>{
+"click",
+()=>{
 
-    if(!current)
-      return;
+if(
+!current||
+!("speechSynthesis"in window)
+)
+return;
 
-    const korean=current[0];
 
-    if("speechSynthesis" in window){
+speechSynthesis.cancel();
 
-      speechSynthesis.cancel();
 
-      const utterance=
-        new SpeechSynthesisUtterance(
-          korean
-        );
-
-      utterance.lang="ko-KR";
-      utterance.rate=.8;
-      utterance.pitch=1;
-
-      speechSynthesis.speak(
-        utterance
-      );
-
-    }
-
-  }
+const u=
+new SpeechSynthesisUtterance(
+current[0]
 );
+
+u.lang="ko-KR";
+u.rate=.8;
+u.pitch=1;
+
+
+speechSynthesis.speak(u);
+
+}
+);
+
 
 /* =========================================================
    INITIALIZE
 ========================================================= */
 
 renderLessons();
+
 stats();
+
 writeNew();
+
+renderWord();
+
 updateLanguageUI();
+
 setView("home");
 
 </script>
