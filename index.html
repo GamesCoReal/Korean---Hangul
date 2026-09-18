@@ -1945,132 +1945,42 @@ function newPracticeQuestion(){
    PRACTICE ANSWER
 ===================================================== */
 
-function answerPractice(
-  button,
-  right
-){
 
-  if(locked)
-    return;
+function answerPractice(answer){
+  if(!current || current.mode !== "practice") return;
 
+  const target = String(current.item[1])
+    .trim()
+    .toLowerCase();
 
-  locked=true;
+  const given = String(answer)
+    .trim()
+    .toLowerCase();
 
+  if(given === target){
+    current.correct++;
 
-  s.total++;
+    practiceStatus.textContent =
+      "Correct! ✓ " + current.correct + "/3";
 
+    if(current.correct >= 3){
+      setTimeout(() => {
+        startBuild();
+      }, 1250);
+    }else{
+      setTimeout(() => {
+        nextPracticeQuestion();
+      }, 1250);
+    }
 
-  const correct =
-    button.textContent===right;
+  }else{
+    practiceStatus.textContent =
+      "Not quite — try again";
 
-
-  if(correct){
-
-    s.correct++;
-
-    s.streak++;
-
-
-    button.classList.add(
-      "correct"
-    );
-
-
-    $("feedback")
-      .textContent =
-        "✓ Correct!";
-
-
-    const key =
-      current[0];
-
-
-    lp(activeLesson)
-      .practice[key] =
-        Math.min(
-          3,
-          (
-            lp(activeLesson)
-              .practice[key]||0
-          )+1
-        );
-
-
-    updateMastery(
-      key,
-      1
-    );
-
+    setTimeout(() => {
+      nextPracticeQuestion();
+    }, 1250);
   }
-  else{
-
-    s.streak=0;
-
-
-    button.classList.add(
-      "wrong"
-    );
-
-
-    $("feedback")
-      .textContent =
-        "Answer: "+right;
-
-
-    [
-      ...$("answers").children
-    ]
-    .forEach(
-      b=>{
-
-        if(
-          b.textContent===right
-        )
-          b.classList.add(
-            "correct"
-          );
-
-      }
-    );
-
-
-    updateMastery(
-      current[0],
-      -1
-    );
-
-  }
-
-
-  save();
-
-  updateStats();
-
-
-  setTimeout(
-    ()=>{
-
-      if(
-        practiceDone(activeLesson)
-      ){
-
-        stage="build";
-
-        renderStage();
-
-        newBuildChallenge();
-
-      }
-      else{
-
-        newPracticeQuestion();
-
-      }
-
-    },
-    1250
-  );
-
 }
 
 
