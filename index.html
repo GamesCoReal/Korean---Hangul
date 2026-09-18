@@ -6,13 +6,12 @@
 <meta name="theme-color" content="#f7f7f9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
 <title>Hangul Quest</title>
 
 <style>
 :root{
   --bg:#f7f7f9;
-  --card:#fff;
+  --card:#ffffff;
   --ink:#17171a;
   --muted:#73747d;
   --line:#e5e5ea;
@@ -35,10 +34,14 @@ body{
   min-height:100svh;
 }
 
-button{
+button,input{
   font:inherit;
   color:inherit;
+}
+
+button{
   cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
 }
 
 button:active{
@@ -59,6 +62,11 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:10px;
+}
+
+.headerLeft{
+  min-width:0;
 }
 
 h1{
@@ -77,21 +85,23 @@ h1{
   display:flex;
   gap:7px;
   align-items:center;
+  flex:none;
+}
+
+.iconbtn,
+.langbtn{
+  border:0;
+  border-radius:13px;
+  padding:10px 12px;
 }
 
 .iconbtn{
-  border:0;
   background:var(--soft);
-  border-radius:13px;
-  padding:10px 12px;
 }
 
 .langbtn{
-  border:0;
   background:var(--accent);
   color:#fff;
-  border-radius:13px;
-  padding:10px 12px;
   font-size:12px;
   font-weight:800;
 }
@@ -156,23 +166,19 @@ p{
   line-height:1.45;
 }
 
-.primary{
-  width:100%;
-  border:0;
-  background:var(--accent);
-  color:white;
-  border-radius:16px;
-  padding:15px;
-  font-weight:750;
-  margin-top:10px;
+.coursebar{
+  margin-top:18px;
+  background:var(--soft);
+  border-radius:15px;
+  padding:12px;
 }
 
-.secondary{
-  border:1px solid var(--line);
-  background:white;
-  border-radius:14px;
-  padding:12px 14px;
-  font-weight:700;
+.coursebarTop{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:12px;
+  font-weight:750;
 }
 
 .progress{
@@ -180,7 +186,7 @@ p{
   background:#e8e8ed;
   border-radius:99px;
   overflow:hidden;
-  margin:9px 0 16px;
+  margin:9px 0 2px;
 }
 
 .progress div{
@@ -237,6 +243,25 @@ p{
   color:var(--muted);
 }
 
+.primary{
+  width:100%;
+  border:0;
+  background:var(--accent);
+  color:white;
+  border-radius:16px;
+  padding:15px;
+  font-weight:750;
+  margin-top:10px;
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:white;
+  border-radius:14px;
+  padding:12px 14px;
+  font-weight:700;
+}
+
 .glyph{
   font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
   font-size:100px;
@@ -288,10 +313,6 @@ p{
   margin:12px 0 0;
 }
 
-.next{
-  display:none;
-}
-
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -317,6 +338,10 @@ p{
   color:var(--muted);
 }
 
+.sectionGap{
+  margin-top:14px;
+}
+
 .choices{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -331,30 +356,6 @@ p{
   border-radius:17px;
   font-weight:750;
   font-size:20px;
-}
-
-.board{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin:14px 0;
-}
-
-.tile{
-  background:var(--soft);
-  border-radius:17px;
-  padding:14px;
-  text-align:center;
-}
-
-.tile b{
-  font-size:31px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-}
-
-.tile small{
-  display:block;
-  color:var(--muted);
 }
 
 .builder{
@@ -378,752 +379,749 @@ p{
   place-items:center;
 }
 
-.padwrap{
+.writeCard{
+  overflow:hidden;
+}
+
+.writeGlyph{
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size:100px;
+  text-align:center;
+  line-height:1;
+  margin:4px 0 10px;
+}
+
+.writeInstructions{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:12px;
+}
+
+.canvasWrap{
   position:relative;
-  margin-top:12px;
-}
-
-.pad{
   width:100%;
-  height:260px;
+  aspect-ratio:1/1;
+  max-width:420px;
+  margin:auto;
   background:#fff;
-  border:2px solid var(--line);
-  border-radius:20px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  overflow:hidden;
   touch-action:none;
-  display:block;
 }
 
-.guide{
+#guide{
   position:absolute;
   inset:0;
+  width:100%;
+  height:100%;
   pointer-events:none;
-  display:grid;
-  place-items:center;
-  color:#e5e5e9;
-  font-size:130px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  z-index:1;
+  opacity:.13;
 }
 
-.padwrap canvas{
-  position:relative;
-  z-index:2;
+#drawCanvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  touch-action:none;
 }
 
-.row{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-.row>*{
-  flex:1;
-}
-
-.tiny{
-  font-size:12px;
-  color:var(--muted);
-}
-
-.flash{
-  font-size:64px;
+.writeScore{
   text-align:center;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  padding:24px;
+  font-size:28px;
+  font-weight:850;
+  margin-top:14px;
+  min-height:34px;
 }
 
-.stars{
-  letter-spacing:3px;
-  font-size:25px;
+.scoreHint{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  min-height:18px;
 }
 
-.hidden{
-  display:none!important;
-}
-
-.reviewgrid{
+.writeButtons{
   display:grid;
+  grid-template-columns:1fr 1fr;
   gap:9px;
   margin-top:12px;
 }
 
-.reviewitem{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:15px;
-  padding:13px;
+.writeButtons button{
+  margin:0;
 }
 
-.reviewitem b{
-  font-size:25px;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-}
-
-.due{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.score{
-  font-size:31px;
-  font-weight:850;
+.writeFeedback{
   text-align:center;
-  margin-top:8px;
-}
-
-.score.good{
-  color:var(--good);
-}
-
-.score.bad{
-  color:var(--bad);
-}
-
-.masteryBox{
-  background:var(--soft);
-  border-radius:16px;
-  padding:12px;
-  margin-top:12px;
-  text-align:center;
-  font-size:13px;
-}
-
-/* WORD OF THE DAY */
-
-.wordCard{
-  text-align:center;
-}
-
-.wordDate{
-  font-size:13px;
-  color:var(--muted);
-  margin:4px 0 10px;
-}
-
-.wordDay{
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:8px;
-}
-
-.wordKorean{
-  font-size:54px;
-  font-weight:800;
-  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  margin:8px 0;
-}
-
-.wordMeaning{
-  font-size:16px;
-  margin-bottom:14px;
-}
-
-.wordInput{
-  width:100%;
-  padding:14px;
-  border:1.5px solid var(--line);
-  border-radius:15px;
-  font:inherit;
-  font-size:20px;
-  text-align:center;
-  background:#fff;
-}
-
-.wordInput:focus{
-  outline:2px solid #cfd3dc;
-}
-
-.wordInput:disabled{
-  background:#f1f1f3;
-  color:#777;
-}
-
-.wordStatus{
-  min-height:26px;
+  min-height:25px;
   margin-top:10px;
   font-weight:750;
 }
 
-.calendar{
-  margin-top:18px;
+.wordHero{
+  text-align:center;
 }
 
-.calendarHead{
+.wordKorean{
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size:64px;
+  font-weight:800;
+  margin:16px 0 4px;
+}
+
+.wordMeaning{
+  color:var(--muted);
+  font-size:16px;
+  margin-bottom:15px;
+}
+
+.wordInput{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:16px;
+  padding:14px;
+  font-size:19px;
+  text-align:center;
+  outline:none;
+}
+
+.wordInput:focus{
+  border-color:#999;
+}
+
+.wordStatus{
+  min-height:25px;
+  text-align:center;
+  margin-top:10px;
+  font-weight:750;
+}
+
+.wordAttempts{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  min-height:18px;
+}
+
+.calendarHeader{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:10px;
   margin-bottom:10px;
 }
 
-.calendarHead button{
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:11px;
-  padding:7px 11px;
+.calendarHeader button{
+  border:0;
+  background:var(--soft);
+  border-radius:12px;
+  width:38px;
+  height:38px;
 }
 
 .calendarTitle{
   font-weight:800;
+  text-align:center;
 }
 
-.calendarGrid{
+.calendar{
   display:grid;
   grid-template-columns:repeat(7,1fr);
   gap:5px;
 }
 
-.calDow{
+.weekday{
   text-align:center;
-  font-size:10px;
   color:var(--muted);
+  font-size:10px;
+  font-weight:750;
   padding:4px 0;
 }
 
-.calDay{
-  min-height:43px;
+.day{
+  position:relative;
+  min-height:42px;
   border:1px solid var(--line);
   background:#fff;
   border-radius:11px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+  display:grid;
+  place-items:center;
   font-size:12px;
 }
 
-.calDay.muted{
-  opacity:.35;
+.day.empty{
+  border-color:transparent;
+  background:transparent;
 }
 
-.calDay.selected{
-  outline:2px solid var(--accent);
-}
-
-.calDay.future{
+.day.future{
   opacity:.3;
 }
 
+.day.selected{
+  outline:2px solid var(--accent);
+  outline-offset:-2px;
+}
+
 .mark{
-  font-size:15px;
-  line-height:15px;
+  position:absolute;
+  right:4px;
+  bottom:3px;
+  font-size:9px;
   font-weight:900;
-}
-
-.mark.red{
-  color:var(--bad);
-}
-
-.mark.yellow{
-  color:#d5a400;
 }
 
 .mark.green{
   color:var(--good);
 }
 
+.mark.yellow{
+  color:#b77900;
+}
+
+.mark.red{
+  color:var(--bad);
+}
+
 .mark.mix-yellow{
-  color:#d5a400;
-  text-shadow:
-    -1px -1px 0 #16803c,
-     1px 1px 0 #16803c;
+  color:#b77900;
 }
 
 .mark.mix-red-yellow{
-  color:#d5a400;
-  text-shadow:
-    -1px -1px 0 #d92d20,
-     1px 1px 0 #d92d20;
+  color:var(--bad);
+}
+
+.calendarHint{
+  color:var(--muted);
+  font-size:12px;
+  margin:12px 0 0;
+}
+
+.reviewList{
+  display:grid;
+  gap:8px;
+  margin-top:14px;
+}
+
+.reviewItem{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:16px;
+  padding:12px;
+}
+
+.reviewGlyph{
+  width:48px;
+  font-size:30px;
+  text-align:center;
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+}
+
+.reviewInfo{
+  flex:1;
+}
+
+.reviewInfo b{
+  display:block;
+}
+
+.reviewInfo small{
+  color:var(--muted);
+}
+
+.emptyReview{
+  text-align:center;
+  color:var(--muted);
+  padding:20px 5px;
+}
+
+@media(max-width:400px){
+  h1{font-size:26px}
+  .glyph{font-size:88px}
+  .writeGlyph{font-size:88px}
+  .wordKorean{font-size:56px}
 }
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
 <header>
+  <div class="headerLeft">
+    <h1>Hangul Quest</h1>
+    <div class="sub" id="subtitle"></div>
+  </div>
 
-<div>
-<h1 id="title">Hangul Quest 🇰🇷</h1>
-<div class="sub" id="subtitle">
-Read it • build it • write it • remember it
-</div>
-</div>
-
-<div class="headerButtons">
-<button class="langbtn" id="language" type="button">한국어</button>
-<button class="iconbtn" id="sound" type="button">🔊</button>
-</div>
-
+  <div class="headerButtons">
+    <button class="iconbtn" id="sound" aria-label="Sound">🔊</button>
+    <button class="langbtn" id="language"></button>
+  </div>
 </header>
 
 <nav id="nav">
-
-<button class="active" data-view="home" type="button">
-Learn
-</button>
-
-<button data-view="practice" type="button">
-Practice
-</button>
-
-<button data-view="write" type="button">
-Write
-</button>
-
-<button data-view="word" type="button">
-Word
-</button>
-
-<button data-view="review" type="button">
-Review
-</button>
-
+  <button data-view="home" class="active"></button>
+  <button data-view="practice"></button>
+  <button data-view="write"></button>
+  <button data-view="word"></button>
+  <button data-view="review"></button>
 </nav>
 
+<!-- HOME -->
+<section class="view active" id="home">
+  <div class="card hero">
+    <div class="eyebrow" id="courseEyebrow"></div>
+    <h2 id="homeTitle"></h2>
+    <p id="homeDescription"></p>
 
-<!-- =========================
-     LEARN
-========================= -->
+    <div class="coursebar">
+      <div class="coursebarTop">
+        <span id="courseText"></span>
+        <span id="coursePercent">0%</span>
+      </div>
+      <div class="progress">
+        <div id="courseProgress"></div>
+      </div>
+    </div>
+  </div>
 
-<section id="home" class="view active">
+  <div class="lesson-list" id="lessons"></div>
+</section>
 
-<div class="card hero">
+<!-- PRACTICE -->
+<section class="view" id="practice">
 
-<div class="eyebrow" id="courseEyebrow">
-Your course
-</div>
+  <div class="card">
+    <div class="eyebrow" id="lessonPracticeLabel"></div>
 
-<h2 id="homeTitle">
-Start learning Hangul
-</h2>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:7px">
+      <b id="qnum"></b>
+      <span id="qmode" style="font-size:11px;color:var(--muted)"></span>
+    </div>
 
-<p id="homeDescription">
-Short lessons take you from individual letters to real Korean syllable blocks.
-</p>
+    <div class="progress">
+      <div id="qbar"></div>
+    </div>
 
-<div class="progress">
-<div id="coursebar"></div>
-</div>
+    <div class="prompt" id="prompt"></div>
+    <div class="glyph" id="big"></div>
 
-<div class="tiny" id="courseText"></div>
+    <div class="answers" id="answers"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
 
-</div>
+  <div class="stats">
+    <div class="stat">
+      <b id="correctStat">0</b>
+      <span id="correctLabel"></span>
+    </div>
 
-<div class="lesson-list" id="lessons"></div>
+    <div class="stat">
+      <b id="streakStat">0</b>
+      <span id="streakLabel"></span>
+    </div>
+
+    <div class="stat">
+      <b id="accuracyStat">0%</b>
+      <span id="accuracyLabel"></span>
+    </div>
+  </div>
+
+  <div class="card sectionGap">
+    <div class="eyebrow" id="builderEyebrow"></div>
+    <h2 id="builderTitle"></h2>
+
+    <div class="builder" id="builder"></div>
+    <div class="choices" id="buildChoices"></div>
+    <div class="feedback" id="buildFeedback"></div>
+  </div>
 
 </section>
 
+<!-- WRITE -->
+<section class="view" id="write">
 
-<!-- =========================
-     PRACTICE
-========================= -->
+  <div class="card writeCard">
+    <div class="eyebrow" id="writingLabel"></div>
 
-<section id="practice" class="view">
+    <div class="writeGlyph" id="writeGlyph"></div>
 
-<div class="card">
+    <div class="writeInstructions" id="writeInstructions"></div>
 
-<div class="row">
+    <div class="canvasWrap">
+      <canvas id="guide"></canvas>
+      <canvas id="drawCanvas"></canvas>
+    </div>
 
-<div class="eyebrow" id="lessonPracticeLabel">
-Lesson practice
-</div>
+    <div class="writeScore" id="writeScore"></div>
+    <div class="scoreHint" id="scoreHint"></div>
 
-<div class="tiny" id="qnum"></div>
+    <div class="writeButtons">
+      <button class="secondary" id="erase"></button>
+      <button class="primary" id="checkWrite"></button>
+    </div>
 
-</div>
+    <button class="secondary" id="newWrite" style="width:100%;margin-top:9px"></button>
 
-<div class="progress">
-<div id="qbar"></div>
-</div>
-
-<div class="prompt" id="prompt"></div>
-
-<div class="glyph" id="big"></div>
-
-<div class="answers" id="answers"></div>
-
-<div class="feedback" id="feedback"></div>
-
-<button class="primary next" id="next" type="button">
-Continue →
-</button>
-
-<div class="masteryBox" id="masteryBox">
-Correct: 0 • Wrong: 0
-</div>
-
-</div>
-
-<div class="stats">
-
-<div class="stat">
-<b id="correct">0</b>
-<span id="correctLabel">Correct</span>
-</div>
-
-<div class="stat">
-<b id="streak">0</b>
-<span id="streakLabel">Streak</span>
-</div>
-
-<div class="stat">
-<b id="accuracy">—</b>
-<span id="accuracyLabel">Accuracy</span>
-</div>
-
-</div>
-
-
-<div class="card" id="builderCard">
-
-<div class="eyebrow" id="builderEyebrow">
-Syllable builder
-</div>
-
-<h2 id="builderTitle">
-Build a block
-</h2>
-
-<div class="builder">
-
-<div class="slot" id="bs1">
-?
-</div>
-
-<div class="slot" id="bs2">
-?
-</div>
-
-<div class="slot" id="bs3">
-→
-</div>
-
-</div>
-
-<div class="choices" id="buildChoices"></div>
-
-<div class="feedback" id="buildFeedback"></div>
-
-</div>
+    <div class="writeFeedback" id="writeFeedback"></div>
+  </div>
 
 </section>
 
+<!-- WORD -->
+<section class="view" id="word">
 
-<!-- =========================
-     WRITE
-========================= -->
+  <div class="card wordHero">
+    <div class="eyebrow" id="wordEyebrow"></div>
+    <h2 id="wordTitle"></h2>
 
-<section id="write" class="view">
+    <div id="wordDate"></div>
+    <div class="wordKorean" id="wordKorean"></div>
+    <div class="wordMeaning" id="wordMeaning"></div>
 
-<div class="card">
+    <input
+      id="wordInput"
+      class="wordInput"
+      type="text"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="none"
+      spellcheck="false"
+    >
 
-<div class="eyebrow" id="writingLabel">
-Writing practice
-</div>
+    <button class="primary" id="wordCheck"></button>
 
-<h2 id="writeGlyph">
-ㄱ
-</h2>
+    <div class="wordStatus" id="wordStatus"></div>
+    <div class="wordAttempts" id="wordAttempts"></div>
+  </div>
 
-<p class="tiny" id="writeInstructions">
-Trace the guide with your finger. Your strokes stay on this device.
-</p>
+  <div class="card sectionGap">
+    <div class="calendarHeader">
+      <button id="prevMonth" aria-label="Previous month">‹</button>
+      <div class="calendarTitle" id="calendarTitle"></div>
+      <button id="nextMonth" aria-label="Next month">›</button>
+    </div>
 
-<div class="padwrap">
-
-<div class="guide" id="guide">
-ㄱ
-</div>
-
-<canvas class="pad" id="canvas"></canvas>
-
-</div>
-
-<div class="score" id="writeScore"></div>
-
-<div
-class="tiny"
-style="text-align:center"
-id="scoreHint">
-</div>
-
-<div class="row">
-
-<button
-class="secondary"
-id="erase"
-type="button">
-Clear
-</button>
-
-<button
-class="primary"
-id="checkWrite"
-type="button">
-Check ✓
-</button>
-
-</div>
-
-<button
-class="secondary"
-id="newWrite"
-type="button"
-style="width:100%;margin-top:8px">
-Next letter →
-</button>
-
-<div class="feedback" id="writeFeedback"></div>
-
-</div>
+    <div class="calendar" id="calendar"></div>
+    <p class="calendarHint" id="calendarHint"></p>
+  </div>
 
 </section>
 
+<!-- REVIEW -->
+<section class="view" id="review">
 
-<!-- =========================
-     WORD OF THE DAY
-========================= -->
+  <div class="card">
+    <div class="eyebrow" id="reviewEyebrow"></div>
+    <h2 id="reviewTitle"></h2>
+    <p id="reviewDescription"></p>
 
-<section id="word" class="view">
+    <div class="reviewList" id="reviewList"></div>
 
-<div class="card wordCard">
-
-<div class="eyebrow" id="wordEyebrow">
-Word of the day
-</div>
-
-<h2 id="wordTitle">
-Type today's Korean word
-</h2>
-
-<div class="wordDate" id="wordDate"></div>
-
-<div class="wordDay" id="wordDay">
-Word of the day
-</div>
-
-<div class="wordKorean" id="wordKorean"></div>
-
-<div class="wordMeaning" id="wordMeaning"></div>
-
-<input
-class="wordInput"
-id="wordInput"
-type="text"
-inputmode="text"
-lang="ko"
-autocomplete="off"
-autocapitalize="none"
-spellcheck="false"
-placeholder="Type the Korean word">
-
-<div class="wordStatus" id="wordStatus"></div>
-
-<div class="tiny" id="wordAttempts"></div>
-
-</div>
-
-
-<div class="card calendar">
-
-<div class="calendarHead">
-
-<button
-id="prevMonth"
-type="button">
-‹
-</button>
-
-<div
-class="calendarTitle"
-id="calendarTitle">
-</div>
-
-<button
-id="nextMonth"
-type="button">
-›
-</button>
-
-</div>
-
-<div
-class="calendarGrid"
-id="calendar">
-</div>
-
-<div
-class="tiny"
-id="calendarHint"
-style="margin-top:10px;text-align:center">
-Select a date to practice that day's word.
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     REVIEW
-========================= -->
-
-<section id="review" class="view">
-
-<div class="card">
-
-<div class="eyebrow" id="reviewEyebrow">
-Spaced repetition
-</div>
-
-<h2 id="reviewTitle">
-Review what needs work
-</h2>
-
-<p
-class="tiny"
-id="reviewDescription">
-Letters you miss come back sooner. Strong letters wait longer.
-</p>
-
-<div
-class="reviewgrid"
-id="reviewList">
-</div>
-
-<button
-class="primary"
-id="startReview"
-type="button">
-Start review
-</button>
-
-</div>
+    <button class="primary" id="startReview"></button>
+  </div>
 
 </section>
 
 </div>
-
 
 <script>
-
 /* =========================================================
-   LESSON DATA
+   DATA
 ========================================================= */
 
-const units=[
-
-{
-name:"Consonants 1",
-ko:"자음 1",
-desc:"The first 7 consonants",
-koDesc:"처음 배우는 7개의 자음",
-
-items:[
-["ㄱ","g / k"],
-["ㄴ","n"],
-["ㄷ","d / t"],
-["ㄹ","r / l"],
-["ㅁ","m"],
-["ㅂ","b / p"],
-["ㅅ","s"]
-]
-},
-
-{
-name:"Consonants 2",
-ko:"자음 2",
-desc:"More consonants",
-koDesc:"더 많은 자음",
-
-items:[
-["ㅇ","ng / silent"],
-["ㅈ","j"],
-["ㅊ","ch"],
-["ㅋ","k"],
-["ㅌ","t"],
-["ㅍ","p"],
-["ㅎ","h"]
-]
-},
-
-{
-name:"Vowels 1",
-ko:"모음 1",
-desc:"Basic vowels",
-koDesc:"기본 모음",
-
-items:[
-["ㅏ","a"],
-["ㅑ","ya"],
-["ㅓ","eo"],
-["ㅕ","yeo"],
-["ㅗ","o"],
-["ㅛ","yo"],
-["ㅜ","u"]
-]
-},
-
-{
-name:"Vowels 2",
-ko:"모음 2",
-desc:"The remaining basic vowels",
-koDesc:"나머지 기본 모음",
-
-items:[
-["ㅠ","yu"],
-["ㅡ","eu"],
-["ㅣ","i"],
-["ㅐ","ae"],
-["ㅔ","e"]
-]
-},
-
-{
-name:"Syllable Blocks",
-ko:"음절 블록",
-desc:"Combine consonants + vowels",
-koDesc:"자음과 모음을 결합해요",
-
-items:[
-["가","ga"],
-["나","na"],
-["다","da"],
-["마","ma"],
-["바","ba"],
-["사","sa"]
-]
-},
-
-{
-name:"Reading",
-ko:"읽기",
-desc:"Simple Korean blocks",
-koDesc:"간단한 한국어 음절",
-
-items:[
-["너","neo"],
-["미","mi"],
-["고","go"],
-["아","a"],
-["우","u"],
-["하","ha"]
-]
-}
-
+const units = [
+  {
+    name:"Consonants 1",
+    ko:"자음 1",
+    desc:"The first 7 consonants",
+    koDesc:"처음 배우는 7개의 자음",
+    items:[
+      ["ㄱ","g / k"],
+      ["ㄴ","n"],
+      ["ㄷ","d / t"],
+      ["ㄹ","r / l"],
+      ["ㅁ","m"],
+      ["ㅂ","b / p"],
+      ["ㅅ","s"]
+    ]
+  },
+  {
+    name:"Consonants 2",
+    ko:"자음 2",
+    desc:"More consonants",
+    koDesc:"더 많은 자음",
+    items:[
+      ["ㅇ","ng / silent"],
+      ["ㅈ","j"],
+      ["ㅊ","ch"],
+      ["ㅋ","k"],
+      ["ㅌ","t"],
+      ["ㅍ","p"],
+      ["ㅎ","h"]
+    ]
+  },
+  {
+    name:"Vowels 1",
+    ko:"모음 1",
+    desc:"Basic vowels",
+    koDesc:"기본 모음",
+    items:[
+      ["ㅏ","a"],
+      ["ㅑ","ya"],
+      ["ㅓ","eo"],
+      ["ㅕ","yeo"],
+      ["ㅗ","o"],
+      ["ㅛ","yo"],
+      ["ㅜ","u"]
+    ]
+  },
+  {
+    name:"Vowels 2",
+    ko:"모음 2",
+    desc:"The remaining basic vowels",
+    koDesc:"나머지 기본 모음",
+    items:[
+      ["ㅠ","yu"],
+      ["ㅡ","eu"],
+      ["ㅣ","i"],
+      ["ㅐ","ae"],
+      ["ㅔ","e"]
+    ]
+  },
+  {
+    name:"Syllable Blocks",
+    ko:"음절 블록",
+    desc:"Combine consonants + vowels",
+    koDesc:"자음과 모음을 결합해요",
+    items:[
+      ["가","ga"],
+      ["나","na"],
+      ["다","da"],
+      ["마","ma"],
+      ["바","ba"],
+      ["사","sa"]
+    ]
+  },
+  {
+    name:"Reading",
+    ko:"읽기",
+    desc:"Simple Korean blocks",
+    koDesc:"간단한 한국어 음절",
+    items:[
+      ["너","neo"],
+      ["미","mi"],
+      ["고","go"],
+      ["아","a"],
+      ["우","u"],
+      ["하","ha"]
+    ]
+  }
 ];
 
-const all=units.flatMap(
-(u,ui)=>
-u.items.map(
-x=>({...x,unit:ui})
-)
+const all = units.flatMap((u,ui)=>
+  u.items.map(x=>({...x,unit:ui}))
 );
 
+/* Korean labels used when the interface is Korean */
+const koSounds = {
+  "ㄱ":"기역",
+  "ㄴ":"니은",
+  "ㄷ":"디귿",
+  "ㄹ":"리을",
+  "ㅁ":"미음",
+  "ㅂ":"비읍",
+  "ㅅ":"시옷",
+  "ㅇ":"이응",
+  "ㅈ":"지읒",
+  "ㅊ":"치읓",
+  "ㅋ":"키읔",
+  "ㅌ":"티읕",
+  "ㅍ":"피읖",
+  "ㅎ":"히읗",
+
+  "ㅏ":"아",
+  "ㅑ":"야",
+  "ㅓ":"어",
+  "ㅕ":"여",
+  "ㅗ":"오",
+  "ㅛ":"요",
+  "ㅜ":"우",
+  "ㅠ":"유",
+  "ㅡ":"으",
+  "ㅣ":"이",
+  "ㅐ":"애",
+  "ㅔ":"에",
+
+  "가":"가",
+  "나":"나",
+  "다":"다",
+  "마":"마",
+  "바":"바",
+  "사":"사",
+  "너":"너",
+  "미":"미",
+  "고":"고",
+  "아":"아",
+  "우":"우",
+  "하":"하"
+};
+
+/* =========================================================
+   TRANSLATIONS
+========================================================= */
+
+const UI = {
+
+  en:{
+    subtitle:"Read it • build it • write it • remember it",
+
+    courseEyebrow:"Your course",
+    homeTitle:"Start learning Hangul",
+    homeDescription:"Short lessons take you from individual letters to real Korean syllable blocks.",
+    courseText:"Course progress",
+
+    lessonPracticeLabel:"Lesson practice",
+    correctLabel:"Correct",
+    streakLabel:"Streak",
+    accuracyLabel:"Accuracy",
+
+    builderEyebrow:"Syllable builder",
+    builderBuild:"Build",
+    builderTryAgain:"Try again",
+    builderCorrect:"Correct!",
+    builderComplete:"Complete!",
+
+    writingLabel:"Writing practice",
+    writeInstructions:"Trace the guide with your finger. Your strokes stay on this device.",
+    erase:"Clear",
+    checkWrite:"Check ✓",
+    newWrite:"Next letter →",
+    scoreHint:"Your score is based on how closely your strokes follow the guide.",
+    writingExcellent:"Excellent!",
+    writingGood:"Good job!",
+    writingKeep:"Keep practicing!",
+    writingNoInk:"Draw the letter first.",
+
+    wordEyebrow:"Word of the day",
+    wordTitle:"Type today's Korean word",
+    wordCheck:"Check",
+    wordInputPlaceholder:"Type the Korean word",
+    wordCorrect:"Correct! ✓",
+    wordWrong:"Not quite.",
+    wordTryAgain:"Try again.",
+    wordTypeFirst:"Type the word first.",
+    wordAttemptsLeft:"tries left",
+    wordFailed:"No tries left for today.",
+    wordAttemptsLabel:"Attempts",
+
+    calendarHint:"Select a date to practice that day's word.",
+
+    reviewEyebrow:"Spaced repetition",
+    reviewTitle:"Review what needs work",
+    reviewDescription:"Letters you miss come back sooner. Strong letters wait longer.",
+    startReview:"Start review",
+    nothingUrgent:"Nothing urgent right now. Keep practicing!",
+    reviewCorrect:"correct",
+    reviewMissed:"missed",
+
+    previousMonth:"Previous month",
+    nextMonth:"Next month",
+    sound:"Play pronunciation",
+
+    questionSound:"Which sound matches this Korean letter?",
+    questionLetter:"Which Korean letter matches this sound?",
+    questionRead:"How is this Korean block read?",
+    answerLabel:"Answer",
+
+    correctFeedback:"Correct! ✓",
+    nextComing:"Next word in 1.25 seconds…",
+
+    lockedLesson:"Locked",
+    lessonReady:"Start",
+    lessonComplete:"Completed"
+  },
+
+  ko:{
+    subtitle:"읽고 • 만들고 • 쓰고 • 기억해요",
+
+    courseEyebrow:"나의 코스",
+    homeTitle:"한글 배우기 시작",
+    homeDescription:"짧은 레슨으로 글자부터 실제 한국어 음절 블록까지 배워요.",
+    courseText:"코스 진행률",
+
+    lessonPracticeLabel:"레슨 연습",
+    correctLabel:"정답",
+    streakLabel:"연속",
+    accuracyLabel:"정확도",
+
+    builderEyebrow:"음절 블록 만들기",
+    builderBuild:"만들기",
+    builderTryAgain:"다시 해보세요",
+    builderCorrect:"정답이에요!",
+    builderComplete:"완성!",
+
+    writingLabel:"쓰기 연습",
+    writeInstructions:"가이드를 손가락으로 따라 써 보세요. 획은 이 기기에만 남아요.",
+    erase:"지우기",
+    checkWrite:"확인 ✓",
+    newWrite:"다음 글자 →",
+    scoreHint:"획이 가이드와 얼마나 가까운지에 따라 점수가 계산돼요.",
+    writingExcellent:"아주 잘했어요!",
+    writingGood:"잘했어요!",
+    writingKeep:"계속 연습해 보세요!",
+    writingNoInk:"먼저 글자를 써 주세요.",
+
+    wordEyebrow:"오늘의 단어",
+    wordTitle:"오늘의 한국어 단어를 입력하세요",
+    wordCheck:"확인",
+    wordInputPlaceholder:"한국어 단어 입력",
+    wordCorrect:"정답이에요! ✓",
+    wordWrong:"아직 맞지 않아요.",
+    wordTryAgain:"다시 해보세요.",
+    wordTypeFirst:"먼저 단어를 입력하세요.",
+    wordAttemptsLeft:"번 남았어요",
+    wordFailed:"오늘의 기회를 모두 사용했어요.",
+    wordAttemptsLabel:"시도",
+
+    calendarHint:"날짜를 선택하면 그날의 단어를 다시 풀 수 있어요.",
+
+    reviewEyebrow:"간격 반복",
+    reviewTitle:"복습이 필요한 것을 확인하세요",
+    reviewDescription:"틀린 글자는 더 빨리 다시 나오고, 익숙한 글자는 더 오래 기다려요.",
+    startReview:"복습 시작",
+    nothingUrgent:"지금은 급한 복습이 없어요. 계속 연습해 보세요!",
+    reviewCorrect:"정답",
+    reviewMissed:"오답",
+
+    previousMonth:"이전 달",
+    nextMonth:"다음 달",
+    sound:"발음 듣기",
+
+    questionSound:"이 한글 글자의 이름은 무엇인가요?",
+    questionLetter:"이 소리에 맞는 한글은 무엇인가요?",
+    questionRead:"이 한국어 음절은 어떻게 읽나요?",
+    answerLabel:"정답",
+
+    correctFeedback:"정답이에요! ✓",
+    nextComing:"1.25초 후 다음 문제…",
+
+    lockedLesson:"잠김",
+    lessonReady:"시작",
+    lessonComplete:"완료"
+  }
+};
+
+function T(key){
+  return UI[language][key] ?? UI.en[key] ?? key;
+}
 
 /* =========================================================
    STATE
@@ -1132,2330 +1130,1137 @@ x=>({...x,unit:ui})
 let s;
 
 try{
-s=JSON.parse(
-localStorage.getItem("hangulQuest")||"{}"
-);
+  s=JSON.parse(localStorage.getItem("hangulQuest")||"{}");
 }catch(e){
-s={};
+  s={};
 }
 
-s.correct??=0;
-s.total??=0;
-s.streak??=0;
-s.unlocked??=1;
-s.mastery??={};
-s.wordDays??={};
+s.correct ??= 0;
+s.total ??= 0;
+s.streak ??= 0;
+s.unlocked ??= 1;
+s.mastery ??= {};
+s.wordDays ??= {};
 
-let language=s.language==="ko"?"ko":"en";
+let language=s.language==="ko" ? "ko" : "en";
 
 let q=0;
 let qTotal=10;
 let current=null;
 let locked=false;
 let activeUnit=0;
+let answerTimer=null;
 
+let lastAnswerCorrect=null;
+let lastAnswerRight="";
 
-/* =========================================================
-   HELPERS
-========================================================= */
+let wi=0;
+let writeTimer=null;
+let writeLocked=false;
+
+let builderTarget=null;
+let builderStep=0;
+
+let selectedDateKey=null;
+let calendarDate=new Date();
 
 function $(id){
-return document.getElementById(id);
+  return document.getElementById(id);
 }
 
 function save(){
+  s.language=language;
 
-s.language=language;
-
-try{
-localStorage.setItem(
-"hangulQuest",
-JSON.stringify(s)
-);
-}catch(e){}
-
+  try{
+    localStorage.setItem("hangulQuest",JSON.stringify(s));
+  }catch(e){}
 }
 
 function shuffle(a){
-return [...a].sort(
-()=>Math.random()-.5
-);
+  return [...a].sort(()=>Math.random()-.5);
 }
 
 function getMastery(key){
+  s.mastery[key] ??= {
+    correct:0,
+    wrong:0,
+    next:0
+  };
 
-s.mastery[key]??={
-correct:0,
-wrong:0
-};
+  s.mastery[key].correct ??= 0;
+  s.mastery[key].wrong ??= 0;
+  s.mastery[key].next ??= 0;
 
-s.mastery[key].correct??=0;
-s.mastery[key].wrong??=0;
-
-return s.mastery[key];
-
+  return s.mastery[key];
 }
 
 function updateMastery(key,ok){
+  const m=getMastery(key);
 
-const m=getMastery(key);
+  if(ok){
+    m.correct++;
+  }else{
+    m.wrong++;
+  }
 
-if(ok){
-m.correct++;
-}else{
-m.wrong++;
-}
-
-save();
-
+  save();
 }
 
 function masteredCount(){
-
-return all.filter(
-x=>getMastery(x[0]).correct>=2
-).length;
-
+  return all.filter(x=>getMastery(x[0]).correct>=2).length;
 }
 
+function soundLabel(item){
+  return language==="ko"
+    ? (koSounds[item[0]] || item[1])
+    : item[1];
+}
 
 /* =========================================================
-   LANGUAGE UI
+   LANGUAGE
 ========================================================= */
 
 function updateLanguageUI(){
 
-const ko=language==="ko";
+  document.documentElement.lang=language;
 
-document.documentElement.lang=
-ko?"ko":"en";
+  $("language").textContent=
+    language==="ko" ? "English" : "한국어";
 
-$("language").textContent=
-ko?"English":"한국어";
+  $("subtitle").textContent=T("subtitle");
 
-$("subtitle").textContent=
-ko
-?"읽고 • 만들고 • 쓰고 • 기억해요"
-:"Read it • build it • write it • remember it";
+  $("courseEyebrow").textContent=T("courseEyebrow");
+  $("homeTitle").textContent=T("homeTitle");
+  $("homeDescription").textContent=T("homeDescription");
+  $("courseText").textContent=T("courseText");
 
-$("courseEyebrow").textContent=
-ko?"나의 코스":"Your course";
+  $("lessonPracticeLabel").textContent=T("lessonPracticeLabel");
 
-$("homeTitle").textContent=
-ko?"한글 배우기 시작"
-:"Start learning Hangul";
+  $("correctLabel").textContent=T("correctLabel");
+  $("streakLabel").textContent=T("streakLabel");
+  $("accuracyLabel").textContent=T("accuracyLabel");
 
-$("homeDescription").textContent=
-ko
-?"짧은 레슨으로 글자부터 실제 한국어 음절 블록까지 배워요."
-:"Short lessons take you from individual letters to real Korean syllable blocks.";
+  $("builderEyebrow").textContent=T("builderEyebrow");
 
-$("lessonPracticeLabel").textContent=
-ko?"레슨 연습":"Lesson practice";
+  $("writingLabel").textContent=T("writingLabel");
+  $("writeInstructions").textContent=T("writeInstructions");
+  $("erase").textContent=T("erase");
+  $("checkWrite").textContent=T("checkWrite");
+  $("newWrite").textContent=T("newWrite");
+  $("scoreHint").textContent=T("scoreHint");
 
-$("correctLabel").textContent=
-ko?"정답":"Correct";
+  $("wordEyebrow").textContent=T("wordEyebrow");
+  $("wordTitle").textContent=T("wordTitle");
+  $("wordCheck").textContent=T("wordCheck");
+  $("wordInput").placeholder=T("wordInputPlaceholder");
 
-$("streakLabel").textContent=
-ko?"연속":"Streak";
+  $("calendarHint").textContent=T("calendarHint");
 
-$("accuracyLabel").textContent=
-ko?"정확도":"Accuracy";
+  $("reviewEyebrow").textContent=T("reviewEyebrow");
+  $("reviewTitle").textContent=T("reviewTitle");
+  $("reviewDescription").textContent=T("reviewDescription");
+  $("startReview").textContent=T("startReview");
 
-$("builderEyebrow").textContent=
-ko?"음절 블록 만들기":"Syllable builder";
+  $("sound").title=T("sound");
+  $("sound").ariaLabel=T("sound");
 
-$("writingLabel").textContent=
-ko?"쓰기 연습":"Writing practice";
+  $("prevMonth").title=T("previousMonth");
+  $("prevMonth").ariaLabel=T("previousMonth");
 
-$("writeInstructions").textContent=
-ko
-?"가이드를 손가락으로 따라 써 보세요. 획은 이 기기에만 남아요."
-:"Trace the guide with your finger. Your strokes stay on this device.";
+  $("nextMonth").title=T("nextMonth");
+  $("nextMonth").ariaLabel=T("nextMonth");
 
-$("erase").textContent=
-ko?"지우기":"Clear";
+  const names=language==="ko"
+    ? {
+        home:"학습",
+        practice:"연습",
+        write:"쓰기",
+        word:"단어",
+        review:"복습"
+      }
+    : {
+        home:"Learn",
+        practice:"Practice",
+        write:"Write",
+        word:"Word",
+        review:"Review"
+      };
 
-$("checkWrite").textContent=
-ko?"확인 ✓":"Check ✓";
+  document.querySelectorAll("#nav button").forEach(btn=>{
+    btn.textContent=names[btn.dataset.view];
+  });
 
-$("newWrite").textContent=
-ko?"다음 글자 →":"Next letter →";
+  renderLessons();
+  stats();
+  updateMasteryDisplay();
+  renderReview();
+  renderWord();
 
-$("wordEyebrow").textContent=
-ko?"오늘의 단어":"Word of the day";
+  if(current){
+    if(!locked){
+      renderCurrentQuestion();
+    }else{
+      $("prompt").textContent=
+        current.mode==="sound"
+          ? (current.item.unit>=4 ? T("questionRead") : T("questionSound"))
+          : T("questionLetter");
 
-$("wordTitle").textContent=
-ko
-?"오늘의 한국어 단어를 입력하세요"
-:"Type today's Korean word";
+      if(lastAnswerCorrect!==null){
+        $("feedback").textContent=
+          lastAnswerCorrect
+            ? T("correctFeedback")+" "+T("nextComing")
+            : `${T("answerLabel")}: ${lastAnswerRight} • ${T("nextComing")}`;
+      }
+    }
+  }
 
-$("wordInput").placeholder=
-ko
-?"한국어 단어 입력"
-:"Type the Korean word";
-
-$("calendarHint").textContent=
-ko
-?"날짜를 선택하면 그날의 단어를 다시 풀 수 있어요."
-:"Select a date to practice that day's word.";
-
-$("reviewEyebrow").textContent=
-ko?"간격 반복":"Spaced repetition";
-
-$("reviewTitle").textContent=
-ko
-?"복습이 필요한 것을 확인하세요"
-:"Review what needs work";
-
-$("reviewDescription").textContent=
-ko
-?"틀린 글자는 더 빨리 다시 나오고, 익숙한 글자는 더 오래 기다려요."
-:"Letters you miss come back sooner. Strong letters wait longer.";
-
-$("startReview").textContent=
-ko?"복습 시작":"Start review";
-
-
-document
-.querySelectorAll("#nav button")
-.forEach(b=>{
-
-const n=
-ko
-?{
-home:"학습",
-practice:"연습",
-write:"쓰기",
-word:"단어",
-review:"복습"
+  updateBuilderLanguage();
 }
-:{
-home:"Learn",
-practice:"Practice",
-write:"Write",
-word:"Word",
-review:"Review"
-};
-
-b.textContent=
-n[b.dataset.view];
-
-});
-
-
-renderLessons();
-
-if(current)
-renderCurrentQuestion();
-
-writeNew();
-
-renderReview();
-
-renderWord();
-
-stats();
-
-updateMasteryDisplay();
-
-}
-
 
 /* =========================================================
    NAVIGATION
 ========================================================= */
 
-$("language").addEventListener(
-"click",
-()=>{
-language=
-language==="en"
-?"ko"
-:"en";
+function setView(view){
 
-save();
-updateLanguageUI();
-}
-);
+  document.querySelectorAll(".view").forEach(v=>{
+    v.classList.toggle("active",v.id===view);
+  });
 
+  document.querySelectorAll("#nav button").forEach(b=>{
+    b.classList.toggle("active",b.dataset.view===view);
+  });
 
-function setView(v){
+  if(view==="practice" && !current){
+    newQuestion();
+  }
 
-if(
-![
-"home",
-"practice",
-"write",
-"word",
-"review"
-].includes(v)
-){
-v="home";
-}
+  if(view==="write"){
+    resizeCanvases();
+  }
 
-document
-.querySelectorAll(".view")
-.forEach(x=>
-x.classList.toggle(
-"active",
-x.id===v
-)
-);
+  if(view==="review"){
+    renderReview();
+  }
 
-document
-.querySelectorAll("#nav button")
-.forEach(x=>
-x.classList.toggle(
-"active",
-x.dataset.view===v
-)
-);
-
-if(
-v==="practice" &&
-!current
-){
-q=0;
-newQuestion();
+  if(view==="word"){
+    renderWord();
+  }
 }
 
-if(v==="write"){
-setTimeout(
-resizeCanvas,
-50
-);
-}
-
-if(v==="review"){
-renderReview();
-}
-
-if(v==="word"){
-renderWord();
-}
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
+document.querySelectorAll("#nav button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    setView(btn.dataset.view);
+  });
 });
 
-}
-
-
-document
-.querySelectorAll("#nav button")
-.forEach(
-b=>
-b.addEventListener(
-"click",
-()=>{
-setView(b.dataset.view);
-}
-)
-);
-
-
 /* =========================================================
-   LESSONS
+   HOME / LESSONS
 ========================================================= */
 
 function renderLessons(){
 
-$("lessons").innerHTML=
-units
-.map(
-(u,i)=>{
+  const box=$("lessons");
+  box.innerHTML="";
 
-const unlocked=
-i<=s.unlocked;
+  units.forEach((u,i)=>{
 
-return `
-<button
-class="lesson ${!unlocked?"locked":""}"
-${!unlocked?"disabled":""}
-data-i="${i}"
-type="button">
+    const unlocked=i<s.unlocked;
+    const mastered=u.items.every(x=>getMastery(x[0]).correct>=2);
 
-<div class="num">
-${i+1}
-</div>
+    const btn=document.createElement("button");
+    btn.className="lesson"+(unlocked?"":" locked");
+    btn.disabled=!unlocked;
 
-<div>
-<b>
-${language==="ko"?u.ko:u.name}
-</b>
+    btn.innerHTML=`
+      <div class="num">${unlocked ? i+1 : "🔒"}</div>
+      <div style="min-width:0;flex:1">
+        <b>${language==="ko"?u.ko:u.name}</b>
+        <small>${language==="ko"?u.koDesc:u.desc}</small>
+      </div>
+      <div class="xp">${mastered ? "✓" : unlocked ? "▶" : ""}</div>
+    `;
 
-<small>
-${language==="ko"?u.koDesc:u.desc}
-</small>
-</div>
+    btn.addEventListener("click",()=>{
+      if(unlocked){
+        startLesson(i);
+      }
+    });
 
-<span class="xp">
-${unlocked?"▶":"🔒"}
-</span>
+    box.appendChild(btn);
+  });
 
-</button>
-`;
+  const total=all.length;
+  const mastered=masteredCount();
+  const percent=total ? Math.round(mastered/total*100) : 0;
 
-}
-)
-.join("");
-
-
-document
-.querySelectorAll(".lesson")
-.forEach(
-b=>
-b.addEventListener(
-"click",
-()=>{
-activeUnit=
-Number(b.dataset.i);
-
-startLesson(activeUnit);
-}
-)
-);
-
-
-const done=
-Math.min(
-units.length,
-s.unlocked
-);
-
-$("coursebar").style.width=
-done/units.length*100+"%";
-
-$("courseText").textContent=
-language==="ko"
-?`${done} / ${units.length} 레슨 잠금 해제 • ${masteredCount()}개 마스터`
-:`${done} of ${units.length} lessons unlocked • ${masteredCount()} mastered`;
-
+  $("courseProgress").style.width=percent+"%";
+  $("coursePercent").textContent=percent+"%";
 }
 
+function startLesson(index){
 
-function startLesson(i){
+  clearTimeout(answerTimer);
+  answerTimer=null;
 
-activeUnit=i;
+  activeUnit=index;
+  q=0;
+  locked=false;
+  current=null;
+  lastAnswerCorrect=null;
+  lastAnswerRight="";
 
-q=0;
-
-current=null;
-
-setView("practice");
-
-newQuestion();
-
+  setView("practice");
+  newQuestion();
 }
-
 
 /* =========================================================
    PRACTICE
 ========================================================= */
 
-function renderCurrentQuestion(){
-
-if(!current)
-return;
-
-const mode=
-current.practiceMode;
-
-const right=
-mode==="sound"
-?current[1]
-:current[0];
-
-
-$("prompt").textContent=
-language==="ko"
-?
-(
-mode==="sound"
-?
-"이 한글 글자의 소리는 무엇인가요?"
-:
-"이 소리에 맞는 한글 글자는 무엇인가요?"
-)
-:
-(
-mode==="sound"
-?
-"Which sound matches this Korean letter?"
-:
-"Which Korean letter matches this sound?"
-);
-
-
-$("big").textContent=
-mode==="sound"
-?current[0]
-:current[1];
-
-
-const pool=
-units[activeUnit].items;
-
-const wrong=
-shuffle(
-pool.filter(
-x=>x!==current
-)
-)
-.slice(0,3)
-.map(
-x=>
-mode==="sound"
-?x[1]
-:x[0]
-);
-
-
-$("answers").innerHTML=
-shuffle([
-right,
-...wrong
-])
-.map(
-a=>
-`
-<button
-class="answer"
-type="button">
-${a}
-</button>
-`
-)
-.join("");
-
-
-[
-...$("answers").children
-]
-.forEach(
-b=>
-b.addEventListener(
-"click",
-()=>{
-answer(b,right);
-}
-)
-);
-
-updateMasteryDisplay();
-
-}
-
-
 function newQuestion(){
 
-locked=false;
+  locked=false;
+  lastAnswerCorrect=null;
+  lastAnswerRight="";
 
-$("feedback").textContent="";
+  const pool=units[activeUnit].items;
 
-$("next").style.display="none";
+  const item=pool[Math.floor(Math.random()*pool.length)];
 
-$("qnum").textContent=
-`${q+1} / ${qTotal}`;
+  const mode=Math.random()<.5 ? "sound" : "letter";
 
-$("qbar").style.width=
-q/qTotal*100+"%";
+  current={
+    item,
+    mode
+  };
 
-
-const item=
-units[activeUnit]
-.items[
-Math.floor(
-Math.random()*
-units[activeUnit].items.length
-)
-];
-
-
-current=[
-item[0],
-item[1]
-];
-
-current.practiceMode=
-Math.random()<.5
-?"sound"
-:"letter";
-
-renderCurrentQuestion();
-
+  renderCurrentQuestion();
 }
 
+function renderCurrentQuestion(){
 
-function answer(button,right){
+  if(!current)return;
 
-if(locked)
-return;
+  const item=current.item;
 
-locked=true;
+  $("qnum").textContent=`${q+1} / ${qTotal}`;
 
-s.total++;
+  $("qbar").style.width=(q/qTotal*100)+"%";
 
-const ok=
-button.textContent.trim()===right;
+  $("qmode").textContent=
+    current.mode==="sound"
+      ? T("questionSound")
+      : T("questionLetter");
 
-updateMastery(
-current[0],
-ok
-);
+  if(current.mode==="sound"){
+    $("prompt").textContent=
+      item[0].length===1 || activeUnit<4
+        ? T("questionSound")
+        : T("questionRead");
 
-if(ok){
+    $("big").textContent=item[0];
+  }else{
+    $("prompt").textContent=T("questionLetter");
+    $("big").textContent=soundLabel(item);
+  }
 
-s.correct++;
-s.streak++;
+  const wrongPool=shuffle(
+    units[activeUnit].items.filter(x=>x[0]!==item[0])
+  ).slice(0,3);
 
-button.classList.add("correct");
+  let choices;
 
-$("feedback").textContent=
-language==="ko"
-?"✓ 정답!"
-:"✓ Correct!";
+  if(current.mode==="sound"){
+    choices=[
+      soundLabel(item),
+      ...wrongPool.map(x=>soundLabel(x))
+    ];
+  }else{
+    choices=[
+      item[0],
+      ...wrongPool.map(x=>x[0])
+    ];
+  }
 
-}else{
+  choices=shuffle(choices);
 
-s.streak=0;
+  const box=$("answers");
+  box.innerHTML="";
 
-button.classList.add("wrong");
+  choices.forEach(choice=>{
 
-$("feedback").textContent=
-language==="ko"
-?`정답: ${right}`
-:`Answer: ${right}`;
+    const b=document.createElement("button");
+    b.className="answer";
+    b.textContent=choice;
 
-[
-...$("answers").children
-]
-.forEach(
-b=>{
-if(
-b.textContent.trim()===right
-){
-b.classList.add("correct");
-}
-}
-);
+    b.addEventListener("click",()=>{
+      answer(b,choice);
+    });
 
-}
+    box.appendChild(b);
+  });
 
-save();
-
-stats();
-
-updateMasteryDisplay();
-
-$("next").style.display="block";
-
-}
-
-
-$("next").addEventListener(
-"click",
-()=>{
-
-q++;
-
-if(q>=qTotal){
-
-if(
-activeUnit===s.unlocked &&
-s.unlocked<units.length
-){
-s.unlocked++;
+  $("feedback").textContent="";
 }
 
-save();
+function answer(button,choice){
 
-renderLessons();
+  if(locked || !current)return;
 
-current=null;
+  locked=true;
 
-setView("home");
+  const item=current.item;
 
-}else{
+  const right=
+    current.mode==="sound"
+      ? soundLabel(item)
+      : item[0];
 
-newQuestion();
+  const ok=choice===right;
 
+  lastAnswerCorrect=ok;
+  lastAnswerRight=right;
+
+  document.querySelectorAll("#answers .answer").forEach(b=>{
+    b.disabled=true;
+
+    if(b.textContent===right){
+      b.classList.add("correct");
+    }
+  });
+
+  if(!ok){
+    button.classList.add("wrong");
+  }
+
+  if(ok){
+    s.correct++;
+    s.total++;
+    s.streak++;
+
+    updateMastery(item[0],true);
+
+    $("feedback").textContent=
+      T("correctFeedback")+" "+T("nextComing");
+  }else{
+    s.total++;
+    s.streak=0;
+
+    updateMastery(item[0],false);
+
+    $("feedback").textContent=
+      `${T("answerLabel")}: ${right} • ${T("nextComing")}`;
+  }
+
+  save();
+  stats();
+  updateMasteryDisplay();
+
+  clearTimeout(answerTimer);
+
+  answerTimer=setTimeout(()=>{
+
+    answerTimer=null;
+    q++;
+
+    if(q>=qTotal){
+
+      if(activeUnit===s.unlocked && s.unlocked<units.length){
+        s.unlocked++;
+      }
+
+      save();
+      renderLessons();
+
+      current=null;
+      locked=false;
+
+      setView("home");
+
+    }else{
+      newQuestion();
+    }
+
+  },1250);
 }
-
-}
-);
-
-
-/* =========================================================
-   STATS
-========================================================= */
 
 function stats(){
 
-$("correct").textContent=
-s.correct;
+  $("correctStat").textContent=s.correct;
+  $("streakStat").textContent=s.streak;
 
-$("streak").textContent=
-s.streak;
+  const accuracy=s.total
+    ? Math.round(s.correct/s.total*100)
+    : 0;
 
-$("accuracy").textContent=
-s.total
-?Math.round(
-s.correct/s.total*100
-)+"%"
-:"—";
-
+  $("accuracyStat").textContent=accuracy+"%";
 }
 
+function updateMasteryDisplay(){
+
+  /* Keeps the home progress synchronized */
+  renderLessons();
+}
 
 /* =========================================================
    SYLLABLE BUILDER
 ========================================================= */
 
-const builderTargets=[
-
-["가","ㄱ","ㅏ"],
-["나","ㄴ","ㅏ"],
-["다","ㄷ","ㅏ"],
-["미","ㅁ","ㅣ"],
-["고","ㄱ","ㅗ"],
-["하","ㅎ","ㅏ"]
-
-];
-
-let builderTarget=null;
-let builderStep=0;
-
-
 function build(){
 
-builderTarget=
-builderTargets[
-Math.floor(
-Math.random()*
-builderTargets.length
-)
-];
+  const consonants=["ㄱ","ㄴ","ㄷ","ㅁ","ㅂ","ㅅ"];
+  const vowels=["ㅏ","ㅓ","ㅗ","ㅜ","ㅡ","ㅣ"];
 
-builderStep=0;
+  const c=consonants[Math.floor(Math.random()*consonants.length)];
+  const v=vowels[Math.floor(Math.random()*vowels.length)];
 
-$("builderTitle").textContent=
-language==="ko"
-?`${builderTarget[0]} 만들기`
-:`Build ${builderTarget[0]}`;
+  const syllableMap={
+    "ㄱㅏ":"가",
+    "ㄱㅓ":"거",
+    "ㄱㅗ":"고",
+    "ㄱㅜ":"구",
+    "ㄱㅡ":"그",
+    "ㄱㅣ":"기",
 
-$("bs1").textContent="?";
-$("bs2").textContent="?";
-$("bs3").textContent="→";
+    "ㄴㅏ":"나",
+    "ㄴㅓ":"너",
+    "ㄴㅗ":"노",
+    "ㄴㅜ":"누",
+    "ㄴㅡ":"느",
+    "ㄴㅣ":"니",
 
-$("buildFeedback").textContent="";
+    "ㄷㅏ":"다",
+    "ㄷㅓ":"더",
+    "ㄷㅗ":"도",
+    "ㄷㅜ":"두",
+    "ㄷㅡ":"드",
+    "ㄷㅣ":"디",
 
-makeBuilderChoices();
+    "ㅁㅏ":"마",
+    "ㅁㅓ":"머",
+    "ㅁㅗ":"모",
+    "ㅁㅜ":"무",
+    "ㅁㅡ":"므",
+    "ㅁㅣ":"미",
 
+    "ㅂㅏ":"바",
+    "ㅂㅓ":"버",
+    "ㅂㅗ":"보",
+    "ㅂㅜ":"부",
+    "ㅂㅡ":"브",
+    "ㅂㅣ":"비",
+
+    "ㅅㅏ":"사",
+    "ㅅㅓ":"서",
+    "ㅅㅗ":"소",
+    "ㅅㅜ":"수",
+    "ㅅㅡ":"스",
+    "ㅅㅣ":"시"
+  };
+
+  builderTarget={
+    c,
+    v,
+    answer:syllableMap[c+v]
+  };
+
+  builderStep=0;
+
+  $("builder").innerHTML=`
+    <div class="slot" id="slotC">${c}</div>
+    <div class="slot" id="slotV">${v}</div>
+  `;
+
+  makeBuilderChoices();
+
+  $("buildFeedback").textContent="";
+  updateBuilderLanguage();
 }
 
+function updateBuilderLanguage(){
+
+  if(!builderTarget)return;
+
+  const target=builderTarget;
+
+  if(builderStep===0){
+    $("builderTitle").textContent=
+      `${T("builderBuild")} ${target.answer}`;
+  }else if(builderStep===1){
+    $("builderTitle").textContent=
+      `${T("builderBuild")} ${target.answer}`;
+  }else{
+    $("builderTitle").textContent=
+      `${T("builderComplete")} ${target.answer}`;
+  }
+}
 
 function makeBuilderChoices(){
 
-const right=
-builderTarget[
-builderStep+1
-];
+  const choices=[
+    builderTarget.c,
+    builderTarget.v
+  ];
 
-const pool=
-shuffle([
-"ㄱ",
-"ㄴ",
-"ㄷ",
-"ㅁ",
-"ㅎ",
-"ㅏ",
-"ㅣ",
-"ㅗ"
-])
-.filter(
-x=>x!==right
-)
-.slice(0,3);
+  const extraConsonants=["ㄱ","ㄴ","ㄷ","ㅁ","ㅂ","ㅅ","ㅎ"];
+  const extraVowels=["ㅏ","ㅓ","ㅗ","ㅜ","ㅡ","ㅣ","ㅔ"];
 
+  if(builderStep===0){
+    while(choices.length<4){
+      const x=extraConsonants[
+        Math.floor(Math.random()*extraConsonants.length)
+      ];
 
-$("buildChoices").innerHTML=
-shuffle([
-right,
-...pool
-])
-.map(
-x=>
-`
-<button type="button">
-${x}
-</button>
-`
-)
-.join("");
+      if(!choices.includes(x))choices.push(x);
+    }
+  }else{
+    while(choices.length<4){
+      const x=extraVowels[
+        Math.floor(Math.random()*extraVowels.length)
+      ];
 
+      if(!choices.includes(x))choices.push(x);
+    }
+  }
 
-[
-...$("buildChoices").children
-]
-.forEach(
-b=>
-b.addEventListener(
-"click",
-()=>{
+  const box=$("buildChoices");
+  box.innerHTML="";
 
-if(
-b.textContent.trim()!==right
-){
+  shuffle(choices).forEach(choice=>{
 
-$("buildFeedback").textContent=
-language==="ko"
-?"다시 해보세요"
-:"Try again";
+    const b=document.createElement("button");
+    b.textContent=choice;
 
-return;
+    b.addEventListener("click",()=>{
 
+      if(builderStep===0){
+
+        if(choice===builderTarget.c){
+          $("slotC").textContent=choice;
+          builderStep=1;
+          $("buildFeedback").textContent="✓";
+          makeBuilderChoices();
+          updateBuilderLanguage();
+        }else{
+          $("buildFeedback").textContent=T("builderTryAgain");
+        }
+
+      }else{
+
+        if(choice===builderTarget.v){
+
+          $("slotV").textContent=choice;
+          builderStep=2;
+
+          $("buildFeedback").textContent=T("builderCorrect");
+          updateBuilderLanguage();
+
+          setTimeout(build,1000);
+
+        }else{
+          $("buildFeedback").textContent=T("builderTryAgain");
+        }
+      }
+    });
+
+    box.appendChild(b);
+  });
 }
-
-b.classList.add("correct");
-
-[
-...$("buildChoices").children
-]
-.forEach(
-x=>x.disabled=true
-);
-
-$("buildFeedback").textContent="✓";
-
-if(builderStep===0){
-
-$("bs1").textContent=
-builderTarget[1];
-
-}else{
-
-$("bs2").textContent=
-builderTarget[2];
-
-}
-
-builderStep++;
-
-if(builderStep<2){
-
-setTimeout(
-makeBuilderChoices,
-300
-);
-
-}else{
-
-$("bs3").textContent=
-"→ "+builderTarget[0];
-
-$("buildFeedback").textContent=
-language==="ko"
-?`✓ ${builderTarget[0]} = ${builderTarget[1]} + ${builderTarget[2]}`
-:`✓ ${builderTarget[0]} = ${builderTarget[1]} + ${builderTarget[2]}`;
-
-setTimeout(
-build,
-1500
-);
-
-}
-
-}
-)
-);
-
-}
-
-build();
-
 
 /* =========================================================
    WRITING
-   ORIGINAL DRAWING SYSTEM
 ========================================================= */
 
-const consonants=
-units
-.slice(0,2)
-.flatMap(
-u=>u.items
-);
+const drawCanvas=$("drawCanvas");
+const guideCanvas=$("guide");
 
-let wi=0;
-let ctx=null;
-let down=false;
-let lastX=0;
-let lastY=0;
+const dctx=drawCanvas.getContext("2d");
+const gctx=guideCanvas.getContext("2d");
 
+let drawing=false;
+let hasInk=false;
 
-function resizeCanvas(){
+const writeItems=[
+  "ㄱ","ㄴ","ㄷ","ㄹ","ㅁ","ㅂ","ㅅ",
+  "ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ",
+  "ㅏ","ㅑ","ㅓ","ㅕ","ㅗ","ㅛ","ㅜ",
+  "ㅠ","ㅡ","ㅣ","ㅐ","ㅔ",
+  "가","나","다","마","바","사",
+  "너","미","고","아","우","하"
+];
 
-const canvas=$("canvas");
+function resizeCanvases(){
 
-if(!canvas)
-return;
+  const rect=drawCanvas.parentElement.getBoundingClientRect();
 
-const rect=
-canvas.getBoundingClientRect();
+  const dpr=Math.min(window.devicePixelRatio||1,2);
 
-const d=
-window.devicePixelRatio||1;
+  drawCanvas.width=Math.round(rect.width*dpr);
+  drawCanvas.height=Math.round(rect.height*dpr);
 
-canvas.width=
-Math.max(
-1,
-rect.width*d
-);
+  guideCanvas.width=Math.round(rect.width*dpr);
+  guideCanvas.height=Math.round(rect.height*dpr);
 
-canvas.height=
-Math.max(
-1,
-rect.height*d
-);
+  dctx.setTransform(dpr,0,0,dpr,0,0);
+  gctx.setTransform(dpr,0,0,dpr,0,0);
 
-ctx=
-canvas.getContext("2d");
-
-ctx.setTransform(
-d,
-0,
-0,
-d,
-0,
-0
-);
-
-ctx.lineWidth=5;
-ctx.lineCap="round";
-ctx.lineJoin="round";
-
+  drawGuide();
 }
 
+function drawGuide(){
 
-function writeNew(){
+  const rect=drawCanvas.parentElement.getBoundingClientRect();
 
-const x=
-consonants[
-wi%consonants.length
-][0];
+  gctx.clearRect(0,0,rect.width,rect.height);
 
-$("writeGlyph").textContent=x;
+  gctx.font=
+    `${Math.min(rect.width*.72,300)}px "Apple SD Gothic Neo","Noto Sans KR",sans-serif`;
 
-$("guide").textContent=x;
-
-$("writeFeedback").textContent="";
-
-$("writeScore").textContent="";
-
-$("scoreHint").textContent=
-language==="ko"
-?
-"70% 이상이면 읽을 수 있는 것으로 표시돼요."
-:
-"70% or higher is considered readable.";
-
-clearCanvas();
-
+  gctx.textAlign="center";
+  gctx.textBaseline="middle";
+  gctx.fillText(
+    writeItems[wi],
+    rect.width/2,
+    rect.height/2
+  );
 }
-
 
 function clearCanvas(){
 
-if(!ctx)
-resizeCanvas();
+  const rect=drawCanvas.parentElement.getBoundingClientRect();
 
-if(!ctx)
-return;
+  dctx.clearRect(0,0,rect.width,rect.height);
+  hasInk=false;
 
-const canvas=$("canvas");
-
-ctx.clearRect(
-0,
-0,
-canvas.clientWidth,
-canvas.clientHeight
-);
-
+  $("writeScore").textContent="";
+  $("writeFeedback").textContent="";
 }
 
+function writeNew(){
 
-function pos(e){
+  clearTimeout(writeTimer);
+  writeTimer=null;
+  writeLocked=false;
 
-const rect=
-$("canvas").getBoundingClientRect();
+  $("writeGlyph").textContent=writeItems[wi];
 
-return[
-e.clientX-rect.left,
-e.clientY-rect.top
-];
+  clearCanvas();
 
+  resizeCanvases();
 }
 
+function getPoint(e){
 
-$("canvas").addEventListener(
-"pointerdown",
-e=>{
+  const rect=drawCanvas.getBoundingClientRect();
 
-e.preventDefault();
+  const source=e.touches ? e.touches[0] : e;
 
-down=true;
-
-$("canvas")
-.setPointerCapture(
-e.pointerId
-);
-
-const p=pos(e);
-
-lastX=p[0];
-lastY=p[1];
-
-}
-);
-
-
-$("canvas").addEventListener(
-"pointermove",
-e=>{
-
-if(!down||!ctx)
-return;
-
-e.preventDefault();
-
-const p=pos(e);
-
-ctx.beginPath();
-
-ctx.moveTo(
-lastX,
-lastY
-);
-
-ctx.lineTo(
-p[0],
-p[1]
-);
-
-ctx.stroke();
-
-lastX=p[0];
-lastY=p[1];
-
-}
-);
-
-
-[
-"pointerup",
-"pointercancel"
-]
-.forEach(
-eventName=>{
-
-$("canvas").addEventListener(
-eventName,
-e=>{
-
-down=false;
-
-try{
-
-$("canvas")
-.releasePointerCapture(
-e.pointerId
-);
-
-}catch(err){}
-
-}
-);
-
-}
-);
-
-
-if(window.ResizeObserver){
-
-new ResizeObserver(
-resizeCanvas
-)
-.observe(
-$("canvas")
-);
-
+  return {
+    x:source.clientX-rect.left,
+    y:source.clientY-rect.top
+  };
 }
 
-window.addEventListener(
-"resize",
-resizeCanvas
-);
+function startDrawing(e){
 
-resizeCanvas();
+  e.preventDefault();
 
+  if(writeLocked)return;
 
-/* =========================================================
-   FORGIVING WRITING SCORE
-========================================================= */
+  drawing=true;
+  hasInk=true;
 
-function getInkBounds(canvas){
+  const p=getPoint(e);
 
-const c=
-canvas.getContext(
-"2d",
-{
-willReadFrequently:true
-}
-);
-
-const w=canvas.width;
-const h=canvas.height;
-
-const data=
-c.getImageData(
-0,
-0,
-w,
-h
-).data;
-
-let minX=w;
-let minY=h;
-let maxX=-1;
-let maxY=-1;
-
-
-for(
-let y=0;
-y<h;
-y++
-){
-
-for(
-let x=0;
-x<w;
-x++
-){
-
-const i=
-(y*w+x)*4;
-
-if(
-data[i+3]>20
-){
-
-if(x<minX)
-minX=x;
-
-if(y<minY)
-minY=y;
-
-if(x>maxX)
-maxX=x;
-
-if(y>maxY)
-maxY=y;
-
+  dctx.beginPath();
+  dctx.moveTo(p.x,p.y);
 }
 
+function draw(e){
+
+  if(!drawing || writeLocked)return;
+
+  e.preventDefault();
+
+  const p=getPoint(e);
+
+  dctx.lineTo(p.x,p.y);
+  dctx.lineWidth=7;
+  dctx.lineCap="round";
+  dctx.lineJoin="round";
+  dctx.stroke();
 }
 
+function stopDrawing(){
+
+  if(!drawing)return;
+
+  drawing=false;
 }
 
-
-if(maxX<0)
-return null;
-
-
-return{
-minX,
-minY,
-maxX,
-maxY
-};
-
-}
-
-
-function normalizeInk(
-canvas,
-bounds,
-size=64
-){
-
-const out=
-document.createElement(
-"canvas"
-);
-
-out.width=size;
-out.height=size;
-
-const c=
-out.getContext("2d");
-
-const pad=5;
-
-const bw=
-bounds.maxX-
-bounds.minX+
-1;
-
-const bh=
-bounds.maxY-
-bounds.minY+
-1;
-
-const scale=
-Math.min(
-(size-pad*2)/bw,
-(size-pad*2)/bh
-);
-
-const dw=bw*scale;
-const dh=bh*scale;
-
-const dx=
-(size-dw)/2;
-
-const dy=
-(size-dh)/2;
-
-
-c.drawImage(
-canvas,
-bounds.minX,
-bounds.minY,
-bw,
-bh,
-dx,
-dy,
-dw,
-dh
-);
-
-return out;
-
-}
-
-
-function getMask(
-canvas,
-size=64
-){
-
-const c=
-canvas.getContext(
-"2d",
-{
-willReadFrequently:true
-}
-);
-
-const data=
-c.getImageData(
-0,
-0,
-size,
-size
-).data;
-
-const mask=
-new Uint8Array(
-size*size
-);
-
-
-for(
-let i=0;
-i<mask.length;
-i++
-){
-
-const p=i*4;
-
-mask[i]=
-data[p+3]>20
-?1
-:0;
-
-}
-
-return mask;
-
-}
-
-
-function blurMask(
-mask,
-size,
-radius
-){
-
-const out=
-new Float32Array(
-mask.length
-);
-
-
-for(
-let y=0;
-y<size;
-y++
-){
-
-for(
-let x=0;
-x<size;
-x++
-){
-
-let sum=0;
-let n=0;
-
-
-for(
-let dy=-radius;
-dy<=radius;
-dy++
-){
-
-for(
-let dx=-radius;
-dx<=radius;
-dx++
-){
-
-const nx=x+dx;
-const ny=y+dy;
-
-
-if(
-nx>=0 &&
-nx<size &&
-ny>=0 &&
-ny<size
-){
-
-sum+=
-mask[
-ny*size+nx
-];
-
-n++;
-
-}
-
-}
-
-}
-
-
-out[
-y*size+x
-]=
-sum/n;
-
-}
-
-}
-
-
-return out;
-
-}
-
-
-function makeGrid(
-mask,
-size,
-grid,
-radius
-){
-
-const soft=
-blurMask(
-mask,
-size,
-radius
-);
-
-const out=
-new Float32Array(
-grid*grid
-);
-
-const sx=
-size/grid;
-
-
-for(
-let gy=0;
-gy<grid;
-gy++
-){
-
-for(
-let gx=0;
-gx<grid;
-gx++
-){
-
-const x0=
-Math.floor(
-gx*sx
-);
-
-const x1=
-Math.floor(
-(gx+1)*sx
-);
-
-const y0=
-Math.floor(
-gy*sx
-);
-
-const y1=
-Math.floor(
-(gy+1)*sx
-);
-
-let sum=0;
-let n=0;
-
-
-for(
-let y=y0;
-y<y1;
-y++
-){
-
-for(
-let x=x0;
-x<x1;
-x++
-){
-
-sum+=
-soft[
-y*size+x
-];
-
-n++;
-
-}
-
-}
-
-
-out[
-gy*grid+gx
-]=
-n
-?sum/n
-:0;
-
-}
-
-}
-
-
-return out;
-
-}
-
-
-function gridSimilarity(a,b){
-
-let diff=0;
-let dot=0;
-let aa=0;
-let bb=0;
-
-
-for(
-let i=0;
-i<a.length;
-i++
-){
-
-diff+=
-Math.abs(
-a[i]-b[i]
-);
-
-dot+=
-a[i]*b[i];
-
-aa+=
-a[i]*a[i];
-
-bb+=
-b[i]*b[i];
-
-}
-
-
-const absolute=
-1-diff/a.length;
-
-const cosine=
-aa&&bb
-?
-dot/
-(
-Math.sqrt(aa)*
-Math.sqrt(bb)
-)
-:0;
-
-
-return(
-absolute*.65+
-cosine*.35
-);
-
-}
-
-
-function dilateMask(
-mask,
-size,
-radius
-){
-
-const out=
-new Uint8Array(
-mask.length
-);
-
-
-for(
-let y=0;
-y<size;
-y++
-){
-
-for(
-let x=0;
-x<size;
-x++
-){
-
-let found=0;
-
-
-for(
-let dy=-radius;
-dy<=radius&&!found;
-dy++
-){
-
-for(
-let dx=-radius;
-dx<=radius;
-dx++
-){
-
-const nx=x+dx;
-const ny=y+dy;
-
-
-if(
-nx>=0 &&
-nx<size &&
-ny>=0 &&
-ny<size &&
-mask[
-ny*size+nx
-]
-){
-
-found=1;
-
-break;
-
-}
-
-}
-
-}
-
-
-out[
-y*size+x
-]=found;
-
-}
-
-}
-
-
-return out;
-
-}
-
-
-function proximityScore(
-a,
-b,
-size=64,
-radius=3
-){
-
-const ad=
-dilateMask(
-b,
-size,
-radius
-);
-
-const bd=
-dilateMask(
-a,
-size,
-radius
-);
-
-let ac=0;
-let bc=0;
-let an=0;
-let bn=0;
-
-
-for(
-let i=0;
-i<a.length;
-i++
-){
-
-if(a[i]){
-
-ac++;
-
-if(ad[i])
-an++;
-
-}
-
-if(b[i]){
-
-bc++;
-
-if(bd[i])
-bn++;
-
-}
-
-}
-
-
-return ac&&bc
-?
-.5*
-(
-an/ac+
-bn/bc
-)
-:0;
-
-}
-
-
-function makeReference(
-letter,
-size=64
-){
-
-const c=
-document.createElement(
-"canvas"
-);
-
-c.width=size;
-c.height=size;
-
-const x=
-c.getContext("2d");
-
-x.clearRect(
-0,
-0,
-size,
-size
-);
-
-x.fillStyle="#111";
-
-x.textAlign="center";
-
-x.textBaseline="middle";
-
-x.font=
-"700 52px -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif";
-
-x.fillText(
-letter,
-size/2,
-size/2
-);
-
-return c;
-
-}
-
+drawCanvas.addEventListener("mousedown",startDrawing);
+drawCanvas.addEventListener("mousemove",draw);
+window.addEventListener("mouseup",stopDrawing);
+
+drawCanvas.addEventListener("touchstart",startDrawing,{passive:false});
+drawCanvas.addEventListener("touchmove",draw,{passive:false});
+drawCanvas.addEventListener("touchend",stopDrawing);
 
 function calculateWritingScore(){
 
-const canvas=$("canvas");
+  if(writeLocked)return;
 
-if(!ctx||!canvas)
-return;
+  if(!hasInk){
+    $("writeFeedback").textContent=T("writingNoInk");
+    return;
+  }
 
+  writeLocked=true;
 
-const userBounds=
-getInkBounds(canvas);
+  /*
+    Forgiving score:
+    We compare the user's ink pixels with the guide's glyph area.
+    This intentionally isn't strict handwriting recognition.
+  */
 
+  const w=drawCanvas.width;
+  const h=drawCanvas.height;
 
-if(!userBounds){
+  const userData=dctx.getImageData(0,0,w,h).data;
+  const guideData=gctx.getImageData(0,0,w,h).data;
 
-$("writeScore").textContent="";
+  let userCount=0;
+  let guideCount=0;
+  let overlap=0;
 
-$("writeFeedback").textContent=
-language==="ko"
-?
-"먼저 글자를 써 보세요."
-:
-"Draw the letter first.";
+  for(let i=3;i<userData.length;i+=4){
 
-return;
+    const u=userData[i]>20;
+    const g=guideData[i]>10;
 
+    if(u)userCount++;
+    if(g)guideCount++;
+    if(u && g)overlap++;
+  }
+
+  let score=0;
+
+  if(userCount>0 && guideCount>0){
+
+    const precision=overlap/userCount;
+    const coverage=overlap/guideCount;
+
+    score=Math.round(
+      Math.min(
+        100,
+        (precision*.45 + coverage*.55)*100
+      )
+    );
+  }
+
+  score=Math.max(0,Math.min(100,score));
+
+  $("writeScore").textContent=score+"%";
+
+  if(score>=80){
+    $("writeFeedback").textContent=T("writingExcellent");
+  }else if(score>=55){
+    $("writeFeedback").textContent=T("writingGood");
+  }else{
+    $("writeFeedback").textContent=T("writingKeep");
+  }
+
+  clearTimeout(writeTimer);
+
+  /*
+    IMPORTANT:
+    Regardless of whether the score is good or bad,
+    automatically advance after exactly 1.25 seconds.
+  */
+
+  writeTimer=setTimeout(()=>{
+
+    writeTimer=null;
+    wi=(wi+1)%writeItems.length;
+
+    writeNew();
+
+  },1250);
 }
 
+$("checkWrite").addEventListener("click",calculateWritingScore);
 
-const userNormalized=
-normalizeInk(
-canvas,
-userBounds,
-64
-);
+$("erase").addEventListener("click",()=>{
 
-const userMask=
-getMask(
-userNormalized,
-64
-);
+  clearTimeout(writeTimer);
+  writeTimer=null;
+  writeLocked=false;
 
+  clearCanvas();
 
-const reference=
-makeReference(
-$("writeGlyph").textContent,
-64
-);
+});
 
+$("newWrite").addEventListener("click",()=>{
 
-const refBounds=
-getInkBounds(
-reference
-);
+  wi=(wi+1)%writeItems.length;
+  writeNew();
 
+});
 
-if(!refBounds)
-return;
-
-
-const refNormalized=
-normalizeInk(
-reference,
-refBounds,
-64
-);
-
-const refMask=
-getMask(
-refNormalized,
-64
-);
-
-
-const coarse=
-gridSimilarity(
-makeGrid(
-userMask,
-64,
-16,
-2
-),
-makeGrid(
-refMask,
-64,
-16,
-2
-)
-);
-
-
-const fine=
-gridSimilarity(
-makeGrid(
-userMask,
-64,
-24,
-1
-),
-makeGrid(
-refMask,
-64,
-24,
-1
-)
-);
-
-
-const proximity=
-proximityScore(
-userMask,
-refMask,
-64,
-3
-);
-
-
-let raw=
-coarse*.62+
-fine*.23+
-proximity*.15;
-
-
-const occupied=
-makeGrid(
-userMask,
-64,
-16,
-2
-)
-.filter(
-v=>v>.08
-)
-.length;
-
-
-if(occupied<3){
-
-raw*=.45;
-
-}else if(occupied<5){
-
-raw*=.75;
-
-}
-
-
-const score=
-Math.max(
-0,
-Math.min(
-100,
-Math.round(
-(
-(raw-.18)/
-.70
-)*100
-)
-)
-);
-
-
-$("writeScore").textContent=
-score+"%";
-
-$("writeScore").className=
-"score "+
-(
-score>=70
-?"good"
-:"bad"
-);
-
-
-if(score>=90){
-
-$("writeFeedback").textContent=
-language==="ko"
-?
-"훌륭해요! 정말 잘 썼어요."
-:
-"Excellent! That looks great.";
-
-}else if(score>=70){
-
-$("writeFeedback").textContent=
-language==="ko"
-?
-"읽을 수 있어요! ✓"
-:
-"Readable! ✓";
-
-}else if(score>=55){
-
-$("writeFeedback").textContent=
-language==="ko"
-?
-"거의 다 됐어요!"
-:
-"Almost there!";
-
-}else{
-
-$("writeFeedback").textContent=
-language==="ko"
-?
-"조금 더 연습해 보세요."
-:
-"Keep practicing.";
-
-}
-
-}
-
-
-$("checkWrite").addEventListener(
-"click",
-()=>{
-calculateWritingScore();
-}
-);
-
-
-$("newWrite").addEventListener(
-"click",
-()=>{
-wi++;
-writeNew();
-}
-);
-
-
-$("erase").addEventListener(
-"click",
-()=>{
-clearCanvas();
-$("writeScore").textContent="";
-$("writeFeedback").textContent="";
-}
-);
-
+window.addEventListener("resize",()=>{
+  resizeCanvases();
+});
 
 /* =========================================================
    WORD OF THE DAY
 ========================================================= */
 
 /*
-   Built-in Korean words.
-
-   The word is selected deterministically from the date,
-   so the same date always has the same word.
+  [Korean, English meaning, Korean meaning]
 */
 
 const wordData=[
-
-["안녕하세요","hello","Hello"],
-["감사합니다","thank you","Thank you"],
-["사랑","love","Love"],
-["친구","friend","Friend"],
-["가족","family","Family"],
-["하늘","sky","Sky"],
-["바다","sea","Sea"],
-["학교","school","School"],
-["책","book","Book"],
-["집","house","House"],
-["사과","apple","Apple"],
-["물","water","Water"],
-["밥","rice / meal","Rice / meal"],
-["고양이","cat","Cat"],
-["강아지","puppy / dog","Puppy / dog"],
-["오늘","today","Today"],
-["내일","tomorrow","Tomorrow"],
-["행복","happiness","Happiness"],
-["좋아요","good / I like it","Good / I like it"],
-["공부","study","Study"],
-["한국","Korea","Korea"],
-["친절","kindness","Kindness"],
-["꿈","dream","Dream"],
-["빛","light","Light"],
-["마음","heart / mind","Heart / mind"],
-["웃음","laughter","Laughter"],
-["봄","spring","Spring"],
-["여름","summer","Summer"],
-["가을","autumn","Autumn"],
-["겨울","winter","Winter"]
-
+  ["안녕하세요","hello","안녕하세요 / 인사말"],
+  ["감사합니다","thank you","고맙습니다"],
+  ["사랑","love","사랑"],
+  ["친구","friend","친구"],
+  ["가족","family","가족"],
+  ["하늘","sky","하늘"],
+  ["바다","sea","바다"],
+  ["학교","school","학교"],
+  ["책","book","책"],
+  ["집","house / home","집"],
+  ["사과","apple","사과"],
+  ["물","water","물"],
+  ["밥","rice / meal","밥 / 식사"],
+  ["고양이","cat","고양이"],
+  ["강아지","puppy / dog","강아지"],
+  ["오늘","today","오늘"],
+  ["내일","tomorrow","내일"],
+  ["행복","happiness","행복"],
+  ["좋아요","I like it / good","좋다 / 좋아요"],
+  ["공부","study","공부"],
+  ["한국","Korea","한국"],
+  ["친절","kindness","친절함"],
+  ["꿈","dream","꿈"],
+  ["빛","light","빛"],
+  ["마음","heart / mind","마음"],
+  ["웃음","laughter","웃음"],
+  ["봄","spring","봄"],
+  ["여름","summer","여름"],
+  ["가을","autumn / fall","가을"],
+  ["겨울","winter","겨울"]
 ];
 
+function dateKey(date){
 
-let calendarDate=
-new Date();
+  const y=date.getFullYear();
+  const m=String(date.getMonth()+1).padStart(2,"0");
+  const d=String(date.getDate()).padStart(2,"0");
 
-calendarDate.setDate(1);
-
-
-let selectedDateKey=
-localDateKey(
-new Date()
-);
-
-
-/* =========================================================
-   LOCAL DATE
-========================================================= */
-
-function localDateKey(
-d
-){
-
-const y=
-d.getFullYear();
-
-const m=
-String(
-d.getMonth()+1
-)
-.padStart(2,"0");
-
-const day=
-String(
-d.getDate()
-)
-.padStart(2,"0");
-
-
-return `${y}-${m}-${day}`;
-
+  return `${y}-${m}-${d}`;
 }
 
+function wordIndexForDate(key){
 
-/* =========================================================
-   WORD FOR DATE
-========================================================= */
+  const start=new Date("2026-01-01T00:00:00");
+  const date=new Date(key+"T00:00:00");
 
-function dateWord(key){
+  const diff=Math.floor(
+    (date-start)/(1000*60*60*24)
+  );
 
-const d=
-new Date(
-key+"T12:00:00"
-);
-
-const start=
-new Date(
-"2026-01-01T12:00:00"
-);
-
-const n=
-Math.floor(
-(
-d-start
-)/
-86400000
-);
-
-
-return wordData[
-(
-n%wordData.length+
-wordData.length
-)%
-wordData.length
-];
-
+  return ((diff%wordData.length)+wordData.length)%wordData.length;
 }
-
-
-/* =========================================================
-   GET WORD-DAY STATE
-========================================================= */
 
 function dayState(key){
-
-return s.wordDays[key]||null;
-
+  return s.wordDays[key] || null;
 }
-
-
-/* =========================================================
-   RENDER WORD
-========================================================= */
 
 function renderWord(){
 
-const d=
-new Date(
-selectedDateKey+
-"T12:00:00"
-);
+  if(!selectedDateKey){
+    selectedDateKey=dateKey(new Date());
+  }
 
-const w=
-dateWord(
-selectedDateKey
-);
+  const todayKey=dateKey(new Date());
 
-const state=
-dayState(
-selectedDateKey
-);
+  const selected=new Date(selectedDateKey+"T00:00:00");
+  const today=new Date(todayKey+"T00:00:00");
 
+  if(selected>today){
+    selectedDateKey=todayKey;
+  }
 
-$("wordDate").textContent=
-d.toLocaleDateString(
-language==="ko"
-?"ko-KR"
-:"en-US",
-{
-weekday:"long",
-year:"numeric",
-month:"long",
-day:"numeric"
+  const index=wordIndexForDate(selectedDateKey);
+  const w=wordData[index];
+
+  $("wordDate").textContent=
+    selected.toLocaleDateString(
+      language==="ko" ? "ko-KR" : "en-US",
+      {
+        weekday:"long",
+        year:"numeric",
+        month:"long",
+        day:"numeric"
+      }
+    );
+
+  $("wordKorean").textContent=w[0];
+
+  $("wordMeaning").textContent=
+    language==="ko" ? w[2] : w[1];
+
+  $("wordInput").placeholder=T("wordInputPlaceholder");
+
+  const state=dayState(selectedDateKey);
+
+  const tries=state?.tries || 0;
+  const finished=!!(
+    state &&
+    (
+      state.correct ||
+      tries>=3
+    )
+  );
+
+  $("wordInput").disabled=finished;
+  $("wordCheck").disabled=finished;
+
+  if(state?.correct){
+
+    $("wordStatus").textContent=T("wordCorrect");
+
+  }else if(tries>=3){
+
+    $("wordStatus").textContent=T("wordFailed");
+
+  }else if(tries>0){
+
+    const remaining=3-tries;
+
+    $("wordStatus").textContent=
+      `${T("wordWrong")} ${T("wordTryAgain")}`;
+
+  }else{
+
+    $("wordStatus").textContent="";
+  }
+
+  if(tries>0){
+
+    const remaining=3-tries;
+
+    $("wordAttempts").textContent=
+      `${T("wordAttemptsLabel")}: ${tries}/3`+
+      (
+        remaining>0
+          ? ` • ${remaining} ${T("wordAttemptsLeft")}`
+          : ""
+      );
+
+  }else{
+
+    $("wordAttempts").textContent=
+      `${T("wordAttemptsLabel")}: 0/3`;
+  }
+
+  renderCalendar();
 }
-);
-
-
-$("wordDay").textContent=
-language==="ko"
-?
-"오늘의 단어"
-:
-"Word of the day";
-
-
-$("wordKorean").textContent=
-w[0];
-
-
-$("wordMeaning").textContent=
-language==="ko"
-?w[1]
-:w[2];
-
-
-$("wordInput").value="";
-
-
-$("wordInput").disabled=
-!!state;
-
-
-if(!state){
-
-$("wordStatus").textContent="";
-
-$("wordStatus").style.color=
-"var(--ink)";
-
-$("wordAttempts").textContent=
-language==="ko"
-?
-"최대 3번 시도할 수 있어요."
-:
-"You get up to 3 tries.";
-
-}else{
-
-const tries=
-state.tries||0;
-
-const ok=
-state.correct;
-
-
-$("wordStatus").style.color=
-ok
-?"var(--good)"
-:"var(--bad)";
-
-
-$("wordStatus").textContent=
-ok
-?
-(
-language==="ko"
-?
-"✓ 정답이에요!"
-:
-"✓ Correct!"
-)
-:
-(
-language==="ko"
-?
-"✕ 틀렸어요."
-:
-"✕ Wrong."
-);
-
-
-$("wordAttempts").textContent=
-language==="ko"
-?
-`${tries}번 시도했어요.`
-:
-`${tries} attempt${tries===1?"":"s"}.`;
-
-}
-
-
-renderCalendar();
-
-}
-
-
-/* =========================================================
-   CHECK WORD
-========================================================= */
 
 function checkWord(){
 
-if(
-dayState(
-selectedDateKey
-)
-)
-return;
+  const typed=$("wordInput").value.trim();
+  const key=selectedDateKey;
 
+  const existing=dayState(key);
 
-const input=
-$("wordInput")
-.value
-.trim()
-.normalize("NFC");
+  if(
+    existing &&
+    (
+      existing.correct ||
+      (existing.tries||0)>=3
+    )
+  ){
+    return;
+  }
 
+  if(!typed){
 
-const target=
-dateWord(
-selectedDateKey
-)[0];
+    $("wordStatus").textContent=T("wordTypeFirst");
+    return;
+  }
 
+  const index=wordIndexForDate(key);
+  const answer=wordData[index][0];
 
-if(!input){
+  const state=existing || {
+    tries:0,
+    correct:false
+  };
 
-$("wordStatus").style.color=
-"var(--bad)";
+  state.tries++;
 
-$("wordStatus").textContent=
-language==="ko"
-?
-"단어를 입력하세요."
-:
-"Type the word first.";
+  if(typed===answer){
 
-return;
+    state.correct=true;
+    s.wordDays[key]=state;
 
+    save();
+
+    $("wordStatus").textContent=T("wordCorrect");
+    $("wordAttempts").textContent=
+      `${T("wordAttemptsLabel")}: ${state.tries}/3`;
+
+    $("wordInput").disabled=true;
+    $("wordCheck").disabled=true;
+
+  }else{
+
+    state.correct=false;
+    s.wordDays[key]=state;
+
+    save();
+
+    if(state.tries>=3){
+
+      $("wordStatus").textContent=T("wordFailed");
+
+      $("wordInput").disabled=true;
+      $("wordCheck").disabled=true;
+
+    }else{
+
+      const remaining=3-state.tries;
+
+      $("wordStatus").textContent=
+        `${T("wordWrong")} ${T("wordTryAgain")}`;
+
+      $("wordAttempts").textContent=
+        `${T("wordAttemptsLabel")}: ${state.tries}/3 • `+
+        `${remaining} ${T("wordAttemptsLeft")}`;
+
+      /*
+        Keep the input active after a wrong answer.
+        The user gets all 3 attempts.
+      */
+
+      $("wordInput").value="";
+      $("wordInput").focus();
+    }
+  }
+
+  renderCalendar();
 }
 
+$("wordCheck").addEventListener("click",checkWord);
 
-const key=
-selectedDateKey;
-
-
-const state=
-s.wordDays[key]||
-{
-tries:0,
-correct:false
-};
-
-
-state.tries++;
-
-
-if(input===target){
-
-state.correct=true;
-
-s.wordDays[key]=state;
-
-save();
-
-renderWord();
-
-return;
-
-}
-
-
-/*
-   Wrong answer.
-
-   The user gets exactly 3 attempts.
-*/
-
-if(state.tries>=3){
-
-state.correct=false;
-
-s.wordDays[key]=state;
-
-save();
-
-renderWord();
-
-return;
-
-}
-
-
-s.wordDays[key]=state;
-
-save();
-
-
-const remaining=
-3-state.tries;
-
-
-$("wordStatus").style.color=
-"var(--bad)";
-
-
-$("wordStatus").textContent=
-language==="ko"
-?
-`틀렸어요. ${remaining}번 남았어요.`
-:
-`Wrong. ${remaining} ${remaining===1?"try":"tries"} left.`;
-
-$("wordAttempts").textContent=
-language==="ko"
-?
-`${state.tries}번 실패했어요.`
-:
-`${state.tries} failed attempt${state.tries===1?"":"s"}.`;
-
-}
-
-
-/* =========================================================
-   ENTER TO SUBMIT
-========================================================= */
-
-$("wordInput").addEventListener(
-"keydown",
-e=>{
-
-if(e.key==="Enter"){
-checkWord();
-}
-
-}
-);
-
+$("wordInput").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    checkWord();
+  }
+});
 
 /* =========================================================
    CALENDAR
@@ -3463,337 +2268,147 @@ checkWord();
 
 function renderCalendar(){
 
-const y=
-calendarDate.getFullYear();
+  const year=calendarDate.getFullYear();
+  const month=calendarDate.getMonth();
 
-const m=
-calendarDate.getMonth();
+  $("calendarTitle").textContent=
+    calendarDate.toLocaleDateString(
+      language==="ko" ? "ko-KR" : "en-US",
+      {
+        month:"long",
+        year:"numeric"
+      }
+    );
 
-const first=
-new Date(
-y,
-m,
-1
-).getDay();
+  const box=$("calendar");
+  box.innerHTML="";
 
-const days=
-new Date(
-y,
-m+1,
-0
-).getDate();
+  const weekdays=language==="ko"
+    ? ["일","월","화","수","목","금","토"]
+    : ["S","M","T","W","T","F","S"];
 
-const todayKey=
-localDateKey(
-new Date()
-);
+  weekdays.forEach(day=>{
 
+    const el=document.createElement("div");
+    el.className="weekday";
+    el.textContent=day;
 
-$("calendarTitle").textContent=
-new Date(
-y,
-m,
-1
-).toLocaleDateString(
-language==="ko"
-?"ko-KR"
-:"en-US",
-{
-month:"long",
-year:"numeric"
-}
-);
+    box.appendChild(el);
+  });
 
+  const first=new Date(year,month,1);
+  const last=new Date(year,month+1,0);
 
-let out="";
+  for(let i=0;i<first.getDay();i++){
 
+    const empty=document.createElement("div");
+    empty.className="day empty";
 
-const englishDays=[
-"Sun",
-"Mon",
-"Tue",
-"Wed",
-"Thu",
-"Fri",
-"Sat"
-];
+    box.appendChild(empty);
+  }
 
-const koreanDays=[
-"일",
-"월",
-"화",
-"수",
-"목",
-"금",
-"토"
-];
+  const todayKey=dateKey(new Date());
 
+  for(let day=1;day<=last.getDate();day++){
 
-for(
-let i=0;
-i<7;
-i++
-){
+    const d=new Date(year,month,day);
+    const key=dateKey(d);
 
-out+=`
-<div class="calDow">
-${
-language==="ko"
-?koreanDays[i]
-:englishDays[i]
-}
-</div>
-`;
+    const el=document.createElement("button");
+    el.className="day";
+    el.textContent=day;
 
-}
+    if(key>todayKey){
+      el.classList.add("future");
+      el.disabled=true;
+    }
 
+    if(key===selectedDateKey){
+      el.classList.add("selected");
+    }
 
-/* previous month empty cells */
+    const state=dayState(key);
 
-for(
-let i=0;
-i<first;
-i++
-){
+    if(state){
 
-const prevDay=
-new Date(
-y,
-m,
-0
-).getDate()-
-first+
-i+
-1;
+      const mark=document.createElement("span");
+      mark.className="mark";
 
-out+=`
-<div class="calDay muted">
-${prevDay}
-</div>
-`;
+      const tries=state.tries||0;
 
-}
+      if(state.correct){
 
+        mark.textContent="✓";
 
-/* actual days */
+        if(tries===1){
+          mark.classList.add("green");
+        }else if(tries===2){
+          mark.classList.add("mix-yellow");
+        }else{
+          mark.classList.add("mix-red-yellow");
+        }
 
-for(
-let day=1;
-day<=days;
-day++
-){
+      }else{
 
-const date=
-new Date(
-y,
-m,
-day
-);
+        mark.textContent="✕";
 
-const key=
-localDateKey(
-date
-);
+        if(tries===1){
+          mark.classList.add("yellow");
+        }else if(tries===2){
+          mark.classList.add("mix-red-yellow");
+        }else{
+          mark.classList.add("red");
+        }
+      }
 
-const future=
-key>todayKey;
+      el.appendChild(mark);
+    }
 
-const state=
-dayState(key);
+    el.addEventListener("click",()=>{
 
-let mark="";
+      selectedDateKey=key;
 
+      renderWord();
 
-if(state){
+      $("wordInput").value="";
 
-const tries=
-state.tries||0;
+    });
 
-
-if(state.correct){
-
-/*
-   Successful checkmarks:
-
-   1st try = green
-   2nd try = yellow/green
-   3rd try = red/yellow
-*/
-
-if(tries===1){
-
-mark=`
-<span class="mark green">
-✓
-</span>
-`;
-
-}else if(tries===2){
-
-mark=`
-<span class="mark mix-yellow">
-✓
-</span>
-`;
-
-}else{
-
-mark=`
-<span class="mark mix-red-yellow">
-✓
-</span>
-`;
-
+    box.appendChild(el);
+  }
 }
 
-}else{
+$("prevMonth").addEventListener("click",()=>{
 
-/*
-   Failed attempts:
+  calendarDate.setMonth(calendarDate.getMonth()-1);
+  renderCalendar();
 
-   1 miss = yellow X
-   2 misses = yellow/red X
-   3 misses = red X
-*/
+});
 
-if(tries===1){
+$("nextMonth").addEventListener("click",()=>{
 
-mark=`
-<span class="mark yellow">
-✕
-</span>
-`;
+  const next=new Date(
+    calendarDate.getFullYear(),
+    calendarDate.getMonth()+1,
+    1
+  );
 
-}else if(tries===2){
+  const today=new Date();
 
-mark=`
-<span class="mark mix-red-yellow">
-✕
-</span>
-`;
+  if(
+    next.getFullYear()>today.getFullYear() ||
+    (
+      next.getFullYear()===today.getFullYear() &&
+      next.getMonth()>today.getMonth()
+    )
+  ){
+    return;
+  }
 
-}else{
+  calendarDate=next;
+  renderCalendar();
 
-mark=`
-<span class="mark red">
-✕
-</span>
-`;
-
-}
-
-}
-
-}
-
-
-out+=`
-<button
-class="calDay
-${key===selectedDateKey?"selected":""}
-${future?"future":""}"
-data-date="${key}"
-type="button"
-${future?"disabled":""}>
-
-<span>
-${day}
-</span>
-
-${mark}
-
-</button>
-`;
-
-}
-
-
-$("calendar").innerHTML=
-out;
-
-
-document
-.querySelectorAll(
-".calDay[data-date]"
-)
-.forEach(
-b=>
-b.addEventListener(
-"click",
-()=>{
-
-selectedDateKey=
-b.dataset.date;
-
-renderWord();
-
-}
-)
-);
-
-}
-
-
-/* =========================================================
-   CALENDAR NAVIGATION
-========================================================= */
-
-$("prevMonth").addEventListener(
-"click",
-()=>{
-
-calendarDate.setMonth(
-calendarDate.getMonth()-1
-);
-
-renderCalendar();
-
-}
-);
-
-
-$("nextMonth").addEventListener(
-"click",
-()=>{
-
-const next=
-new Date(
-calendarDate
-);
-
-next.setMonth(
-next.getMonth()+1
-);
-
-
-/*
-   Don't let the calendar move
-   beyond the current month.
-*/
-
-const today=
-new Date();
-
-const currentMonth=
-new Date(
-today.getFullYear(),
-today.getMonth(),
-1
-);
-
-
-if(next<=currentMonth){
-
-calendarDate=
-next;
-
-renderCalendar();
-
-}
-
-}
-);
-
+});
 
 /* =========================================================
    REVIEW
@@ -3801,202 +2416,153 @@ renderCalendar();
 
 function renderReview(){
 
-const now=
-Date.now();
+  const box=$("reviewList");
+  box.innerHTML="";
 
+  const now=Date.now();
 
-const due=
-all
-.map(
-x=>({
-x,
-m:getMastery(x[0])
-})
-)
-.filter(
-z=>
-z.m.wrong>0||
-z.m.correct<2||
-z.m.next<=now
-)
-.sort(
-(a,b)=>
-(
-b.m.wrong*100+
-(b.m.correct<2?50:0)+
-(b.m.next<=now?25:0)
-)
--
-(
-a.m.wrong*100+
-(a.m.correct<2?50:0)+
-(a.m.next<=now?25:0)
-)
-)
-.slice(
-0,
-12
-);
+  const due=all
+    .filter(item=>{
+      const m=getMastery(item[0]);
 
+      return (
+        m.wrong>0 ||
+        m.correct<2 ||
+        (m.next && m.next<=now)
+      );
+    })
+    .sort((a,b)=>{
 
-if(!due.length){
+      const ma=getMastery(a[0]);
+      const mb=getMastery(b[0]);
 
-$("reviewList").innerHTML=
-`
-<div class="tiny">
-${
-language==="ko"
-?
-"지금은 급한 복습이 없어요. 🎉"
-:
-"Nothing urgent. Keep practicing! 🎉"
-}
-</div>
-`;
+      if(ma.correct!==mb.correct){
+        return ma.correct-mb.correct;
+      }
 
-return;
+      return mb.wrong-ma.wrong;
+    })
+    .slice(0,10);
 
-}
+  if(!due.length){
 
+    box.innerHTML=`
+      <div class="emptyReview">
+        ${T("nothingUrgent")}
+      </div>
+    `;
 
-$("reviewList").innerHTML=
-due
-.map(
-z=>
-`
-<div class="reviewitem">
+    return;
+  }
 
-<b>
-${z.x[0]}
-</b>
+  due.forEach(item=>{
 
-<span>
-${z.x[1]}
+    const m=getMastery(item[0]);
 
-<br>
+    const el=document.createElement("div");
+    el.className="reviewItem";
 
-<span class="due">
-${
-language==="ko"
-?
-`정답 ${z.m.correct} • 오답 ${z.m.wrong}`
-:
-`Correct ${z.m.correct} • Wrong ${z.m.wrong}`
-}
-</span>
+    el.innerHTML=`
+      <div class="reviewGlyph">${item[0]}</div>
 
-</span>
+      <div class="reviewInfo">
+        <b>${soundLabel(item)}</b>
+        <small>
+          ${m.correct} ${T("reviewCorrect")}
+          •
+          ${m.wrong} ${T("reviewMissed")}
+        </small>
+      </div>
+    `;
 
-</div>
-`
-)
-.join("");
-
+    box.appendChild(el);
+  });
 }
 
+$("startReview").addEventListener("click",()=>{
 
-$("startReview").addEventListener(
-"click",
-()=>{
+  const now=Date.now();
 
-const now=
-Date.now();
+  const due=all.filter(item=>{
 
+    const m=getMastery(item[0]);
 
-const due=
-all.filter(
-x=>{
+    return (
+      m.wrong>0 ||
+      m.correct<2 ||
+      (m.next && m.next<=now)
+    );
+  });
 
-const m=
-getMastery(
-x[0]
-);
+  if(!due.length){
+    setView("review");
+    return;
+  }
 
-return(
-m.next<=now||
-m.correct<2||
-m.wrong>0
-);
+  activeUnit=due[0].unit;
 
-}
-);
+  q=0;
+  current=null;
 
+  setView("practice");
+  newQuestion();
 
-activeUnit=
-due.length
-?
-due[
-Math.floor(
-Math.random()*
-due.length
-)
-].unit
-:
-Math.floor(
-Math.random()*
-units.length
-);
-
-
-startLesson(
-activeUnit
-);
-
-}
-);
-
+});
 
 /* =========================================================
-   SPEECH
+   SOUND
 ========================================================= */
 
-$("sound").addEventListener(
-"click",
-()=>{
+$("sound").addEventListener("click",()=>{
 
-if(
-!current||
-!("speechSynthesis"in window)
-)
-return;
+  if(!current)return;
 
+  const text=
+    current.mode==="sound"
+      ? soundLabel(current.item)
+      : current.item[0];
 
-speechSynthesis.cancel();
+  if("speechSynthesis" in window){
 
+    speechSynthesis.cancel();
 
-const u=
-new SpeechSynthesisUtterance(
-current[0]
-);
+    const utter=new SpeechSynthesisUtterance(text);
 
-u.lang="ko-KR";
-u.rate=.8;
-u.pitch=1;
+    utter.lang="ko-KR";
+    utter.rate=.75;
 
+    speechSynthesis.speak(utter);
+  }
 
-speechSynthesis.speak(u);
+});
 
-}
-);
+/* =========================================================
+   LANGUAGE TOGGLE
+========================================================= */
 
+$("language").addEventListener("click",()=>{
+
+  language=language==="en" ? "ko" : "en";
+
+  save();
+  updateLanguageUI();
+
+});
 
 /* =========================================================
    INITIALIZE
 ========================================================= */
 
-renderLessons();
+selectedDateKey=dateKey(new Date());
 
-stats();
-
+build();
 writeNew();
-
+updateLanguageUI();
+stats();
+renderLessons();
+renderReview();
 renderWord();
 
-updateLanguageUI();
-
-setView("home");
-
 </script>
-
 </body>
 </html>
