@@ -469,7 +469,6 @@ p{
 </style>
 </head>
 
-
 <body>
 
 <div class="app">
@@ -496,7 +495,6 @@ p{
   </button>
 
 </header>
-
 
 <nav id="nav">
 
@@ -528,9 +526,7 @@ p{
 </nav>
 
 
-<!-- =========================
-     HOME
-========================= -->
+<!-- HOME -->
 
 <section
   id="home"
@@ -562,7 +558,6 @@ p{
 
   </div>
 
-
   <div
     class="lesson-list"
     id="lessons">
@@ -571,9 +566,7 @@ p{
 </section>
 
 
-<!-- =========================
-     PRACTICE
-========================= -->
+<!-- PRACTICE -->
 
 <section
   id="practice"
@@ -606,13 +599,9 @@ p{
 
     </div>
 
-
     <div class="progress">
       <div id="qbar"></div>
     </div>
-
-
-    <!-- QUESTION -->
 
     <div id="questionArea">
 
@@ -637,9 +626,6 @@ p{
       </div>
 
     </div>
-
-
-    <!-- BUILDER -->
 
     <div
       id="builderArea"
@@ -684,45 +670,21 @@ p{
 
   </div>
 
-
   <div class="stats">
 
     <div class="stat">
-
-      <b id="correct">
-        0
-      </b>
-
-      <span>
-        Correct
-      </span>
-
+      <b id="correct">0</b>
+      <span>Correct</span>
     </div>
 
-
     <div class="stat">
-
-      <b id="streak">
-        0
-      </b>
-
-      <span>
-        Streak
-      </span>
-
+      <b id="streak">0</b>
+      <span>Streak</span>
     </div>
 
-
     <div class="stat">
-
-      <b id="accuracy">
-        —
-      </b>
-
-      <span>
-        Accuracy
-      </span>
-
+      <b id="accuracy">—</b>
+      <span>Accuracy</span>
     </div>
 
   </div>
@@ -730,9 +692,7 @@ p{
 </section>
 
 
-<!-- =========================
-     WRITE
-========================= -->
+<!-- WRITE -->
 
 <section
   id="write"
@@ -758,14 +718,12 @@ p{
 
     </div>
 
-
     <p class="tiny">
 
       Trace the guide with your finger.
       Draw the same letter 3 times in a row.
 
     </p>
-
 
     <div class="padwrap">
 
@@ -781,7 +739,6 @@ p{
       </canvas>
 
     </div>
-
 
     <div class="row">
 
@@ -801,12 +758,10 @@ p{
 
     </div>
 
-
     <div
       class="feedback"
       id="writeFeedback">
     </div>
-
 
     <div class="tiny writeHint">
 
@@ -820,9 +775,7 @@ p{
 </section>
 
 
-<!-- =========================
-     REVIEW
-========================= -->
+<!-- REVIEW -->
 
 <section
   id="review"
@@ -859,7 +812,6 @@ p{
 
 </section>
 
-
 </div>
 
 
@@ -871,10 +823,6 @@ p{
 ===================================================== */
 
 const units = [
-
-  /* -------------------------
-     CONSONANTS 1
-  ------------------------- */
 
   {
     type:"lesson",
@@ -910,11 +858,6 @@ const units = [
     lesson:0
   },
 
-
-  /* -------------------------
-     CONSONANTS 2
-  ------------------------- */
-
   {
     type:"lesson",
     name:"Consonants 2",
@@ -948,11 +891,6 @@ const units = [
 
     lesson:2
   },
-
-
-  /* -------------------------
-     VOWELS 1
-  ------------------------- */
 
   {
     type:"lesson",
@@ -988,11 +926,6 @@ const units = [
     lesson:4
   },
 
-
-  /* -------------------------
-     VOWELS 2
-  ------------------------- */
-
   {
     type:"lesson",
     name:"Vowels 2",
@@ -1022,11 +955,6 @@ const units = [
 
     lesson:6
   },
-
-
-  /* -------------------------
-     SYLLABLE BLOCKS 1
-  ------------------------- */
 
   {
     type:"lesson",
@@ -1059,11 +987,6 @@ const units = [
 
     lesson:8
   },
-
-
-  /* -------------------------
-     READING 1
-  ------------------------- */
 
   {
     type:"lesson",
@@ -1188,37 +1111,19 @@ let s =
     localStorage.hangulQuest || "{}"
   );
 
-
 s.correct ??=0;
 s.total ??=0;
 s.streak ??=0;
-
 s.mastery ??={};
-
 s.lessonProgress ??={};
-
-
-/*
-  unlockedLesson is the number
-  of the actual lesson currently
-  unlocked.
-
-  There are 6 lessons and 6 tests.
-*/
-
 s.unlockedLesson ??=1;
 
 
-for(
-  let i=0;
-  i<6;
-  i++
-){
+for(let i=0;i<6;i++){
 
   s.lessonProgress[i] ??={
 
     practice:{},
-
     build:{},
 
     test:{
@@ -1229,22 +1134,18 @@ for(
 
   };
 
-
   const lesson =
     units[i*2];
 
+  lesson.items.forEach(x=>{
 
-  lesson.items.forEach(
-    x=>{
+    s.lessonProgress[i]
+      .practice[x[0]] ??=0;
 
-      s.lessonProgress[i]
-        .practice[x[0]] ??=0;
+    s.lessonProgress[i]
+      .build[x[0]] ??=0;
 
-      s.lessonProgress[i]
-        .build[x[0]] ??=0;
-
-    }
-  );
+  });
 
 }
 
@@ -1254,47 +1155,35 @@ for(
 ===================================================== */
 
 function $(id){
-
   return document.getElementById(id);
-
 }
 
 
 function save(){
-
   localStorage.hangulQuest =
     JSON.stringify(s);
-
 }
 
 
 function shuffle(a){
-
   return [...a].sort(
     ()=>Math.random()-.5
   );
-
 }
 
 
 function lessonData(i){
-
   return units[i*2];
-
 }
 
 
 function testData(i){
-
   return units[i*2+1];
-
 }
 
 
 function lp(i){
-
   return s.lessonProgress[i];
-
 }
 
 
@@ -1320,26 +1209,16 @@ function buildDone(i){
 
 function lessonStage(i){
 
-  if(
-    lp(i).test.passed
-  )
+  if(lp(i).test.passed)
     return "passed";
 
-
-  if(
-    !practiceDone(i)
-  )
+  if(!practiceDone(i))
     return "practice";
 
-
-  if(
-    !buildDone(i)
-  )
+  if(!buildDone(i))
     return "build";
 
-
   return "test";
-
 }
 
 
@@ -1349,44 +1228,38 @@ function lessonStage(i){
 
 document
   .querySelectorAll("nav button")
-  .forEach(
-    b=>{
+  .forEach(b=>{
 
-      b.onclick=()=>{
+    b.onclick=()=>{
 
-        setView(
-          b.dataset.view
-        );
+      setView(
+        b.dataset.view
+      );
 
-      };
+    };
 
-    }
-  );
+  });
 
 
 function setView(v){
 
   document
     .querySelectorAll(".view")
-    .forEach(
-      x=>
-        x.classList.toggle(
-          "active",
-          x.id===v
-        )
+    .forEach(x=>
+      x.classList.toggle(
+        "active",
+        x.id===v
+      )
     );
-
 
   document
     .querySelectorAll("nav button")
-    .forEach(
-      x=>
-        x.classList.toggle(
-          "active",
-          x.dataset.view===v
-        )
+    .forEach(x=>
+      x.classList.toggle(
+        "active",
+        x.dataset.view===v
+      )
     );
-
 
   if(v==="review")
     renderReview();
@@ -1402,12 +1275,7 @@ function renderLessons(){
 
   let html="";
 
-
-  for(
-    let i=0;
-    i<6;
-    i++
-  ){
+  for(let i=0;i<6;i++){
 
     const lesson =
       lessonData(i);
@@ -1415,10 +1283,8 @@ function renderLessons(){
     const st =
       lessonStage(i);
 
-
     const unlocked =
       i < s.unlockedLesson;
-
 
     const mastered =
       lesson.items.filter(
@@ -1426,16 +1292,13 @@ function renderLessons(){
           lp(i).practice[x[0]]>=3
       ).length;
 
-
     const built =
       lesson.items.filter(
         x =>
           lp(i).build[x[0]]>=2
       ).length;
 
-
     let status="";
-
 
     if(st==="passed"){
 
@@ -1459,7 +1322,6 @@ function renderLessons(){
       status="Test ready";
 
     }
-
 
     html+=`
 
@@ -1499,15 +1361,8 @@ function renderLessons(){
       </button>
     `;
 
-
-    /*
-      Show the test directly underneath
-      its lesson.
-    */
-
     const test =
       testData(i);
-
 
     const testUnlocked =
       unlocked &&
@@ -1515,7 +1370,6 @@ function renderLessons(){
         st==="test" ||
         st==="passed"
       );
-
 
     html+=`
 
@@ -1567,63 +1421,47 @@ function renderLessons(){
 
   }
 
-
   $("lessons")
     .innerHTML=html;
 
+  document
+    .querySelectorAll("[data-lesson]")
+    .forEach(b=>{
+
+      b.onclick=()=>{
+
+        const i =
+          +b.dataset.lesson;
+
+        startLesson(i);
+
+      };
+
+    });
 
   document
-    .querySelectorAll(
-      "[data-lesson]"
-    )
-    .forEach(
-      b=>{
+    .querySelectorAll("[data-test]")
+    .forEach(b=>{
 
-        b.onclick=()=>{
+      b.onclick=()=>{
 
-          const i =
-            +b.dataset.lesson;
+        const i =
+          +b.dataset.test;
 
-          startLesson(i);
+        startTest(i);
 
-        };
+      };
 
-      }
-    );
-
-
-  document
-    .querySelectorAll(
-      "[data-test]"
-    )
-    .forEach(
-      b=>{
-
-        b.onclick=()=>{
-
-          const i =
-            +b.dataset.test;
-
-          startTest(i);
-
-          setView("practice");
-
-        };
-
-      }
-    );
-
+    });
 
   const passed =
     s.unlockedLesson-1;
-
 
   $("coursebar")
     .style.width =
       (
         passed/6*100
       )+"%";
-
 
   $("courseText")
     .textContent =
@@ -1637,34 +1475,29 @@ renderLessons();
 
 
 /* =====================================================
-   START LESSON
+   STAGE VARIABLES
 ===================================================== */
 
 let activeLesson=0;
-
 let stage="practice";
-
 let current=null;
-
 let locked=false;
-
 let buildState=null;
-
 let testTasks=[];
-
 let testIndex=0;
-
 let testCorrect=0;
 
+
+/* =====================================================
+   START LESSON
+===================================================== */
 
 function startLesson(i){
 
   activeLesson=i;
 
-
   stage =
     lessonStage(i);
-
 
   if(stage==="passed"){
 
@@ -1676,7 +1509,6 @@ function startLesson(i){
 
   }
 
-
   if(stage==="practice"){
 
     setView("practice");
@@ -1686,7 +1518,6 @@ function startLesson(i){
     return;
 
   }
-
 
   if(stage==="build"){
 
@@ -1698,12 +1529,9 @@ function startLesson(i){
 
   }
 
-
   if(stage==="test"){
 
     startTest(i);
-
-    setView("practice");
 
   }
 
@@ -1769,7 +1597,6 @@ function renderStage(){
 
 /* =====================================================
    PRACTICE
-   EVERY LETTER 3×
 ===================================================== */
 
 function newPracticeQuestion(){
@@ -1780,14 +1607,7 @@ function newPracticeQuestion(){
 
   locked=false;
 
-
-  if(
-    practiceDone(activeLesson)
-  ){
-
-    stage="build";
-
-    renderStage();
+  if(practiceDone(activeLesson)){
 
     newBuildChallenge();
 
@@ -1795,11 +1615,8 @@ function newPracticeQuestion(){
 
   }
 
-
   const items =
-    lessonData(activeLesson)
-      .items;
-
+    lessonData(activeLesson).items;
 
   const pool =
     items.filter(
@@ -1808,11 +1625,8 @@ function newPracticeQuestion(){
           .practice[x[0]]<3
     );
 
-
-  /*
-    RANDOMLY select only from
-    letters that still need work.
-  */
+  if(!pool.length)
+    return;
 
   current =
     pool[
@@ -1821,14 +1635,12 @@ function newPracticeQuestion(){
       )
     ];
 
-
   const completed =
     items.filter(
       x =>
         lp(activeLesson)
           .practice[x[0]]>=3
     ).length;
-
 
   $("stageCount")
     .textContent =
@@ -1837,17 +1649,14 @@ function newPracticeQuestion(){
       items.length+
       " letters";
 
-
   $("qbar")
     .style.width =
       (
         completed/items.length*100
       )+"%";
 
-
   const soundMode =
     Math.random()<.5;
-
 
   $("prompt")
     .textContent =
@@ -1857,7 +1666,6 @@ function newPracticeQuestion(){
         :
           "Which letter matches this sound?";
 
-
   $("big")
     .textContent =
       soundMode
@@ -1866,14 +1674,12 @@ function newPracticeQuestion(){
         :
           current[1];
 
-
   const right =
     soundMode
       ?
         current[1]
       :
         current[0];
-
 
   const wrong =
     shuffle(
@@ -1892,7 +1698,6 @@ function newPracticeQuestion(){
             x[0]
     );
 
-
   $("answers")
     .innerHTML =
       shuffle(
@@ -1910,33 +1715,26 @@ function newPracticeQuestion(){
       )
       .join("");
 
-
   $("feedback")
     .textContent="";
-
 
   [
     ...$("answers").children
   ]
-  .forEach(
-    b=>
-      b.onclick =
-        ()=>answerPractice(
-          b,
-          right
-        )
-  );
+  .forEach(b=>{
 
+    b.onclick=()=>answerPractice(
+      b,
+      right
+    );
+
+  });
 
   $("questionArea")
-    .classList.remove(
-      "hidden"
-    );
+    .classList.remove("hidden");
 
   $("builderArea")
-    .classList.add(
-      "hidden"
-    );
+    .classList.add("hidden");
 
 }
 
@@ -1945,42 +1743,95 @@ function newPracticeQuestion(){
    PRACTICE ANSWER
 ===================================================== */
 
+function answerPractice(button,right){
 
-function answerPractice(answer){
-  if(!current || current.mode !== "practice") return;
+  if(locked)
+    return;
 
-  const target = String(current.item[1])
-    .trim()
-    .toLowerCase();
+  locked=true;
 
-  const given = String(answer)
-    .trim()
-    .toLowerCase();
+  const given =
+    button.textContent.trim();
 
-  if(given === target){
-    current.correct++;
+  const correct =
+    given===right;
 
-    practiceStatus.textContent =
-      "Correct! ✓ " + current.correct + "/3";
+  s.total++;
 
-    if(current.correct >= 3){
-      setTimeout(() => {
-        startBuild();
-      }, 1250);
-    }else{
-      setTimeout(() => {
-        nextPracticeQuestion();
-      }, 1250);
-    }
+  if(correct){
 
-  }else{
-    practiceStatus.textContent =
-      "Not quite — try again";
+    s.correct++;
+    s.streak++;
 
-    setTimeout(() => {
-      nextPracticeQuestion();
-    }, 1250);
+    lp(activeLesson)
+      .practice[current[0]] =
+        Math.min(
+          3,
+          (
+            lp(activeLesson)
+              .practice[current[0]]||0
+          )+1
+        );
+
+    button.classList.add("correct");
+
+    $("feedback")
+      .textContent =
+        "✓ Correct!";
+
   }
+  else{
+
+    s.streak=0;
+
+    button.classList.add("wrong");
+
+    $("feedback")
+      .textContent =
+        "Answer: "+right;
+
+    [
+      ...$("answers").children
+    ]
+    .forEach(b=>{
+
+      if(
+        b.textContent.trim()===right
+      ){
+
+        b.classList.add("correct");
+
+      }
+
+    });
+
+  }
+
+  save();
+  updateStats();
+
+  setTimeout(
+    ()=>{
+
+      locked=false;
+
+      if(
+        practiceDone(activeLesson)
+      ){
+
+        newBuildChallenge();
+
+      }
+      else{
+
+        newPracticeQuestion();
+
+      }
+
+    },
+    1250
+  );
+
 }
 
 
@@ -1994,11 +1845,9 @@ function updateStats(){
     .textContent =
       s.correct;
 
-
   $("streak")
     .textContent =
       s.streak;
-
 
   $("accuracy")
     .textContent =
@@ -2014,24 +1863,22 @@ function updateStats(){
 
 }
 
-
 updateStats();
 
 
-function updateMastery(
-  key,
-  delta
-){
+/* =====================================================
+   MASTERY
+===================================================== */
+
+function updateMastery(key,delta){
 
   s.mastery[key] ??={
     level:0,
     next:0
   };
 
-
   const m =
     s.mastery[key];
-
 
   m.level =
     Math.max(
@@ -2042,7 +1889,6 @@ function updateMastery(
       )
     );
 
-
   const delays=[
     0,
     10,
@@ -2051,7 +1897,6 @@ function updateMastery(
     3600,
     86400
   ];
-
 
   m.next =
     Date.now()+
@@ -2069,26 +1914,18 @@ function buildTarget(item){
   const char =
     item[0];
 
-
-  if(
-    jamoBuild[char]
-  ){
+  if(jamoBuild[char]){
 
     return {
 
       target:char,
-
-      parts:
-        jamoBuild[char]
+      parts:jamoBuild[char]
 
     };
 
   }
 
-
-  if(
-    consonantToSyllable[char]
-  ){
+  if(consonantToSyllable[char]){
 
     return {
 
@@ -2104,10 +1941,7 @@ function buildTarget(item){
 
   }
 
-
-  if(
-    vowelToSyllable[char]
-  ){
+  if(vowelToSyllable[char]){
 
     return {
 
@@ -2123,11 +1957,9 @@ function buildTarget(item){
 
   }
 
-
   return {
 
     target:char,
-
     parts:[char]
 
   };
@@ -2172,7 +2004,6 @@ function buildChoices(right){
 
 /* =====================================================
    BUILD STAGE
-   EVERY LETTER 2×
 ===================================================== */
 
 function newBuildChallenge(){
@@ -2183,24 +2014,16 @@ function newBuildChallenge(){
 
   locked=false;
 
+  if(buildDone(activeLesson)){
 
-  if(
-    buildDone(activeLesson)
-  ){
-
-    startTest(
-      activeLesson
-    );
+    startTest(activeLesson);
 
     return;
 
   }
 
-
   const items =
-    lessonData(activeLesson)
-      .items;
-
+    lessonData(activeLesson).items;
 
   const pool =
     items.filter(
@@ -2209,6 +2032,12 @@ function newBuildChallenge(){
           .build[x[0]]<2
     );
 
+  if(!pool.length){
+
+    startTest(activeLesson);
+    return;
+
+  }
 
   const item =
     pool[
@@ -2216,7 +2045,6 @@ function newBuildChallenge(){
         Math.random()*pool.length
       )
     ];
-
 
   buildState={
 
@@ -2233,7 +2061,6 @@ function newBuildChallenge(){
 
   };
 
-
   renderBuilder();
 
 }
@@ -2246,24 +2073,16 @@ function newBuildChallenge(){
 function renderBuilder(){
 
   $("questionArea")
-    .classList.add(
-      "hidden"
-    );
-
+    .classList.add("hidden");
 
   $("builderArea")
-    .classList.remove(
-      "hidden"
-    );
-
+    .classList.remove("hidden");
 
   const target =
     buildState.target;
 
-
   const key =
     buildState.item[0];
-
 
   if(buildState.isTest){
 
@@ -2278,7 +2097,6 @@ function renderBuilder(){
       lp(activeLesson)
         .build[key]||0;
 
-
     $("buildPrompt")
       .textContent =
         "Build "+
@@ -2291,22 +2109,14 @@ function renderBuilder(){
 
   }
 
-
-  /*
-    ALWAYS START BLANK.
-  */
-
   $("bs1")
     .textContent="?";
-
 
   $("bs2")
     .textContent="?";
 
-
   $("buildFeedback")
     .textContent="";
-
 
   buildState.step=0;
 
@@ -2322,11 +2132,9 @@ function renderBuilder(){
 function showBuildChoices(){
 
   const right =
-    buildState.target
-      .parts[
-        buildState.step
-      ];
-
+    buildState.target.parts[
+      buildState.step
+    ];
 
   $("buildChoices")
     .innerHTML =
@@ -2342,17 +2150,14 @@ function showBuildChoices(){
         )
         .join("");
 
-
   [
     ...$("buildChoices").children
   ]
-  .forEach(
-    b=>
-      b.onclick =
-        ()=>pickBuild(
-          b,
-          right
-        )
+  .forEach(b=>
+    b.onclick=()=>pickBuild(
+      b,
+      right
+    )
   );
 
 }
@@ -2362,71 +2167,56 @@ function showBuildChoices(){
    BUILD ANSWER
 ===================================================== */
 
-function pickBuild(
-  button,
-  right
-){
+function pickBuild(button,right){
 
   if(locked)
     return;
 
-
   const correct =
-    button.textContent===right;
-
+    button.textContent.trim()===right;
 
   if(!correct){
 
     locked=true;
 
-
-    button.classList.add(
-      "wrong"
-    );
-
+    button.classList.add("wrong");
 
     $("buildFeedback")
       .textContent =
         "Correct part: "+right;
 
-
     buildState.ok=false;
 
+    s.streak=0;
+    s.total++;
+
+    save();
+    updateStats();
 
     setTimeout(
       nextBuild,
       1250
     );
 
-
     return;
 
   }
 
-
-  button.classList.add(
-    "correct"
-  );
-
+  button.classList.add("correct");
 
   [
     ...$("buildChoices").children
   ]
   .forEach(
-    x =>
-      x.disabled=true
+    x=>x.disabled=true
   );
-
 
   $("bs"+
     (buildState.step+1)
   )
-    .textContent=
-      right;
-
+    .textContent=right;
 
   buildState.step++;
-
 
   if(
     buildState.step <
@@ -2442,22 +2232,20 @@ function pickBuild(
 
   }
 
-
   locked=true;
-
 
   $("buildFeedback")
     .textContent =
       "✓ Built!";
 
+  s.correct++;
+  s.total++;
+  s.streak++;
 
-  if(
-    !buildState.isTest
-  ){
+  if(!buildState.isTest){
 
     const key =
       buildState.item[0];
-
 
     lp(activeLesson)
       .build[key] =
@@ -2469,11 +2257,15 @@ function pickBuild(
           )+1
         );
 
+  }
+  else{
 
-    save();
+    testCorrect++;
 
   }
 
+  save();
+  updateStats();
 
   setTimeout(
     nextBuild,
@@ -2491,13 +2283,9 @@ function nextBuild(){
 
   locked=false;
 
-
-  if(
-    buildState.isTest
-  ){
+  if(buildState.isTest){
 
     testIndex++;
-
 
     if(
       testIndex>=
@@ -2513,19 +2301,13 @@ function nextBuild(){
 
     }
 
-
     return;
 
   }
 
+  if(buildDone(activeLesson)){
 
-  if(
-    buildDone(activeLesson)
-  ){
-
-    startTest(
-      activeLesson
-    );
+    startTest(activeLesson);
 
   }
   else{
@@ -2548,61 +2330,47 @@ function startTest(
   activeLesson =
     lessonIndex;
 
-
   stage="test";
-
 
   testTasks=[];
 
+  lessonData(activeLesson)
+    .items
+    .forEach(item=>{
 
-  /*
-    FIRST:
-    Guess every letter once.
-  */
+      testTasks.push({
+
+        type:"letter",
+        item:item
+
+      });
+
+    });
 
   lessonData(activeLesson)
     .items
-    .forEach(
-      item=>{
+    .forEach(item=>{
 
-        testTasks.push({
+      testTasks.push({
 
-          type:"letter",
+        type:"build",
+        item:item
 
-          item:item
+      });
 
-        });
-
-      }
-    );
-
+    });
 
   /*
-    THEN:
-    Build every letter once.
+    Randomize the test order while
+    keeping every item exactly once
+    for each section.
   */
 
-  lessonData(activeLesson)
-    .items
-    .forEach(
-      item=>{
-
-        testTasks.push({
-
-          type:"build",
-
-          item:item
-
-        });
-
-      }
-    );
-
+  testTasks =
+    shuffle(testTasks);
 
   testIndex=0;
-
   testCorrect=0;
-
 
   setView("practice");
 
@@ -2621,10 +2389,8 @@ function renderTestTask(){
 
   renderStage();
 
-
   const task =
     testTasks[testIndex];
-
 
   $("stageCount")
     .textContent =
@@ -2634,7 +2400,6 @@ function renderTestTask(){
       " / "+
       testTasks.length;
 
-
   $("qbar")
     .style.width =
       (
@@ -2643,40 +2408,27 @@ function renderTestTask(){
         100
       )+"%";
 
-
-  if(
-    task.type==="letter"
-  ){
+  if(task.type==="letter"){
 
     current =
       task.item;
 
-
     $("questionArea")
-      .classList.remove(
-        "hidden"
-      );
-
+      .classList.remove("hidden");
 
     $("builderArea")
-      .classList.add(
-        "hidden"
-      );
-
+      .classList.add("hidden");
 
     $("prompt")
       .textContent =
         "Which letter matches this sound?";
 
-
     $("big")
       .textContent =
         current[1];
 
-
     const right =
       current[0];
-
 
     const wrong =
       shuffle(
@@ -2691,7 +2443,6 @@ function renderTestTask(){
       .map(
         x=>x[0]
       );
-
 
     $("answers")
       .innerHTML =
@@ -2710,21 +2461,18 @@ function renderTestTask(){
         )
         .join("");
 
-
     $("feedback")
       .textContent="";
-
 
     [
       ...$("answers").children
     ]
-    .forEach(
-      b=>
-        b.onclick =
-          ()=>testLetterAnswer(
-            b,
-            right
-          )
+    .forEach(b=>
+      b.onclick=>
+        testLetterAnswer(
+          b,
+          right
+        )
     );
 
   }
@@ -2745,7 +2493,6 @@ function renderTestTask(){
 
     };
 
-
     renderBuilder();
 
   }
@@ -2765,21 +2512,20 @@ function testLetterAnswer(
   if(locked)
     return;
 
-
   locked=true;
 
+  const correct =
+    button.textContent.trim()===right;
 
-  if(
-    button.textContent===right
-  ){
+  s.total++;
+
+  if(correct){
 
     testCorrect++;
+    s.correct++;
+    s.streak++;
 
-
-    button.classList.add(
-      "correct"
-    );
-
+    button.classList.add("correct");
 
     $("feedback")
       .textContent =
@@ -2788,40 +2534,38 @@ function testLetterAnswer(
   }
   else{
 
-    button.classList.add(
-      "wrong"
-    );
+    s.streak=0;
 
+    button.classList.add("wrong");
 
     $("feedback")
       .textContent =
         "Answer: "+right;
 
-
     [
       ...$("answers").children
     ]
-    .forEach(
-      b=>{
+    .forEach(b=>{
 
-        if(
-          b.textContent===right
-        )
-          b.classList.add(
-            "correct"
-          );
+      if(
+        b.textContent.trim()===right
+      ){
+
+        b.classList.add("correct");
 
       }
-    );
+
+    });
 
   }
 
+  save();
+  updateStats();
 
   setTimeout(
     ()=>{
 
       testIndex++;
-
 
       if(
         testIndex>=
@@ -2857,7 +2601,6 @@ function finishTest(){
       100
     );
 
-
   lp(activeLesson)
     .test.attempts =
       (
@@ -2865,25 +2608,14 @@ function finishTest(){
           .test.attempts||0
       )+1;
 
-
   lp(activeLesson)
     .test.lastScore =
       score;
-
-
-  /*
-    70% OR HIGHER PASSES.
-  */
 
   if(score>=70){
 
     lp(activeLesson)
       .test.passed=true;
-
-
-    /*
-      Unlock the next lesson.
-    */
 
     if(
       activeLesson+1 >
@@ -2898,56 +2630,40 @@ function finishTest(){
 
     }
 
-
     save();
-
     renderLessons();
-
 
     $("stageEyebrow")
       .textContent =
         "Test complete";
 
-
     $("stageTitle")
       .textContent =
         "Passed ✓";
-
 
     $("stageCount")
       .textContent =
         score+"%";
 
-
     $("qbar")
       .style.width="100%";
 
-
     $("questionArea")
-      .classList.remove(
-        "hidden"
-      );
-
+      .classList.remove("hidden");
 
     $("builderArea")
-      .classList.add(
-        "hidden"
-      );
-
+      .classList.add("hidden");
 
     $("prompt")
       .textContent =
         "You passed!";
 
-
     $("big")
       .textContent =
         score+"%";
 
-
     $("answers")
       .innerHTML="";
-
 
     $("feedback")
       .textContent =
@@ -2957,11 +2673,12 @@ function finishTest(){
           :
             "You completed the course! 🎉";
 
-
     setTimeout(
       ()=>{
+
         setView("home");
         renderLessons();
+
       },
       1500
     );
@@ -2971,66 +2688,49 @@ function finishTest(){
 
     save();
 
-
     $("stageEyebrow")
       .textContent =
         "Test complete";
-
 
     $("stageTitle")
       .textContent =
         "Retest";
 
-
     $("stageCount")
       .textContent =
         score+"%";
 
-
     $("qbar")
       .style.width="100%";
 
-
     $("questionArea")
-      .classList.remove(
-        "hidden"
-      );
-
+      .classList.remove("hidden");
 
     $("builderArea")
-      .classList.add(
-        "hidden"
-      );
-
+      .classList.add("hidden");
 
     $("prompt")
       .textContent =
         "You need 70% to pass.";
 
-
     $("big")
       .textContent =
         score+"%";
 
-
     $("answers")
       .innerHTML="";
-
 
     $("feedback")
       .textContent =
         "Retesting this lesson…";
 
-
-    /*
-      Automatically retest.
-    */
-
     setTimeout(
       ()=>{
+
         startTest(
           activeLesson
         );
+
       },
       1500
     );
@@ -3050,39 +2750,27 @@ function showPassed(){
 
   renderStage();
 
-
   $("stageCount")
     .textContent="✓";
-
 
   $("qbar")
     .style.width="100%";
 
-
   $("questionArea")
-    .classList.remove(
-      "hidden"
-    );
-
+    .classList.remove("hidden");
 
   $("builderArea")
-    .classList.add(
-      "hidden"
-    );
-
+    .classList.add("hidden");
 
   $("prompt")
     .textContent =
       "This lesson is complete.";
 
-
   $("big")
     .textContent="✓";
 
-
   $("answers")
     .innerHTML="";
-
 
   $("feedback")
     .textContent =
@@ -3106,19 +2794,12 @@ const writeItems =
         u.items
     );
 
-
 let ctx=null;
-
 let down=false;
-
 let lastX=0;
-
 let lastY=0;
-
 let writeTarget=null;
-
 let writeRepeat=0;
-
 let writeLocked=false;
 
 
@@ -3131,14 +2812,11 @@ function resizeCanvas(){
   const c =
     $("canvas");
 
-
   const r =
     c.getBoundingClientRect();
 
-
   const d =
     devicePixelRatio||1;
-
 
   c.width =
     Math.max(
@@ -3148,7 +2826,6 @@ function resizeCanvas(){
       )
     );
 
-
   c.height =
     Math.max(
       1,
@@ -3157,10 +2834,8 @@ function resizeCanvas(){
       )
     );
 
-
   ctx =
     c.getContext("2d");
-
 
   ctx.setTransform(
     d,
@@ -3171,11 +2846,8 @@ function resizeCanvas(){
     0
   );
 
-
   ctx.lineWidth=5;
-
   ctx.lineCap="round";
-
   ctx.lineJoin="round";
 
 }
@@ -3185,7 +2857,6 @@ function clearCanvas(){
 
   if(!ctx)
     return;
-
 
   ctx.clearRect(
     0,
@@ -3216,9 +2887,7 @@ function pickWriteTarget(){
       )
     ];
 
-
   writeRepeat=0;
-
 
   setWriteTarget();
 
@@ -3231,11 +2900,9 @@ function setWriteTarget(){
     .textContent =
       writeTarget[0];
 
-
   $("guide")
     .textContent =
       writeTarget[0];
-
 
   $("writeCount")
     .textContent =
@@ -3244,10 +2911,8 @@ function setWriteTarget(){
       )+
       " / 3";
 
-
   $("writeFeedback")
     .textContent="";
-
 
   clearCanvas();
 
@@ -3264,7 +2929,6 @@ new ResizeObserver(
   $("canvas")
 );
 
-
 resizeCanvas();
 
 
@@ -3278,11 +2942,9 @@ function pointerPosition(e){
     $("canvas")
       .getBoundingClientRect();
 
-
   return [
 
     e.clientX-r.left,
-
     e.clientY-r.top
 
   ];
@@ -3298,9 +2960,7 @@ $("canvas")
       if(writeLocked)
         return;
 
-
       down=true;
-
 
       if(
         $("canvas")
@@ -3314,13 +2974,10 @@ $("canvas")
 
       }
 
-
       const p =
         pointerPosition(e);
 
-
       lastX=p[0];
-
       lastY=p[1];
 
     }
@@ -3338,10 +2995,8 @@ $("canvas")
       )
         return;
 
-
       const p =
         pointerPosition(e);
-
 
       ctx.beginPath();
 
@@ -3357,9 +3012,7 @@ $("canvas")
 
       ctx.stroke();
 
-
       lastX=p[0];
-
       lastY=p[1];
 
     }
@@ -3390,127 +3043,299 @@ $("canvas")
    FORGIVING WRITING SCORE
 ===================================================== */
 
-
 function writingScore(){
-  const size = 80;
 
-  const userCanvas = document.createElement("canvas");
-  const guideCanvas = document.createElement("canvas");
+  const size=100;
 
-  userCanvas.width = userCanvas.height = size;
-  guideCanvas.width = guideCanvas.height = size;
+  const userCanvas =
+    document.createElement("canvas");
 
-  const uc = userCanvas.getContext("2d");
-  const gc = guideCanvas.getContext("2d");
+  const guideCanvas =
+    document.createElement("canvas");
 
-  // Draw user's handwriting
-  uc.drawImage(writeCanvas, 0, 0, size, size);
+  userCanvas.width =
+    userCanvas.height =
+      size;
 
-  // Draw guide
-  gc.fillStyle = "#000";
-  gc.font = '130px "Apple SD Gothic Neo","Noto Sans KR",sans-serif';
-  gc.textAlign = "center";
-  gc.textBaseline = "middle";
-  gc.fillText(writeTarget, size / 2, size / 2 + 3);
+  guideCanvas.width =
+    guideCanvas.height =
+      size;
 
-  const user = uc.getImageData(0, 0, size, size).data;
-  const guide = gc.getImageData(0, 0, size, size).data;
+  const uc =
+    userCanvas.getContext("2d");
+
+  const gc =
+    guideCanvas.getContext("2d");
+
+  /*
+    IMPORTANT:
+    The actual canvas is #canvas.
+    The previous code incorrectly used
+    writeCanvas.
+  */
+
+  uc.drawImage(
+    $("canvas"),
+    0,
+    0,
+    size,
+    size
+  );
+
+  /*
+    Draw the guide at a slightly smaller
+    size so the user doesn't have to
+    perfectly trace its outer edge.
+  */
+
+  gc.fillStyle="#000";
+
+  gc.font =
+    '115px "Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+
+  gc.textAlign="center";
+  gc.textBaseline="middle";
+
+  gc.fillText(
+    writeTarget[0],
+    size/2,
+    size/2+2
+  );
+
+  const user =
+    uc.getImageData(
+      0,
+      0,
+      size,
+      size
+    ).data;
+
+  const guide =
+    gc.getImageData(
+      0,
+      0,
+      size,
+      size
+    ).data;
+
 
   function makeMask(data){
-    const mask = new Uint8Array(size * size);
 
-    for(let y = 0; y < size; y++){
-      for(let x = 0; x < size; x++){
-        const i = (y * size + x) * 4;
+    const mask =
+      new Uint8Array(
+        size*size
+      );
 
-        // Slightly more forgiving threshold
-        if(data[i + 3] > 15){
-          mask[y * size + x] = 1;
+    for(
+      let y=0;
+      y<size;
+      y++
+    ){
+
+      for(
+        let x=0;
+        x<size;
+        x++
+      ){
+
+        const i =
+          (y*size+x)*4;
+
+        /*
+          Any visible stroke counts.
+        */
+
+        if(
+          data[i+3]>5
+        ){
+
+          mask[
+            y*size+x
+          ]=1;
+
         }
+
       }
+
     }
 
     return mask;
+
   }
 
-  const u = makeMask(user);
-  const g = makeMask(guide);
 
-  let userCount = 0;
-  let guideCount = 0;
-  let userHit = 0;
-  let guideHit = 0;
+  const u=makeMask(user);
+  const g=makeMask(guide);
 
-  // Larger tolerance than before: ±2 pixels
-  const tolerance = 2;
 
-  for(let y = 0; y < size; y++){
-    for(let x = 0; x < size; x++){
-      const index = y * size + x;
+  let userCount=0;
+  let guideCount=0;
+  let userHit=0;
+  let guideHit=0;
+
+
+  /*
+    ±4 pixels of tolerance.
+    This is substantially more forgiving
+    than the old ±1/±2 version.
+  */
+
+  const tolerance=4;
+
+
+  for(
+    let y=0;
+    y<size;
+    y++
+  ){
+
+    for(
+      let x=0;
+      x<size;
+      x++
+    ){
+
+      const index =
+        y*size+x;
+
 
       if(u[index]){
+
         userCount++;
 
-        let hit = false;
+        let hit=false;
 
-        for(let dy = -tolerance; dy <= tolerance && !hit; dy++){
-          for(let dx = -tolerance; dx <= tolerance; dx++){
-            const nx = x + dx;
-            const ny = y + dy;
+        for(
+          let dy=-tolerance;
+          dy<=tolerance && !hit;
+          dy++
+        ){
+
+          for(
+            let dx=-tolerance;
+            dx<=tolerance;
+            dx++
+          ){
+
+            const nx=x+dx;
+            const ny=y+dy;
 
             if(
-              nx >= 0 && nx < size &&
-              ny >= 0 && ny < size &&
-              g[ny * size + nx]
+              nx>=0 &&
+              nx<size &&
+              ny>=0 &&
+              ny<size &&
+              g[
+                ny*size+nx
+              ]
             ){
-              hit = true;
+
+              hit=true;
               break;
+
             }
+
           }
+
         }
 
-        if(hit) userHit++;
+        if(hit)
+          userHit++;
+
       }
+
 
       if(g[index]){
+
         guideCount++;
 
-        let hit = false;
+        let hit=false;
 
-        for(let dy = -tolerance; dy <= tolerance && !hit; dy++){
-          for(let dx = -tolerance; dx <= tolerance; dx++){
-            const nx = x + dx;
-            const ny = y + dy;
+        for(
+          let dy=-tolerance;
+          dy<=tolerance && !hit;
+          dy++
+        ){
+
+          for(
+            let dx=-tolerance;
+            dx<=tolerance;
+            dx++
+          ){
+
+            const nx=x+dx;
+            const ny=y+dy;
 
             if(
-              nx >= 0 && nx < size &&
-              ny >= 0 && ny < size &&
-              u[ny * size + nx]
+              nx>=0 &&
+              nx<size &&
+              ny>=0 &&
+              ny<size &&
+              u[
+                ny*size+nx
+              ]
             ){
-              hit = true;
+
+              hit=true;
               break;
+
             }
+
           }
+
         }
 
-        if(hit) guideHit++;
+        if(hit)
+          guideHit++;
+
       }
+
     }
+
   }
 
-  if(userCount === 0 || guideCount === 0){
+
+  if(
+    userCount===0 ||
+    guideCount===0
+  ){
+
     return 0;
+
   }
 
-  const precision = userHit / userCount;
-  const coverage = guideHit / guideCount;
 
-  // More forgiving overall scoring
+  const precision =
+    userHit/userCount;
+
+  const coverage =
+    guideHit/guideCount;
+
+
+  /*
+    Coverage matters slightly more
+    because we want to recognize the
+    intended character even when the
+    user's stroke is imperfect.
+
+    Extra stray strokes are still
+    penalized by precision.
+  */
+
   const score =
-    (precision * 0.40) +
-    (coverage * 0.60);
+    (
+      precision*0.35+
+      coverage*0.65
+    );
 
-  return Math.round(Math.min(1, score) * 100);
+
+  return Math.round(
+    Math.min(
+      1,
+      score
+    )*100
+  );
+
 }
 
 
@@ -3528,9 +3353,7 @@ function checkWriting(){
   if(writeLocked)
     return;
 
-
   writeLocked=true;
-
 
   const score =
     writingScore();
@@ -3557,31 +3380,27 @@ function checkWriting(){
   setTimeout(
     ()=>{
 
-      writeRepeat++;
+      /*
+        A failed drawing still counts as
+        one attempt toward the 3 drawings.
+        The user can therefore practice the
+        same character 3 times.
+      */
 
+      writeRepeat++;
 
       if(
         writeRepeat>=3
       ){
-
-        /*
-          New random letter only
-          after 3 consecutive drawings.
-        */
 
         pickWriteTarget();
 
       }
       else{
 
-        /*
-          Same letter again.
-        */
-
         setWriteTarget();
 
       }
-
 
       writeLocked=false;
 
@@ -3602,10 +3421,14 @@ $("sound")
 
       let text=null;
 
-
       if(current){
 
-        text=current[1];
+        text =
+          Array.isArray(current)
+            ? current[1]
+            : current.item
+              ? current.item[1]
+              : null;
 
       }
       else if(writeTarget){
@@ -3614,13 +3437,10 @@ $("sound")
 
       }
 
-
       if(!text)
         return;
 
-
       speechSynthesis.cancel();
-
 
       speechSynthesis.speak(
         new SpeechSynthesisUtterance(
@@ -3647,7 +3467,6 @@ function renderReview(){
         u =>
           u.items
       );
-
 
   const due =
     allItems
@@ -3677,6 +3496,7 @@ function renderReview(){
     .innerHTML =
       due.length
         ?
+
           due.map(
             z=>
               `
@@ -3703,7 +3523,9 @@ function renderReview(){
 
               `
           ).join("")
+
         :
+
           `
           <div class="tiny">
             Nothing urgent. Keep practicing! 🎉
@@ -3717,29 +3539,21 @@ $("startReview")
   .onclick =
     ()=>{
 
-      /*
-        Review chooses a random
-        currently unlocked lesson.
-      */
-
       const max =
         Math.max(
           1,
           s.unlockedLesson
         );
 
-
       activeLesson =
         Math.floor(
           Math.random()*max
         );
 
-
       stage =
         lessonStage(
           activeLesson
         );
-
 
       if(stage==="test"){
 
