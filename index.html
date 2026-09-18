@@ -1958,7 +1958,15 @@ function renderBuilder(){
     const target=builderState.data.target;
     const parts=builderState.data.parts;
 
-    document.getElementById("builderTarget").textContent=target;
+    /*
+      DO NOT show the answer at the beginning.
+
+      The target is hidden until the user builds it.
+      Each slot starts as ? and is revealed only
+      after the user chooses that component.
+    */
+
+    document.getElementById("builderTarget").textContent="?";
 
     document.getElementById("builderSlot1").textContent =
         builderState.partIndex>0
@@ -1970,12 +1978,32 @@ function renderBuilder(){
             ? parts[1]
             : "?";
 
-    document.getElementById("buildInstruction").textContent =
-        builderState.mode==="test"
-            ? T("buildInstruction")
-            : builderState.partIndex===0
+
+    /*
+      Tell the user what to do.
+    */
+
+    if(builderState.mode==="test"){
+
+        document.getElementById("buildInstruction").textContent =
+            builderState.partIndex===0
                 ? T("chooseFirst")
                 : T("chooseSecond");
+
+    }
+    else{
+
+        document.getElementById("buildInstruction").textContent =
+            builderState.partIndex===0
+                ? T("chooseFirst")
+                : T("chooseSecond");
+
+    }
+
+
+    /*
+      Create the answer choices.
+    */
 
     const choices=document.getElementById("builderChoices");
 
@@ -2001,8 +2029,10 @@ function renderBuilder(){
 
     });
 
+
     document.getElementById("buildFeedback").textContent="";
     document.getElementById("buildFeedback").className="feedback";
+
 
     if(builderState.mode==="build"){
 
@@ -2018,7 +2048,8 @@ function renderBuilder(){
     }
     else{
 
-        document.getElementById("buildProgress").textContent="";
+        document.getElementById("buildProgress").textContent =
+            `${testState.index+1}/${testState.tasks.length}`;
 
     }
 
@@ -2029,93 +2060,19 @@ function answerBuild(button,choice){
 
     if(builderState.locked) return;
 
-    builderState.locked=true;
-
     const correct=
         builderState.data.parts[
             builderState.partIndex
         ];
 
-    if(choice===correct){
+    /*
+      Wrong answer:
+      the attempt fails and we move to the next challenge.
+    */
 
-        button.classList.add("correct");
+    if(choice!==correct){
 
-        builderState.partIndex++;
-
-        /*
-          Both parts are correct.
-        */
-
-        if(builderState.partIndex>=builderState.data.parts.length){
-
-            document.getElementById("buildFeedback").textContent =
-                T("correct");
-
-            document.getElementById("buildFeedback").className =
-                "feedback good";
-
-            if(builderState.mode==="build"){
-
-                const letter=builderState.item[0];
-
-                const p=lessonProgress(activeUnit);
-
-                p.build[letter]=Math.min(
-                    2,
-                    p.build[letter]+1
-                );
-
-                save();
-
-            }
-
-            setTimeout(()=>{
-
-                builderState.locked=false;
-
-                if(builderState.mode==="test"){
-
-                    finishTestTask(true);
-
-                }
-                else if(buildComplete(activeUnit)){
-
-                    startWritingStage();
-
-                }
-                else{
-
-                    startBuildStage();
-
-                }
-
-            },1250);
-
-        }
-        else{
-
-            /*
-              First component was correct.
-              Give the user the second component.
-            */
-
-            document.getElementById("buildFeedback").textContent =
-                T("correct");
-
-            document.getElementById("buildFeedback").className =
-                "feedback good";
-
-            setTimeout(()=>{
-
-                builderState.locked=false;
-                renderBuilder();
-
-            },350);
-
-        }
-
-    }
-    else{
+        builderState.locked=true;
 
         button.classList.add("wrong");
 
@@ -2125,9 +2082,6 @@ function answerBuild(button,choice){
         document.getElementById("buildFeedback").className =
             "feedback bad";
 
-        /*
-          The whole build attempt fails.
-        */
 
         setTimeout(()=>{
 
@@ -2146,7 +2100,117 @@ function answerBuild(button,choice){
 
         },1250);
 
+        return;
     }
+
+
+    /*
+      Correct answer.
+    */
+
+    button.classList.add("correct");
+
+    /*
+      Reveal the component that was just selected.
+    */
+
+    if(builderState.partIndex===0){
+
+        document.getElementById("builderSlot1").textContent =
+            correct;
+
+    }
+    else{
+
+        document.getElementById("builderSlot2").textContent =
+            correct;
+
+    }
+
+
+    builderState.partIndex++;
+
+
+    /*
+      First component is correct.
+      Now ask for the second component.
+    */
+
+    if(builderState.partIndex<
+       builderState.data.parts.length){
+
+        document.getElementById("buildFeedback").textContent =
+            T("correct");
+
+        document.getElementById("buildFeedback").className =
+            "feedback good";
+
+        setTimeout(()=>{
+
+            builderState.locked=false;
+
+            renderBuilder();
+
+        },350);
+
+        return;
+    }
+
+
+    /*
+      BOTH components are correct.
+      Now reveal the completed syllable.
+    */
+
+    builderState.locked=true;
+
+    document.getElementById("builderTarget").textContent =
+        builderState.data.target;
+
+    document.getElementById("buildFeedback").textContent =
+        T("correct");
+
+    document.getElementById("buildFeedback").className =
+        "feedback good";
+
+
+    if(builderState.mode==="build"){
+
+        const letter=builderState.item[0];
+
+        const p=lessonProgress(activeUnit);
+
+        p.build[letter]=Math.min(
+            2,
+            p.build[letter]+1
+        );
+
+        save();
+
+    }
+
+
+    setTimeout(()=>{
+
+        builderState.locked=false;
+
+        if(builderState.mode==="test"){
+
+            finishTestTask(true);
+
+        }
+        else if(buildComplete(activeUnit)){
+
+            startWritingStage();
+
+        }
+        else{
+
+            startBuildStage();
+
+        }
+
+    },1250);
 
 }
 
