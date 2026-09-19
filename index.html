@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Hangul Quest</title>
+<link rel="icon" href="data:,">
 
 <style>
 *{
@@ -1013,9 +1014,13 @@ function lessonAvailableForPractice(i){
 }
 
 function availableLessonItems(){
-  return lessons
+  const items = lessons
     .filter((lesson,index) => lessonAvailableForPractice(index))
     .flatMap(lesson => lesson.items);
+
+  return items.length && activeLesson !== null
+    ? items
+    : (activeLesson === null ? [] : lessons[activeLesson].items);
 }
 
 function availableLessonJamo(){
@@ -1028,6 +1033,12 @@ function availableLessonJamo(){
       if(!found.includes(letter)) found.push(letter);
     });
   });
+
+  if(!found.length && activeLesson !== null){
+    lessonJamo(activeLesson).forEach(letter=>{
+      if(!found.includes(letter)) found.push(letter);
+    });
+  }
 
   return found;
 }
@@ -1245,18 +1256,17 @@ function makeAnswerChoices(){
 
   const correct = currentPractice[1];
 
-  const all = availableLessonItems().map(item => item[1]);
+  const answerPool = [...new Set(
+    availableLessonItems().map(item => item[1])
+  )];
 
   let choices = [correct];
 
-  while(choices.length < Math.min(4,allParts.length)){
-
-    const candidate = random(all);
-
-    if(!choices.includes(candidate)){
+  answerPool.forEach(candidate=>{
+    if(choices.length < 4 && !choices.includes(candidate)){
       choices.push(candidate);
     }
-  }
+  });
 
   choices = shuffle(choices);
 
@@ -1481,18 +1491,15 @@ function displayBuildPart(part){
 
 function getBuildingChoices(correctPart){
 
-  const allParts = availableLessonJamo();
+  const allParts = [...new Set(availableLessonJamo())];
 
   let choices = [correctPart];
 
-  while(choices.length < Math.min(4,allParts.length)){
-
-    const candidate = random(allParts);
-
-    if(!choices.includes(candidate)){
+  allParts.forEach(candidate=>{
+    if(choices.length < 4 && !choices.includes(candidate)){
       choices.push(candidate);
     }
-  }
+  });
 
   return shuffle(choices);
 }
@@ -2309,10 +2316,15 @@ function clearCanvas(){
 
 function writingScore(){
 
-  if(!currentWritingTarget) return 0;
+  if(!currentWritingTarget) return [0];
 
-  const rect =
-    canvas.getBoundingClientRect();
+  const rect = canvas.getBoundingClientRect();
+
+  const size = 300;
+
+  /* =========================================================
+     GET THE USER DRAWING
+  ========================================================= */
 
   const source =
     ctx.getImageData(
@@ -2324,10 +2336,8 @@ function writingScore(){
 
   const data = source.data;
 
-  const size = 100;
-
   const userMask =
-    new Uint8Array(size*size);
+    new Uint8Array(size * size);
 
   const scaleX =
     canvas.width / size;
@@ -2335,120 +2345,305 @@ function writingScore(){
   const scaleY =
     canvas.height / size;
 
-  for(let y=0;y<size;y++){
+  for(let y = 0; y < size; y++){
 
-    for(let x=0;x<size;x++){
+    for(let x = 0; x < size; x++){
 
       const px =
-        Math.floor(x*scaleX);
+        Math.floor(x * scaleX);
 
       const py =
-        Math.floor(y*scaleY);
+        Math.floor(y * scaleY);
 
       const index =
-        (py*canvas.width+px)*4;
+        (py * canvas.width + px) * 4;
 
-      if(data[index+3] > 20){
-        userMask[y*size+x] = 1;
+      if(data[index + 3] > 20){
+        userMask[y * size + x] = 1;
       }
 
     }
 
   }
 
-  const targetCanvas = document.createElement("canvas");
+
+  /* =========================================================
+     CREATE THE EXACT SAME GUIDE AS THE SCREEN
+  ========================================================= */
+
+  const targetCanvas =
+    document.createElement("canvas");
+
   targetCanvas.width = size;
   targetCanvas.height = size;
-  const targetCtx = targetCanvas.getContext("2d");
-  const chars = [...currentWritingTarget.char];
-  const centers = chars.length === 1
-    ? [size / 2]
-    : chars.map((_,index) =>
-      size * (index + 1) / (chars.length + 1)
-    );
-  const tolerance = 15;
 
-  function scoreTargetChar(char,center){
-    targetCtx.clearRect(0,0,size,size);
-    targetCtx.font = "500 90px sans-serif";
-    targetCtx.textAlign = "center";
-    targetCtx.textBaseline = "middle";
-    targetCtx.fillStyle = "black";
-    targetCtx.fillText(char,center,size/2);
+  const targetCtx =
+    targetCanvas.getContext("2d");
 
-    const targetData = targetCtx.getImageData(0,0,size,size).data;
-    const targetMask = new Uint8Array(size*size);
+  targetCtx.clearRect(
+    0,
+    0,
+    size,
+    size
+  );
 
-    for(let i=0;i<targetMask.length;i++){
-      if(targetData[i*4] < 230) targetMask[i] = 1;
+  targetCtx.fillStyle = "#000";
+
+  const guideFontSize = 120;
+
+  const targetFontSize =
+    rect.width > 0
+      ? (guideFontSize / rect.width) * size
+      : 120;
+
+  targetCtx.font =
+    `500 ${targetFontSize}px sans-serif`;
+
+  targetCtx.textAlign = "center";
+  targetCtx.textBaseline = "middle";
+
+  targetCtx.fillText(
+    currentWritingTarget.char,
+    size / 2,
+    size / 2
+  );
+
+
+  const targetData =
+    targetCtx.getImageData(
+      0,
+      0,
+      size,
+      size
+    ).data;
+
+
+  /* =========================================================
+     TARGET FILLED MASK
+  ========================================================= */
+
+  const targetMask =
+    new Uint8Array(size * size);
+
+  for(let i = 0; i < targetMask.length; i++){
+
+    if(targetData[i * 4 + 3] > 20){
+      targetMask[i] = 1;
     }
 
-    let targetCount = 0;
-    let covered = 0;
-    let targetMatched = 0;
-    let userInTarget = 0;
-
-    for(let y=0;y<size;y++){
-      for(let x=0;x<size;x++){
-        const i = y*size+x;
-
-        if(targetMask[i]){
-          targetCount++;
-          let found = false;
-
-          for(let dy=-tolerance;dy<=tolerance && !found;dy++){
-            for(let dx=-tolerance;dx<=tolerance;dx++){
-              const nx = x+dx;
-              const ny = y+dy;
-
-              if(nx>=0 && nx<size && ny>=0 && ny<size &&
-                 userMask[ny*size+nx]){
-                found = true;
-                break;
-              }
-            }
-          }
-
-          if(found) covered++;
-        }
-
-        if(userMask[i]){
-          let found = false;
-
-          for(let dy=-tolerance;dy<=tolerance && !found;dy++){
-            for(let dx=-tolerance;dx<=tolerance;dx++){
-              const nx = x+dx;
-              const ny = y+dy;
-
-              if(nx>=0 && nx<size && ny>=0 && ny<size &&
-                 targetMask[ny*size+nx]){
-                found = true;
-                break;
-              }
-            }
-          }
-
-          if(found) targetMatched++;
-          if(Math.abs(x-center) < size / chars.length){
-            userInTarget++;
-          }
-        }
-      }
-    }
-
-    const coverage = targetCount ? covered / targetCount : 0;
-    const precision = userInTarget ? targetMatched / userInTarget : 0;
-    let score = coverage * .88 + precision * .12;
-
-    if(coverage >= .40) score += .08;
-    if(coverage >= .60) score += .07;
-
-    return Math.min(1,score);
   }
 
-  return chars.map((char,index) =>
-    scoreTargetChar(char,centers[index])
-  );
+
+  /* =========================================================
+     EXTRACT ONLY THE OUTLINE
+  ========================================================= */
+
+  const outline =
+    new Uint8Array(size * size);
+
+  for(let y = 1; y < size - 1; y++){
+
+    for(let x = 1; x < size - 1; x++){
+
+      const i =
+        y * size + x;
+
+      if(!targetMask[i]) continue;
+
+      if(
+        !targetMask[i - 1] ||
+        !targetMask[i + 1] ||
+        !targetMask[i - size] ||
+        !targetMask[i + size]
+      ){
+
+        outline[i] = 1;
+
+      }
+
+    }
+
+  }
+
+
+  /* =========================================================
+     DISTANCE MAP
+
+     Finds distance from every pixel to the user's drawing.
+  ========================================================= */
+
+  const INF = 9999;
+
+  const distance =
+    new Float32Array(size * size);
+
+  distance.fill(INF);
+
+
+  for(let i = 0; i < distance.length; i++){
+
+    if(userMask[i]){
+      distance[i] = 0;
+    }
+
+  }
+
+
+  /* Forward pass */
+
+  for(let y = 0; y < size; y++){
+
+    for(let x = 0; x < size; x++){
+
+      const i =
+        y * size + x;
+
+      let d =
+        distance[i];
+
+      if(x > 0){
+        d =
+          Math.min(
+            d,
+            distance[i - 1] + 1
+          );
+      }
+
+      if(y > 0){
+        d =
+          Math.min(
+            d,
+            distance[i - size] + 1
+          );
+      }
+
+      if(x > 0 && y > 0){
+        d =
+          Math.min(
+            d,
+            distance[i - size - 1] + 1.414
+          );
+      }
+
+      if(x < size - 1 && y > 0){
+        d =
+          Math.min(
+            d,
+            distance[i - size + 1] + 1.414
+          );
+      }
+
+      distance[i] = d;
+
+    }
+
+  }
+
+
+  /* Backward pass */
+
+  for(let y = size - 1; y >= 0; y--){
+
+    for(let x = size - 1; x >= 0; x--){
+
+      const i =
+        y * size + x;
+
+      let d =
+        distance[i];
+
+      if(x < size - 1){
+        d =
+          Math.min(
+            d,
+            distance[i + 1] + 1
+          );
+      }
+
+      if(y < size - 1){
+        d =
+          Math.min(
+            d,
+            distance[i + size] + 1
+          );
+      }
+
+      if(x < size - 1 && y < size - 1){
+        d =
+          Math.min(
+            d,
+            distance[i + size + 1] + 1.414
+          );
+      }
+
+      if(x > 0 && y < size - 1){
+        d =
+          Math.min(
+            d,
+            distance[i + size - 1] + 1.414
+          );
+      }
+
+      distance[i] = d;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     SCORE OUTLINE COVERAGE
+
+     0 px away     = 100%
+     5 px away     = 75%
+     10 px away    = 50%
+     15 px away    = 25%
+     20+ px away   = 0%
+  ========================================================= */
+
+  const radius = 20;
+
+  let outlinePixels = 0;
+  let outlineScore = 0;
+
+
+  for(let i = 0; i < outline.length; i++){
+
+    if(!outline[i]) continue;
+
+    outlinePixels++;
+
+    const d =
+      distance[i];
+
+    if(d >= radius){
+      continue;
+    }
+
+    const credit =
+      1 - (d / radius);
+
+    outlineScore += credit;
+
+  }
+
+
+  if(outlinePixels === 0){
+    return [0];
+  }
+
+
+  const score =
+    outlineScore / outlinePixels;
+
+
+  return [
+    Math.max(
+      0,
+      Math.min(1, score)
+    )
+  ];
+
 }
 
 /* =========================================================
@@ -2459,37 +2654,38 @@ function checkWriting(){
 
   if(!currentWritingTarget) return;
 
-  const scores =
-    writingScore();
+  const score = writingScore();
 
-  const passed = [];
-  const missed = [];
+  const percent =
+    Math.round(score * 100);
 
-  [...currentWritingTarget.char].forEach((char,index)=>{
-    const percent = Math.round(scores[index] * 100);
+  const char =
+    currentWritingTarget.char;
 
-    if(percent >= 55){
-      s.writing[char] = writeCount(char) + 1;
-      s.correct++;
-      passed.push(`${char} ${percent}% ✓`);
-    }else{
-      missed.push(`${char} ${percent}%`);
-    }
-  });
+  if(percent >= 55){
 
-  s.total += [...currentWritingTarget.char].length;
-  s.streak = missed.length ? 0 : s.streak + passed.length;
+    s.writing[char] =
+      writeCount(char) + 1;
 
-  $("writeFeedback").textContent =
-    `${passed.length ? `Marked: ${passed.join(", ")}.` : ""}` +
-    `${missed.length ? ` Keep practicing: ${missed.join(", ")}.` : ""}`;
+    s.correct++;
+    s.total++;
+    s.streak++;
+
+    $("writeFeedback").textContent =
+      `${char} ${percent}% ✓`;
+
+  }else{
+
+    s.total++;
+    s.streak = 0;
+
+    $("writeFeedback").textContent =
+      `Keep practicing: ${char} ${percent}%.`;
+
+  }
 
   $("writeGuide").textContent =
-    [...currentWritingTarget.char]
-      .map(char =>
-        `${char}${writeCount(char) >= NEEDED_CORRECT ? " ✓" : ""}`
-      )
-      .join(" ");
+    `${char}${writeCount(char) >= NEEDED_CORRECT ? " ✓" : ""}`;
 
   save();
 
