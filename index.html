@@ -2297,7 +2297,7 @@ function writingScore(){
     : chars.map((_,index) =>
       size * (index + 1) / (chars.length + 1)
     );
-  const tolerance = 17;
+  const tolerance = 15;
 
   function scoreTargetChar(char,center){
     targetCtx.clearRect(0,0,size,size);
