@@ -862,6 +862,12 @@ const JUNG_JAMO = [
   "ㅡ","ㅢ","ㅣ"
 ];
 
+const JONG_JAMO = [
+  "", "ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ",
+  "ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ",
+  "ㅋ","ㅌ","ㅍ","ㅎ"
+];
+
 /* =========================================================
    STATE
 ========================================================= */
@@ -938,14 +944,19 @@ function isVowel(char){
 }
 
 function composeHangul(cho,jung){
+  return composeHangulWithFinal(cho,jung,"");
+}
+
+function composeHangulWithFinal(cho,jung,jong){
   const ci = CHO_JAMO.indexOf(cho);
   const ji = JUNG_JAMO.indexOf(jung);
+  const ki = JONG_JAMO.indexOf(jong || "");
 
-  if(ci < 0 || ji < 0){
-    return cho + jung;
+  if(ci < 0 || ji < 0 || ki < 0){
+    return cho + jung + (jong || "");
   }
 
-  return String.fromCharCode(0xAC00 + (ci * 21 + ji) * 28);
+  return String.fromCharCode(0xAC00 + (ci * 21 + ji) * 28 + ki);
 }
 
 function decomposeHangul(char){
@@ -964,10 +975,15 @@ function decomposeHangul(char){
   }
 
   const syllable = code - 0xAC00;
+  const jong = syllable % 28;
   const jung = Math.floor(syllable / 28) % 21;
   const cho = Math.floor(syllable / 28 / 21);
 
-  return [CHO_JAMO[cho], JUNG_JAMO[jung]];
+  return [
+    CHO_JAMO[cho],
+    JUNG_JAMO[jung],
+    JONG_JAMO[jong]
+  ].filter(Boolean);
 }
 
 function lessonJamo(index){
@@ -1233,7 +1249,7 @@ function makeAnswerChoices(){
 
   let choices = [correct];
 
-  while(choices.length < 4){
+  while(choices.length < Math.min(4,allParts.length)){
 
     const candidate = random(all);
 
@@ -1347,6 +1363,7 @@ let currentBuilding = null;
 let currentBuildParts = [];
 let selectedBuildParts = [];
 let buildingLocked = false;
+let buildingUsesSounds = false;
 
 function startBuilding(index){
 
@@ -1388,6 +1405,7 @@ function randomBuildPair(){
 
   let cho;
   let jung;
+  let jong = "";
 
   if(isConsonant(focus)){
     cho = focus;
@@ -1398,14 +1416,67 @@ function randomBuildPair(){
   }else{
     const parts = decomposeHangul(focus);
     cho = parts[0];
-    jung = parts[1] || null;
+    jung = parts[1];
+    jong = parts[2] || "";
+  }
+
+  if(!jung){
+    const fallback = availableLessonJamo().filter(letter =>
+      letter !== focus
+    );
+
+    if(!fallback.length) return null;
+
+    if(isConsonant(focus)){
+      jung = random(fallback);
+    }else{
+      cho = random(fallback);
+    }
+  }
+
+  if(
+    jung &&
+    !jong &&
+    Math.random() < .35
+  ){
+    const finalChoices = availableLessonJamo().filter(letter =>
+      isConsonant(letter) &&
+      buildCount(letter) < NEEDED_CORRECT
+    );
+
+    if(finalChoices.length){
+      jong = random(finalChoices);
+    }
   }
 
   return {
     cho,
     jung,
-    syllable: jung ? composeHangul(cho,jung) : focus
+    jong,
+    syllable: jung
+      ? composeHangulWithFinal(cho,jung,jong)
+      : composeHangul(cho,jung)
   };
+}
+
+function soundForBuildPart(part){
+  const item = lessons
+    .flatMap(lesson => lesson.items)
+    .find(candidate => candidate[0] === part);
+
+  if(item) return item[1];
+
+  const syllable = consonantToSyllable[part] || vowelToSyllable[part];
+  const syllableItem = syllable
+    ? lessons.flatMap(lesson => lesson.items)
+      .find(candidate => candidate[0] === syllable)
+    : null;
+
+  return syllableItem ? syllableItem[1] : part;
+}
+
+function displayBuildPart(part){
+  return buildingUsesSounds ? soundForBuildPart(part) : part;
 }
 
 function getBuildingChoices(correctPart){
@@ -1414,7 +1485,7 @@ function getBuildingChoices(correctPart){
 
   let choices = [correctPart];
 
-  while(choices.length < 4){
+  while(choices.length < Math.min(4,allParts.length)){
 
     const candidate = random(allParts);
 
@@ -1439,16 +1510,18 @@ function newBuildingQuestion(){
   }
 
   const pair = randomBuildPair();
+  if(!pair) return;
 
   currentBuilding = pair.syllable;
-  currentBuildParts = [pair.cho, pair.jung].filter(Boolean);
+  currentBuildParts = [pair.cho, pair.jung, pair.jong].filter(Boolean);
+  buildingUsesSounds = Math.random() < .5;
   selectedBuildParts = [];
   buildingLocked = false;
 
   $("buildTarget").textContent = pair.syllable;
 
   $("buildEquation").textContent =
-    "? + ?";
+    currentBuildParts.map(() => "?").join(" + ");
 
   $("buildFeedback").textContent = "";
 
@@ -1476,7 +1549,7 @@ function renderBuildingChoices(){
     const button = document.createElement("button");
 
     button.className = "buildChoice";
-    button.textContent = choice;
+    button.textContent = displayBuildPart(choice);
 
     button.onclick = ()=>{
       chooseBuildingPart(choice,button);
@@ -1535,14 +1608,19 @@ function chooseBuildingPart(part,button){
   creditBuildLetter(part);
 
   const equation =
-    selectedBuildParts.length === 1
-      ? `${part} + ?`
-      : `${selectedBuildParts[0]} + ${selectedBuildParts[1]}`;
+    selectedBuildParts
+      .map(displayBuildPart)
+      .concat(
+        currentBuildParts
+          .slice(selectedBuildParts.length)
+          .map(() => "?")
+      )
+      .join(" + ");
 
   $("buildEquation").textContent = equation;
 
   $("buildFeedback").textContent =
-    `${part} ✓  (${buildCount(part)} correct)`;
+    `${displayBuildPart(part)} ✓  (${buildCount(part)} correct)`;
 
   save();
   updateBuildingUI();
@@ -1552,7 +1630,7 @@ function chooseBuildingPart(part,button){
     buildingLocked = true;
 
     $("buildFeedback").textContent =
-      "Both letters counted! ✓";
+      `${selectedBuildParts.map(displayBuildPart).join(" + ")} counted! ✓`;
 
     setTimeout(()=>{
       newBuildingQuestion();
@@ -1775,20 +1853,27 @@ function buildTargetFor(item){
 function buildPartsFor(item){
 
   const char = item[0];
+  let parts;
 
   if(jamoBuild[char]){
-    return jamoBuild[char];
+    parts = jamoBuild[char];
+  }else if(consonantToSyllable[char]){
+    parts = [char,"ㅏ"];
+  }else if(vowelToSyllable[char]){
+    parts = ["ㅇ",char];
+  }else{
+    parts = decomposeHangul(char);
   }
 
-  if(consonantToSyllable[char]){
-    return [char,"ㅏ"];
+  if(parts.length < 2){
+    const partner = availableLessonJamo().find(letter =>
+      letter !== parts[0]
+    );
+
+    if(partner) parts = [parts[0],partner];
   }
 
-  if(vowelToSyllable[char]){
-    return ["ㅇ",char];
-  }
-
-  return decomposeHangul(char);
+  return parts.slice(0,3);
 }
 
 function renderBuildTest(task){
@@ -1796,9 +1881,7 @@ function renderBuildTest(task){
   const item = task.item;
 
   const parts = buildPartsFor(item);
-
-  const choices =
-    getBuildingChoices(parts[0]);
+  buildingUsesSounds = Math.random() < .5;
 
   $("testTask").innerHTML = `
     <div class="testNumber">
@@ -1812,7 +1895,7 @@ function renderBuildTest(task){
     <div class="testBuild">${buildTargetFor(item)}</div>
 
     <div class="buildEquation" id="testBuildEquation">
-      ? + ?
+      ${parts.map(() => "?").join(" + ")}
     </div>
 
     <div class="buildChoices" id="testBuildChoices"></div>
@@ -1843,7 +1926,7 @@ function renderBuildTest(task){
       const button = document.createElement("button");
 
       button.className = "buildChoice";
-      button.textContent = choice;
+      button.textContent = displayBuildPart(choice);
 
       button.onclick = ()=>{
 
@@ -1871,9 +1954,14 @@ function renderBuildTest(task){
         selected.push(choice);
 
         $("testBuildEquation").textContent =
-          selected.length === 1
-            ? `${selected[0]} + ?`
-            : `${selected[0]} + ${selected[1]}`;
+          selected
+            .map(displayBuildPart)
+            .concat(
+              parts
+                .slice(selected.length)
+                .map(() => "?")
+            )
+            .join(" + ");
 
         setTimeout(renderPart,150);
       };
@@ -2027,26 +2115,7 @@ function writingTargets(){
     .filter((lesson,index) => lessonAvailableForPractice(index))
     .flatMap(lesson => lesson.items.map(item => item[0]));
 
-  const targets = [];
-  const seen = new Set();
-
-  for(let length=1;length<=3;length++){
-    const addTargets = prefix => {
-      if(prefix.length === length){
-        if(!seen.has(prefix)){
-          seen.add(prefix);
-          targets.push({char:prefix});
-        }
-        return;
-      }
-
-      available.forEach(char => addTargets(prefix + char));
-    };
-
-    addTargets("");
-  }
-
-  return targets;
+  return [...new Set(available)].map(char => ({char}));
 }
 
 function startWriting(){
@@ -2297,7 +2366,7 @@ function writingScore(){
     : chars.map((_,index) =>
       size * (index + 1) / (chars.length + 1)
     );
-  const tolerance = 15.7;
+  const tolerance = 15;
 
   function scoreTargetChar(char,center){
     targetCtx.clearRect(0,0,size,size);
