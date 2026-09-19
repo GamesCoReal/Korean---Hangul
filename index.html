@@ -1635,7 +1635,7 @@ function startTest(){
 
   testTasks = [];
 
-  lessons[activeLesson].items.forEach(item=>{
+  availableLessonItems().forEach(item=>{
 
     testTasks.push({
       type:"letter",
@@ -1691,7 +1691,7 @@ function renderLetterTest(task){
   const item = task.item;
 
   const all =
-    lessons[activeLesson].items.map(x=>x[1]);
+    availableLessonItems().map(x=>x[1]);
 
   let choices = [item[1]];
 
@@ -2414,6 +2414,13 @@ function checkWriting(){
   $("writeFeedback").textContent =
     `${passed.length ? `Marked: ${passed.join(", ")}.` : ""}` +
     `${missed.length ? ` Keep practicing: ${missed.join(", ")}.` : ""}`;
+
+  $("writeGuide").textContent =
+    [...currentWritingTarget.char]
+      .map(char =>
+        `${char}${writeCount(char) >= NEEDED_CORRECT ? " ✓" : ""}`
+      )
+      .join(" ");
 
   save();
 
