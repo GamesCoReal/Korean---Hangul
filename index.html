@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Hangul Quest</title>
-<link rel="icon" href="data:,">
 
 <style>
 *{
@@ -319,25 +318,6 @@ header p{
   color:#666;
 }
 
-.modeButtons{
-  display:flex;
-  gap:8px;
-  margin-bottom:14px;
-}
-
-.modeButton{
-  flex:1;
-  padding:12px;
-  border-radius:14px;
-  background:#e5e5ea;
-  font-weight:800;
-}
-
-.modeButton.active{
-  background:#111;
-  color:white;
-}
-
 .writePrompt{
   text-align:center;
   color:#777;
@@ -359,7 +339,7 @@ header p{
 .guide{
   position:absolute;
   inset:0;
-  display:flex;
+  display:none;
   align-items:center;
   justify-content:center;
   z-index:1;
@@ -532,6 +512,7 @@ header p{
     grid-template-columns:repeat(2,1fr);
   }
 }
+
 </style>
 </head>
 
@@ -540,25 +521,27 @@ header p{
 <div class="app">
 
 <header>
-  <h1>Hangul Quest 🇰🇷</h1>
+  <h1>Hangul</h1>
   <p>Learn Korean one step at a time</p>
 </header>
 
 <div class="tabs">
-  <button class="tab active" onclick="showTab('learn')">Learn</button>
-  <button class="tab" onclick="showTab('practice')">Practice</button>
+  <button class="tab active" onclick="showTab('overview')">Overview</button>
+  <button class="tab" onclick="showTab('practice')">Flashcards</button>
+  <button class="tab" onclick="showTab('building')">Building Blocks</button>
   <button class="tab" onclick="showTab('write')">Write</button>
   <button class="tab" onclick="showTab('review')">Review</button>
 </div>
 
 <!-- =========================================================
-     LEARN
+     OVERVIEW
 ========================================================= -->
 
-<section id="learnView" class="view active">
+<section id="overviewView" class="view active">
 
   <div class="card">
     <h2 class="sectionTitle">Lessons</h2>
+
     <p style="color:#777;margin-top:-7px;">
       Complete the practice and building blocks to unlock each test.
     </p>
@@ -576,17 +559,23 @@ header p{
 
   <div class="card">
 
-    <button class="backButton" onclick="showTab('learn')">
-      ← Lessons
+    <button class="backButton" onclick="showTab('overview')">
+      ← Overview
     </button>
 
     <div id="practiceLessonName" class="sectionTitle"></div>
 
-    <div class="prompt">What is this character?</div>
+    <div class="prompt">
+      What is this character?
+    </div>
 
-    <div id="practiceGlyph" class="glyph">?</div>
+    <div id="practiceGlyph" class="glyph">
+      ?
+    </div>
 
-    <button class="sound" onclick="speakCurrentPractice()">🔊 Hear it</button>
+    <button class="sound" onclick="speakCurrentPractice()">
+      🔊 Hear it
+    </button>
 
     <div id="practiceChoices" class="choices"></div>
 
@@ -598,40 +587,15 @@ header p{
 
     <div id="practiceFeedback" class="feedback"></div>
 
-    <div class="stats">
-      <div class="stat">
-        <strong id="practiceStreak">0</strong>
-        Streak
-      </div>
-    </div>
-
-  </div>
-
-  <!-- BUILDING BLOCKS -->
-
-  <div class="card">
-
-    <h2 class="sectionTitle">Building Blocks</h2>
-
-    <div class="prompt">
-      Build the Korean character from its parts.
-      Each letter counts on its own.
-    </div>
-
-    <div id="buildTarget" class="buildTarget">?</div>
-
-    <div id="buildEquation" class="buildEquation">? + ?</div>
-
-    <div id="buildChoices" class="buildChoices"></div>
-
-    <div id="buildFeedback" class="feedback"></div>
-
   </div>
 
   <!-- TEST -->
 
   <div id="testCard" class="card hidden">
-    <h2 class="sectionTitle">Lesson Test</h2>
+
+    <h2 class="sectionTitle">
+      Lesson Test
+    </h2>
 
     <p id="testLockedText" style="color:#777;">
       Complete practice and building first.
@@ -642,6 +606,44 @@ header p{
             onclick="startTest()">
       Start Test
     </button>
+
+  </div>
+
+</section>
+
+<!-- =========================================================
+     BUILDING BLOCKS
+========================================================= -->
+
+<section id="buildingView" class="view">
+
+  <div class="card">
+
+    <button class="backButton" onclick="showTab('overview')">
+      ← Overview
+    </button>
+
+    <h2 class="sectionTitle">
+      Building Blocks
+    </h2>
+
+    <div class="prompt">
+      Build the sequence from its individual blocks.
+      Each letter counts on its own.
+    </div>
+
+    <div id="buildTarget" class="buildTarget">
+      ?
+    </div>
+
+    <div id="buildEquation" class="buildEquation">
+      ? + ?
+    </div>
+
+    <div id="buildChoices" class="buildChoices"></div>
+
+    <div id="buildFeedback" class="feedback"></div>
+
   </div>
 
 </section>
@@ -672,19 +674,15 @@ header p{
 
   <div class="card">
 
-    <button class="backButton" onclick="showTab('learn')">
-      ← Lessons
+    <button class="backButton" onclick="showTab('overview')">
+      ← Overview
     </button>
 
-    <h2 class="sectionTitle">Writing Practice</h2>
+    <h2 class="sectionTitle">
+      Writing Practice
+    </h2>
 
     <div class="modeButtons">
-
-      <button id="traceModeButton"
-              class="modeButton active"
-              onclick="setWritingMode('trace')">
-        Trace
-      </button>
 
       <button id="writeModeButton"
               class="modeButton"
@@ -695,12 +693,14 @@ header p{
     </div>
 
     <div id="writePrompt" class="writePrompt">
-      Trace the character.
+      draw the character.
     </div>
 
     <div class="canvasWrap">
 
-      <div id="writeGuide" class="guide">?</div>
+      <div id="writeGuide" class="guide">
+        ?
+      </div>
 
       <div class="canvasGrid"></div>
 
@@ -724,14 +724,6 @@ header p{
 
     <div id="writeFeedback" class="feedback"></div>
 
-    <div class="stats">
-      <div class="stat">
-        <strong id="writeTotal">0</strong>
-        Total Correct
-      </div>
-
-    </div>
-
   </div>
 
 </section>
@@ -744,7 +736,9 @@ header p{
 
   <div class="card">
 
-    <h2 class="sectionTitle">Review</h2>
+    <h2 class="sectionTitle">
+      Review
+    </h2>
 
     <div id="reviewInfo" class="reviewInfo"></div>
 
@@ -863,12 +857,6 @@ const JUNG_JAMO = [
   "ㅡ","ㅢ","ㅣ"
 ];
 
-const JONG_JAMO = [
-  "", "ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ",
-  "ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ",
-  "ㅋ","ㅌ","ㅍ","ㅎ"
-];
-
 /* =========================================================
    STATE
 ========================================================= */
@@ -945,19 +933,14 @@ function isVowel(char){
 }
 
 function composeHangul(cho,jung){
-  return composeHangulWithFinal(cho,jung,"");
-}
-
-function composeHangulWithFinal(cho,jung,jong){
   const ci = CHO_JAMO.indexOf(cho);
   const ji = JUNG_JAMO.indexOf(jung);
-  const ki = JONG_JAMO.indexOf(jong || "");
 
-  if(ci < 0 || ji < 0 || ki < 0){
-    return cho + jung + (jong || "");
+  if(ci < 0 || ji < 0){
+    return cho + jung;
   }
 
-  return String.fromCharCode(0xAC00 + (ci * 21 + ji) * 28 + ki);
+  return String.fromCharCode(0xAC00 + (ci * 21 + ji) * 28);
 }
 
 function decomposeHangul(char){
@@ -976,15 +959,10 @@ function decomposeHangul(char){
   }
 
   const syllable = code - 0xAC00;
-  const jong = syllable % 28;
   const jung = Math.floor(syllable / 28) % 21;
   const cho = Math.floor(syllable / 28 / 21);
 
-  return [
-    CHO_JAMO[cho],
-    JUNG_JAMO[jung],
-    JONG_JAMO[jong]
-  ].filter(Boolean);
+  return [CHO_JAMO[cho], JUNG_JAMO[jung]];
 }
 
 function lessonJamo(index){
@@ -1007,40 +985,6 @@ function testPassed(i){
 
 function lessonUnlocked(i){
   return i <= s.unlocked;
-}
-
-function lessonAvailableForPractice(i){
-  return i === activeLesson || testPassed(i);
-}
-
-function availableLessonItems(){
-  const items = lessons
-    .filter((lesson,index) => lessonAvailableForPractice(index))
-    .flatMap(lesson => lesson.items);
-
-  return items.length && activeLesson !== null
-    ? items
-    : (activeLesson === null ? [] : lessons[activeLesson].items);
-}
-
-function availableLessonJamo(){
-  const found = [];
-
-  lessons.forEach((lesson,index)=>{
-    if(!lessonAvailableForPractice(index)) return;
-
-    lessonJamo(index).forEach(letter=>{
-      if(!found.includes(letter)) found.push(letter);
-    });
-  });
-
-  if(!found.length && activeLesson !== null){
-    lessonJamo(activeLesson).forEach(letter=>{
-      if(!found.includes(letter)) found.push(letter);
-    });
-  }
-
-  return found;
 }
 
 function practiceComplete(i){
@@ -1082,20 +1026,34 @@ function showTab(tab){
     tabButton.classList.add("active");
   }
 
-  if(tab === "learn"){
-    $("learnView").classList.add("active");
+  if(tab === "overview"){
+    $("overviewView").classList.add("active");
     renderLessons();
   }
 
-  if(tab === "practice"){
-    $("practiceView").classList.add("active");
+if(tab === "practice"){
+  $("practiceView").classList.add("active");
 
-    if(activeLesson === null){
-      activeLesson = Math.min(s.unlocked,lessons.length-1);
-    }
-
-    renderPracticeLesson();
+  if(activeLesson === null){
+    activeLesson = Math.min(s.unlocked,lessons.length-1);
   }
+
+  renderPracticeLesson();
+}
+
+if(tab === "building"){
+  $("buildingView").classList.add("active");
+
+  if(activeLesson === null){
+    activeLesson = Math.min(s.unlocked,lessons.length-1);
+  }
+
+  $("practiceLessonName").textContent =
+    lessons[activeLesson].name;
+
+  newBuildingQuestion();
+  updateBuildingUI();
+}
 
   if(tab === "write"){
     $("writeView").classList.add("active");
@@ -1133,6 +1091,16 @@ function renderLessons(){
 
     const unlocked = lessonUnlocked(i);
     const passed = testPassed(i);
+
+    const practiceDone = lessons[i].items.filter(item =>
+      practiceCount(item[0]) >= NEEDED_CORRECT
+    ).length;
+
+    const buildLetters = lessonJamo(i);
+
+    const buildDone = buildLetters.filter(letter =>
+      buildCount(letter) >= NEEDED_CORRECT
+    ).length;
 
     const div = document.createElement("div");
 
@@ -1205,7 +1173,6 @@ function startPractice(index){
   document.querySelectorAll(".tab")[1].classList.add("active");
 
   newPracticeQuestion();
-  newBuildingQuestion();
 
   renderTestAvailability();
 }
@@ -1217,7 +1184,6 @@ function renderPracticeLesson(){
   $("practiceLessonName").textContent =
     lessons[activeLesson].name;
 
-  updatePracticeUI();
   updateBuildingUI();
   renderTestAvailability();
 }
@@ -1234,7 +1200,7 @@ function newPracticeQuestion(){
   const pool = getIncompletePracticeItems();
 
   if(!pool.length){
-    updatePracticeUI();
+    
     return;
   }
 
@@ -1249,24 +1215,26 @@ function newPracticeQuestion(){
   $("checkPracticeButton").disabled = false;
 
   makeAnswerChoices();
-  updatePracticeUI();
+  
 }
 
 function makeAnswerChoices(){
 
   const correct = currentPractice[1];
 
-  const answerPool = [...new Set(
-    availableLessonItems().map(item => item[1])
-  )];
+  const all = lessons
+    .flatMap(lesson => lesson.items.map(item => item[1]));
 
   let choices = [correct];
 
-  answerPool.forEach(candidate=>{
-    if(choices.length < 4 && !choices.includes(candidate)){
+  while(choices.length < 4){
+
+    const candidate = random(all);
+
+    if(!choices.includes(candidate)){
       choices.push(candidate);
     }
-  });
+  }
 
   choices = shuffle(choices);
 
@@ -1337,19 +1305,11 @@ function checkPractice(){
   }
 
   save();
-  updatePracticeUI();
+  
 
   setTimeout(()=>{
     newPracticeQuestion();
   },900);
-}
-
-function updatePracticeUI(){
-
-  if(activeLesson === null) return;
-
-  $("practiceStreak").textContent =
-    s.streak;
 }
 
 function speakCurrentPractice(){
@@ -1373,7 +1333,6 @@ let currentBuilding = null;
 let currentBuildParts = [];
 let selectedBuildParts = [];
 let buildingLocked = false;
-let buildingUsesSounds = false;
 
 function startBuilding(index){
 
@@ -1384,129 +1343,94 @@ function startBuilding(index){
 
 function getIncompleteBuildLetters(){
 
-  return lessonJamo(activeLesson).filter(letter =>
-    buildCount(letter) < NEEDED_CORRECT
-  );
-}
+  const available = [];
 
-function randomPartnerFor(letter){
+  for(let i = 0; i <= activeLesson; i++){
 
-  const lessonParts = availableLessonJamo();
+    // The current lesson is always allowed.
+    // Older lessons are allowed once their test is passed.
+    if(i !== activeLesson && !testPassed(i)){
+      continue;
+    }
 
-  if(isConsonant(letter)){
+    lessonJamo(i).forEach(letter => {
 
-    const vowels = lessonParts.filter(isVowel);
-    const pool = vowels.length ? vowels : [];
+      if(!available.includes(letter)){
+        available.push(letter);
+      }
 
-    return pool.length ? random(pool) : null;
+    });
   }
 
-  const consonants = lessonParts.filter(isConsonant);
-  const pool = consonants;
-
-  return pool.length ? random(pool) : null;
+  return available;
 }
 
 function randomBuildPair(){
 
-  const incomplete = getIncompleteBuildLetters();
+  const pool = getIncompleteBuildLetters();
 
-  const focus = random(incomplete);
-
-  let cho;
-  let jung;
-  let jong = "";
-
-  if(isConsonant(focus)){
-    cho = focus;
-    jung = randomPartnerFor(focus);
-  }else if(isVowel(focus)){
-    jung = focus;
-    cho = randomPartnerFor(focus);
-  }else{
-    const parts = decomposeHangul(focus);
-    cho = parts[0];
-    jung = parts[1];
-    jong = parts[2] || "";
+  if(pool.length < 2){
+    return null;
   }
 
-  if(!jung){
-    const fallback = availableLessonJamo().filter(letter =>
-      letter !== focus
-    );
+  const amount =
+    Math.random() < 0.5 ? 2 : 3;
 
-    if(!fallback.length) return null;
+  const count =
+    Math.min(amount,pool.length);
 
-    if(isConsonant(focus)){
-      jung = random(fallback);
-    }else{
-      cho = random(fallback);
-    }
-  }
-
-  if(
-    jung &&
-    !jong &&
-    Math.random() < .35
-  ){
-    const finalChoices = availableLessonJamo().filter(letter =>
-      isConsonant(letter) &&
-      buildCount(letter) < NEEDED_CORRECT
-    );
-
-    if(finalChoices.length){
-      jong = random(finalChoices);
-    }
-  }
+  const parts =
+    shuffle(pool).slice(0,count);
 
   return {
-    cho,
-    jung,
-    jong,
-    syllable: jung
-      ? composeHangulWithFinal(cho,jung,jong)
-      : composeHangul(cho,jung)
+    parts:parts,
+    direction:
+      Math.random() < 0.5
+        ? "koreanToEnglish"
+        : "englishToKorean"
   };
 }
 
-function soundForBuildPart(part){
-  const item = lessons
-    .flatMap(lesson => lesson.items)
-    .find(candidate => candidate[0] === part);
+function getBuildEnglishSound(letter){
 
-  if(item) return item[1];
+  for(const lesson of lessons){
 
-  const syllable = consonantToSyllable[part] || vowelToSyllable[part];
-  const syllableItem = syllable
-    ? lessons.flatMap(lesson => lesson.items)
-      .find(candidate => candidate[0] === syllable)
-    : null;
+    const item =
+      lesson.items.find(item =>
+        item[0] === letter
+      );
 
-  return syllableItem ? syllableItem[1] : part;
-}
+    if(item){
+      return item[1];
+    }
 
-function displayBuildPart(part){
-  return buildingUsesSounds ? soundForBuildPart(part) : part;
+  }
+
+  return letter;
 }
 
 function getBuildingChoices(correctPart){
 
-  const allParts = [...new Set(availableLessonJamo())];
+  const allParts =
+    getIncompleteBuildLetters();
 
-  let choices = [correctPart];
+  const pool =
+    allParts.filter(part =>
+      part !== correctPart
+    );
 
-  allParts.forEach(candidate=>{
-    if(choices.length < 4 && !choices.includes(candidate)){
-      choices.push(candidate);
-    }
-  });
+  const koreanChoices = [
+    correctPart,
+    ...shuffle(pool).slice(0,3)
+  ];
 
-  return shuffle(choices);
+  return shuffle(koreanChoices);
 }
 
 function newBuildingQuestion(){
 
-  const pool = getIncompleteBuildLetters();
+  const pool =
+    getIncompleteBuildLetters();
 
   if(!pool.length){
 
@@ -1516,19 +1440,44 @@ function newBuildingQuestion(){
     return;
   }
 
-  const pair = randomBuildPair();
-  if(!pair) return;
+  const pair =
+    randomBuildPair();
 
-  currentBuilding = pair.syllable;
-  currentBuildParts = [pair.cho, pair.jung, pair.jong].filter(Boolean);
-  buildingUsesSounds = Math.random() < .5;
+  if(!pair){
+
+    updateBuildingUI();
+    renderTestAvailability();
+
+    return;
+  }
+
+  currentBuilding =
+    pair.parts.join("");
+
+  currentBuildParts =
+    pair.parts;
+
   selectedBuildParts = [];
+
   buildingLocked = false;
 
-  $("buildTarget").textContent = pair.syllable;
+  window.buildDirection =
+    pair.direction;
+
+  const displayParts =
+    pair.direction === "koreanToEnglish"
+      ? pair.parts
+      : pair.parts.map(part =>
+          getBuildEnglishSound(part)
+        );
+
+  $("buildTarget").textContent =
+    displayParts.join(" + ");
 
   $("buildEquation").textContent =
-    currentBuildParts.map(() => "?").join(" + ");
+    Array(pair.parts.length)
+      .fill("?")
+      .join(" + ");
 
   $("buildFeedback").textContent = "";
 
@@ -1539,30 +1488,46 @@ function newBuildingQuestion(){
 
 function renderBuildingChoices(){
 
-  const container = $("buildChoices");
+  const container =
+    $("buildChoices");
 
   container.innerHTML = "";
 
   const needed =
-    currentBuildParts[selectedBuildParts.length];
+    currentBuildParts[
+      selectedBuildParts.length
+    ];
 
   if(!needed) return;
 
   const choices =
     getBuildingChoices(needed);
 
-  choices.forEach(choice=>{
+  choices.forEach(koreanPart => {
 
-    const button = document.createElement("button");
+    const button =
+      document.createElement("button");
 
-    button.className = "buildChoice";
-    button.textContent = displayBuildPart(choice);
+    button.className =
+      "buildChoice";
+
+    const display =
+      window.buildDirection === "koreanToEnglish"
+        ? getBuildEnglishSound(koreanPart)
+        : koreanPart;
+
+    button.textContent =
+      display;
 
     button.onclick = ()=>{
-      chooseBuildingPart(choice,button);
+      chooseBuildingPart(
+        koreanPart,
+        button
+      );
     };
 
     container.appendChild(button);
+
   });
 }
 
@@ -1580,7 +1545,9 @@ function chooseBuildingPart(part,button){
   if(buildingLocked) return;
 
   const expected =
-    currentBuildParts[selectedBuildParts.length];
+    currentBuildParts[
+      selectedBuildParts.length
+    ];
 
   if(part !== expected){
 
@@ -1593,11 +1560,22 @@ function chooseBuildingPart(part,button){
 
     const credited =
       selectedBuildParts.length
-        ? `${selectedBuildParts.join(" + ")} counted.`
+        ? `${selectedBuildParts
+            .map(x =>
+              window.buildDirection === "koreanToEnglish"
+                ? getBuildEnglishSound(x)
+                : x
+            )
+            .join(" + ")} counted.`
         : "This word resets, but your letter scores stay.";
 
+    const correctDisplay =
+      window.buildDirection === "koreanToEnglish"
+        ? getBuildEnglishSound(expected)
+        : expected;
+
     $("buildFeedback").textContent =
-      `Not ${expected}. ${credited}`;
+      `Not ${correctDisplay}. ${credited}`;
 
     save();
     updateBuildingUI();
@@ -1612,32 +1590,46 @@ function chooseBuildingPart(part,button){
   button.classList.add("correct");
 
   selectedBuildParts.push(part);
+
   creditBuildLetter(part);
 
-  const equation =
-    selectedBuildParts
-      .map(displayBuildPart)
-      .concat(
-        currentBuildParts
-          .slice(selectedBuildParts.length)
-          .map(() => "?")
-      )
-      .join(" + ");
+  const selectedDisplay =
+    selectedBuildParts.map(x =>
+      window.buildDirection === "koreanToEnglish"
+        ? getBuildEnglishSound(x)
+        : x
+    );
 
-  $("buildEquation").textContent = equation;
+  const remaining =
+    currentBuildParts.length -
+    selectedBuildParts.length;
+
+  $("buildEquation").textContent =
+    [
+      ...selectedDisplay,
+      ...Array(remaining).fill("?")
+    ].join(" + ");
+
+  const clickedDisplay =
+    window.buildDirection === "koreanToEnglish"
+      ? getBuildEnglishSound(part)
+      : part;
 
   $("buildFeedback").textContent =
-    `${displayBuildPart(part)} ✓  (${buildCount(part)} correct)`;
+    `${clickedDisplay} ✓ (${buildCount(part)} correct)`;
 
   save();
   updateBuildingUI();
 
-  if(selectedBuildParts.length >= currentBuildParts.length){
+  if(
+    selectedBuildParts.length >=
+    currentBuildParts.length
+  ){
 
     buildingLocked = true;
 
     $("buildFeedback").textContent =
-      `${selectedBuildParts.map(displayBuildPart).join(" + ")} counted! ✓`;
+      `${currentBuildParts.length} blocks counted! ✓`;
 
     setTimeout(()=>{
       newBuildingQuestion();
@@ -1648,13 +1640,12 @@ function chooseBuildingPart(part,button){
     setTimeout(()=>{
       renderBuildingChoices();
     },150);
+
   }
 }
 
 function updateBuildingUI(){
-
   if(activeLesson === null) return;
-
   renderTestAvailability();
 }
 
@@ -1694,7 +1685,7 @@ function renderTestAvailability(){
   }else{
 
     $("testLockedText").textContent =
-      "Complete all practice and building tasks for every item first.";
+      "Complete 3 correct sounds and 3 correct letters in building first.";
 
     $("startTestButton").textContent =
       "Locked";
@@ -1720,7 +1711,7 @@ function startTest(){
 
   testTasks = [];
 
-  availableLessonItems().forEach(item=>{
+  lessons[activeLesson].items.forEach(item=>{
 
     testTasks.push({
       type:"letter",
@@ -1776,7 +1767,7 @@ function renderLetterTest(task){
   const item = task.item;
 
   const all =
-    availableLessonItems().map(x=>x[1]);
+    lessons[activeLesson].items.map(x=>x[1]);
 
   let choices = [item[1]];
 
@@ -1860,27 +1851,20 @@ function buildTargetFor(item){
 function buildPartsFor(item){
 
   const char = item[0];
-  let parts;
 
   if(jamoBuild[char]){
-    parts = jamoBuild[char];
-  }else if(consonantToSyllable[char]){
-    parts = [char,"ㅏ"];
-  }else if(vowelToSyllable[char]){
-    parts = ["ㅇ",char];
-  }else{
-    parts = decomposeHangul(char);
+    return jamoBuild[char];
   }
 
-  if(parts.length < 2){
-    const partner = availableLessonJamo().find(letter =>
-      letter !== parts[0]
-    );
-
-    if(partner) parts = [parts[0],partner];
+  if(consonantToSyllable[char]){
+    return [char,"ㅏ"];
   }
 
-  return parts.slice(0,3);
+  if(vowelToSyllable[char]){
+    return ["ㅇ",char];
+  }
+
+  return decomposeHangul(char);
 }
 
 function renderBuildTest(task){
@@ -1888,7 +1872,9 @@ function renderBuildTest(task){
   const item = task.item;
 
   const parts = buildPartsFor(item);
-  buildingUsesSounds = Math.random() < .5;
+
+  const choices =
+    getBuildingChoices(parts[0]);
 
   $("testTask").innerHTML = `
     <div class="testNumber">
@@ -1902,7 +1888,7 @@ function renderBuildTest(task){
     <div class="testBuild">${buildTargetFor(item)}</div>
 
     <div class="buildEquation" id="testBuildEquation">
-      ${parts.map(() => "?").join(" + ")}
+      ? + ?
     </div>
 
     <div class="buildChoices" id="testBuildChoices"></div>
@@ -1933,7 +1919,7 @@ function renderBuildTest(task){
       const button = document.createElement("button");
 
       button.className = "buildChoice";
-      button.textContent = displayBuildPart(choice);
+      button.textContent = choice;
 
       button.onclick = ()=>{
 
@@ -1961,14 +1947,9 @@ function renderBuildTest(task){
         selected.push(choice);
 
         $("testBuildEquation").textContent =
-          selected
-            .map(displayBuildPart)
-            .concat(
-              parts
-                .slice(selected.length)
-                .map(() => "?")
-            )
-            .join(" + ");
+          selected.length === 1
+            ? `${selected[0]} + ?`
+            : `${selected[0]} + ${selected[1]}`;
 
         setTimeout(renderPart,150);
       };
@@ -2099,7 +2080,7 @@ function afterTest(){
 
   if(testPassed(activeLesson)){
 
-    showTab("learn");
+    showTab("overview");
 
   }else{
 
@@ -2112,17 +2093,76 @@ function afterTest(){
    WRITING
 ========================================================= */
 
-let writingMode = "trace";
+const COMBINED_REVIEW_DAYS = 7;
+
 let currentWritingTarget = null;
 let writingPool = [];
 
+function sectionIsCurrentlyCombined(index){
+
+  if(!testPassed(index)) return false;
+
+  const last =
+    Number(localStorage.getItem(
+      `hangulQuest_lastReview_${index}`
+    ) || 0);
+
+  const sevenDays =
+    COMBINED_REVIEW_DAYS * 24 * 60 * 60 * 1000;
+
+  return Date.now() - last < sevenDays;
+}
+
 function writingTargets(){
 
-  const available = lessons
-    .filter((lesson,index) => lessonAvailableForPractice(index))
-    .flatMap(lesson => lesson.items.map(item => item[0]));
+  let targets = [];
 
-  return [...new Set(available)].map(char => ({char}));
+  lessons.forEach((lesson,index)=>{
+
+    if(!lessonUnlocked(index)) return;
+
+    const combined =
+      sectionIsCurrentlyCombined(index);
+
+    if(combined){
+
+      lesson.items.forEach(item=>{
+
+        let target = item[0];
+
+        if(index === 0 || index === 1){
+          target = consonantToSyllable[item[0]] || item[0];
+        }
+
+        if(index === 2 || index === 3){
+          target = vowelToSyllable[item[0]] || item[0];
+        }
+
+        targets.push({
+          char:target,
+          sound:item[1],
+          section:index
+        });
+
+      });
+
+    }else{
+
+      lesson.items.forEach(item=>{
+
+        targets.push({
+          char:item[0],
+          sound:item[1],
+          section:index
+        });
+
+      });
+
+    }
+
+  });
+
+  return targets;
 }
 
 function startWriting(){
@@ -2146,10 +2186,9 @@ function chooseNewWritingTarget(){
 
     currentWritingTarget = null;
 
-    updateWritingUI();
-
     $("writeGuide").textContent = "✓";
-    $("writePrompt").textContent = "All available writing prompts are complete.";
+
+    updateWritingPrompt();
 
     return;
   }
@@ -2157,52 +2196,50 @@ function chooseNewWritingTarget(){
   currentWritingTarget =
     random(writingPool);
 
+  // Randomly choose what the user is given as the prompt.
+  currentWritingTarget.promptType =
+    Math.random() < 0.5
+      ? "character"
+      : "sound";
+
   $("writeGuide").textContent =
     currentWritingTarget.char;
 
-  $("writePrompt").textContent =
-    `${writingMode === "trace" ? "Trace" : "Write"} this: ${currentWritingTarget.char}`;
-
   $("writeFeedback").textContent = "";
+
+  updateWritingPrompt();
 
   clearCanvas();
 
-  updateWritingUI();
 }
 
-function updateWritingUI(){
+function updateWritingPrompt(){
 
   if(!currentWritingTarget){
 
-    $("writeTotal").textContent = s.correct;
+    $("writePrompt").textContent =
+      "Writing complete.";
 
     return;
   }
 
-  $("writeTotal").textContent =
-    s.correct;
-}
+  const char =
+    currentWritingTarget.char;
 
-function setWritingMode(mode){
+  const sound =
+    currentWritingTarget.sound;
 
-  writingMode = mode;
+  if(currentWritingTarget.promptType === "sound"){
 
-  $("traceModeButton").classList.toggle(
-    "active",
-    mode === "trace"
-  );
+    $("writePrompt").textContent =
+      `Draw the Korean letter that makes the sound "${sound}".`;
 
-  $("writeModeButton").classList.toggle(
-    "active",
-    mode === "write"
-  );
+  }else{
 
-  $("writeGuide").style.visibility =
-    mode === "trace" ? "visible" : "hidden";
+    $("writePrompt").textContent =
+      `Draw this Korean letter: ${char}`;
 
-  $("writePrompt").textContent = currentWritingTarget
-    ? `${mode === "trace" ? "Trace" : "Write"} this: ${currentWritingTarget.char}`
-    : "Choose a writing prompt.";
+  }
 }
 
 /* =========================================================
@@ -2316,15 +2353,10 @@ function clearCanvas(){
 
 function writingScore(){
 
-  if(!currentWritingTarget) return [0];
+  if(!currentWritingTarget) return 0;
 
-  const rect = canvas.getBoundingClientRect();
-
-  const size = 300;
-
-  /* =========================================================
-     GET THE USER DRAWING
-  ========================================================= */
+  const rect =
+    canvas.getBoundingClientRect();
 
   const source =
     ctx.getImageData(
@@ -2336,8 +2368,10 @@ function writingScore(){
 
   const data = source.data;
 
+  const size = 100;
+
   const userMask =
-    new Uint8Array(size * size);
+    new Uint8Array(size*size);
 
   const scaleX =
     canvas.width / size;
@@ -2345,31 +2379,26 @@ function writingScore(){
   const scaleY =
     canvas.height / size;
 
-  for(let y = 0; y < size; y++){
+  for(let y=0;y<size;y++){
 
-    for(let x = 0; x < size; x++){
+    for(let x=0;x<size;x++){
 
       const px =
-        Math.floor(x * scaleX);
+        Math.floor(x*scaleX);
 
       const py =
-        Math.floor(y * scaleY);
+        Math.floor(y*scaleY);
 
       const index =
-        (py * canvas.width + px) * 4;
+        (py*canvas.width+px)*4;
 
-      if(data[index + 3] > 20){
-        userMask[y * size + x] = 1;
+      if(data[index+3] > 20){
+        userMask[y*size+x] = 1;
       }
 
     }
 
   }
-
-
-  /* =========================================================
-     CREATE THE EXACT SAME GUIDE AS THE SCREEN
-  ========================================================= */
 
   const targetCanvas =
     document.createElement("canvas");
@@ -2380,34 +2409,22 @@ function writingScore(){
   const targetCtx =
     targetCanvas.getContext("2d");
 
-  targetCtx.clearRect(
-    0,
-    0,
-    size,
-    size
-  );
+  targetCtx.fillStyle = "white";
+  targetCtx.fillRect(0,0,size,size);
 
-  targetCtx.fillStyle = "#000";
-
-  const guideFontSize = 120;
-
-  const targetFontSize =
-    rect.width > 0
-      ? (guideFontSize / rect.width) * size
-      : 120;
+  targetCtx.fillStyle = "black";
 
   targetCtx.font =
-    `500 ${targetFontSize}px sans-serif`;
+    "500 90px sans-serif";
 
   targetCtx.textAlign = "center";
   targetCtx.textBaseline = "middle";
 
   targetCtx.fillText(
     currentWritingTarget.char,
-    size / 2,
-    size / 2
+    size/2,
+    size/2
   );
-
 
   const targetData =
     targetCtx.getImageData(
@@ -2417,233 +2434,131 @@ function writingScore(){
       size
     ).data;
 
-
-  /* =========================================================
-     TARGET FILLED MASK
-  ========================================================= */
-
   const targetMask =
-    new Uint8Array(size * size);
+    new Uint8Array(size*size);
 
-  for(let i = 0; i < targetMask.length; i++){
+  for(let i=0;i<targetMask.length;i++){
 
-    if(targetData[i * 4 + 3] > 20){
+    if(targetData[i*4] < 230){
       targetMask[i] = 1;
     }
 
   }
 
+  let targetCount = 0;
+  let covered = 0;
+  let userCount = 0;
+  let matched = 0;
 
-  /* =========================================================
-     EXTRACT ONLY THE OUTLINE
-  ========================================================= */
+  const tolerance = 8;
 
-  const outline =
-    new Uint8Array(size * size);
+  for(let y=0;y<size;y++){
 
-  for(let y = 1; y < size - 1; y++){
+    for(let x=0;x<size;x++){
 
-    for(let x = 1; x < size - 1; x++){
+      const i = y*size+x;
 
-      const i =
-        y * size + x;
+      if(targetMask[i]){
 
-      if(!targetMask[i]) continue;
+        targetCount++;
 
-      if(
-        !targetMask[i - 1] ||
-        !targetMask[i + 1] ||
-        !targetMask[i - size] ||
-        !targetMask[i + size]
-      ){
+        let found = false;
 
-        outline[i] = 1;
+        for(let dy=-tolerance;dy<=tolerance && !found;dy++){
 
+          for(let dx=-tolerance;dx<=tolerance;dx++){
+
+            const nx = x+dx;
+            const ny = y+dy;
+
+            if(
+              nx>=0 &&
+              nx<size &&
+              ny>=0 &&
+              ny<size &&
+              userMask[ny*size+nx]
+            ){
+
+              found = true;
+              break;
+
+            }
+
+          }
+
+        }
+
+        if(found) covered++;
+
+      }
+
+      if(userMask[i]){
+        userCount++;
       }
 
     }
 
   }
 
+  for(let y=0;y<size;y++){
 
-  /* =========================================================
-     DISTANCE MAP
+    for(let x=0;x<size;x++){
 
-     Finds distance from every pixel to the user's drawing.
-  ========================================================= */
+      const i = y*size+x;
 
-  const INF = 9999;
+      if(!userMask[i]) continue;
 
-  const distance =
-    new Float32Array(size * size);
+      let found = false;
 
-  distance.fill(INF);
+      for(let dy=-tolerance;dy<=tolerance && !found;dy++){
 
+        for(let dx=-tolerance;dx<=tolerance;dx++){
 
-  for(let i = 0; i < distance.length; i++){
+          const nx = x+dx;
+          const ny = y+dy;
 
-    if(userMask[i]){
-      distance[i] = 0;
-    }
+          if(
+            nx>=0 &&
+            nx<size &&
+            ny>=0 &&
+            ny<size &&
+            targetMask[ny*size+nx]
+          ){
 
-  }
+            found = true;
+            break;
 
+          }
 
-  /* Forward pass */
+        }
 
-  for(let y = 0; y < size; y++){
-
-    for(let x = 0; x < size; x++){
-
-      const i =
-        y * size + x;
-
-      let d =
-        distance[i];
-
-      if(x > 0){
-        d =
-          Math.min(
-            d,
-            distance[i - 1] + 1
-          );
       }
 
-      if(y > 0){
-        d =
-          Math.min(
-            d,
-            distance[i - size] + 1
-          );
-      }
-
-      if(x > 0 && y > 0){
-        d =
-          Math.min(
-            d,
-            distance[i - size - 1] + 1.414
-          );
-      }
-
-      if(x < size - 1 && y > 0){
-        d =
-          Math.min(
-            d,
-            distance[i - size + 1] + 1.414
-          );
-      }
-
-      distance[i] = d;
+      if(found) matched++;
 
     }
 
   }
 
+  const coverage =
+    targetCount ? covered/targetCount : 0;
 
-  /* Backward pass */
+  const precision =
+    userCount ? matched/userCount : 0;
 
-  for(let y = size - 1; y >= 0; y--){
+  let score =
+    coverage*.78 +
+    precision*.22;
 
-    for(let x = size - 1; x >= 0; x--){
-
-      const i =
-        y * size + x;
-
-      let d =
-        distance[i];
-
-      if(x < size - 1){
-        d =
-          Math.min(
-            d,
-            distance[i + 1] + 1
-          );
-      }
-
-      if(y < size - 1){
-        d =
-          Math.min(
-            d,
-            distance[i + size] + 1
-          );
-      }
-
-      if(x < size - 1 && y < size - 1){
-        d =
-          Math.min(
-            d,
-            distance[i + size + 1] + 1.414
-          );
-      }
-
-      if(x > 0 && y < size - 1){
-        d =
-          Math.min(
-            d,
-            distance[i + size - 1] + 1.414
-          );
-      }
-
-      distance[i] = d;
-
-    }
-
+  if(coverage >= .50){
+    score += .08;
   }
 
-
-  /* =========================================================
-     SCORE OUTLINE COVERAGE
-
-     0 px away     = 100%
-     5 px away     = 75%
-     10 px away    = 50%
-     15 px away    = 25%
-     20+ px away   = 0%
-  ========================================================= */
-
-  const radius = 20;
-
-  let outlinePixels = 0;
-  let outlineScore = 0;
-
-
-  for(let i = 0; i < outline.length; i++){
-
-    if(!outline[i]) continue;
-
-    outlinePixels++;
-
-    const d =
-      distance[i];
-
-    if(d >= radius){
-      continue;
-    }
-
-    const credit =
-      1 - (d / radius);
-
-    outlineScore += credit;
-
+  if(coverage >= .70){
+    score += .07;
   }
 
-
-  if(outlinePixels === 0){
-    return [0];
-  }
-
-
-  const score =
-    outlineScore / outlinePixels;
-
-
-  return [
-    Math.max(
-      0,
-      Math.min(1, score)
-    )
-  ];
-
+  return Math.min(1,score);
 }
 
 /* =========================================================
@@ -2654,25 +2569,27 @@ function checkWriting(){
 
   if(!currentWritingTarget) return;
 
-  const score = writingScore();
+  const score =
+    writingScore();
 
   const percent =
-    Math.round(score * 100);
+    Math.round(score*100);
 
-  const char =
-    currentWritingTarget.char;
+  if(percent >= 70){
 
-  if(percent >= 55){
+    const char =
+      currentWritingTarget.char;
 
-    s.writing[char] =
-      writeCount(char) + 1;
+    s.writing[char] = writeCount(char) + 1;
 
     s.correct++;
     s.total++;
     s.streak++;
 
     $("writeFeedback").textContent =
-      `${char} ${percent}% ✓`;
+      `Correct! ✓ ${percent}%  ${char} marked once.`;
+
+    save();
 
   }else{
 
@@ -2680,16 +2597,9 @@ function checkWriting(){
     s.streak = 0;
 
     $("writeFeedback").textContent =
-      `Keep practicing: ${char} ${percent}%.`;
+      `Not quite. ${percent}%  Moving on.`;
 
   }
-
-  $("writeGuide").textContent =
-    `${char}${writeCount(char) >= NEEDED_CORRECT ? " ✓" : ""}`;
-
-  save();
-
-  updateWritingUI();
 
   setTimeout(()=>{
     chooseNewWritingTarget();
@@ -2846,7 +2756,7 @@ function renderReview(){
 ========================================================= */
 
 renderLessons();
-showTab("learn");
+showTab("overview");
 
 </script>
 
